@@ -23,6 +23,21 @@ command ${CDPATH%$"msg $(command)"}
 { in group $"msg"; }
 A=$(foo $"something $'ansi-c\t\\' ${CDPATH#$"msg"}") `in bq $"some\$th\\i\ng"`
 
+# 3.2.5.1 Looping Constructs
+# for (( expr1 ; expr2 ; expr3 )) ; do commands ; done
+
+for (( i = 0; i < $VAR; i++ )); do
+   cmd
+done
+
+for (( i = 0; i < '$NO_VAR'; i = i + $'ansi-c' ))
+do
+   cmd
+done
+
+for (( i = "123"; i < ${CDPATH}; i = i / 100 )); do V1=456 command here; done
+for ((;;)); do V1=456 command here; done
+
 # 5.1 Bourne Shell Variables
 
 $CDPATH $HOME $IFS $MAIL $MAILPATH $OPTARG $OPTIND $PATH $PS1 $PS2

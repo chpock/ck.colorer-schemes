@@ -146,6 +146,14 @@
     </inherit>
 </scheme>
 
+<scheme name="arithmetic_expansion">
+    <inherit scheme="shell-posix:arithmetic_expansion">
+        <virtual scheme="shell-posix:variables" subst-scheme="variables"/>
+        <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
+        <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
+    </inherit>
+</scheme>
+
 <scheme name="script_words">
     <inherit scheme="shell-posix:script_words">
         <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
@@ -186,14 +194,22 @@
     </inherit>
 </scheme>
 
+<scheme name="for-arithmetic">
+    <block start="/((\(\()|;)/" end="/\M((\)\))|(?{SymbolStrong};))/" scheme="arithmetic_expansion"/>
+</scheme>
+
 <scheme name="for">
-    <!-- for VAR in ... done -->
+    <!-- for special VAR in ... done -->
     <block start="/\b(for)\b\s+(?{VariableSpecial}%specvar;((\w)?!|$))\s*(?{Error}.*?)\s*\b(?{CommandReserved}in)\b\s*/x"
         end="/\M(;|#|$)/" scheme="script_words"
         region01="CommandReserved" region11="SymbolStrong"/>
-    <!-- for VAR ... done -->
+    <!-- for special VAR ... done -->
     <regexp match="/\b(for)\b\s+(?{VariableSpecial}%specvar;((\w)?!|$))\s*(?{Error}.*?)\s*\M(?{SymbolStrong};|#|$)/x"
         region1="CommandReserved"/>
+    <!-- for (( expr1 ; expr2 ; expr3 )) ... done -->
+    <block start="/\b(for)\s+\M(\(\()/" end="/(\)\))\s*(?{Error}.*?)\M(;|#|$)/" scheme="for-arithmetic"
+        region01="CommandReserved" region12="SymbolStrong"
+        region02="PairStart"       region11="PairEnd"/>
     <inherit scheme="shell-posix:for"/>
 </scheme>
 

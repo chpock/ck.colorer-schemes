@@ -399,6 +399,7 @@
 
 <scheme name="numbers">
     <regexp match="/([\w+-])?~1-?\d+\b/" region="Number"/>
+    <regexp match="/\b\d+\b/" region="Number"/>
 </scheme>
 
 <scheme name="comments">
@@ -427,6 +428,7 @@
     <inherit scheme="evaluations"/>
     <inherit scheme="escapes"/>
     <inherit scheme="numbers"/>
+    <inherit scheme="variable_names"/>
     <keywords region="Symbol">
         <symb name="++"/>         <symb name="--"/>
         <symb name="+"/>          <symb name="-"/>
