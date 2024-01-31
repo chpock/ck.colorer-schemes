@@ -103,6 +103,33 @@
         <virtual scheme="shell-posix:for" subst-scheme="for"/>
         <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
         <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
+        <virtual scheme="shell-posix:script_control" subst-scheme="script_control"/>
+        <virtual scheme="shell-posix:script" subst-scheme="script"/>
+    </inherit>
+</scheme>
+
+<scheme name="script">
+    <inherit scheme="shell-posix:script">
+        <virtual scheme="shell-posix:variables" subst-scheme="variables"/>
+        <virtual scheme="shell-posix:variable_assignments" subst-scheme="variable_assignments"/>
+        <virtual scheme="shell-posix:for" subst-scheme="for"/>
+        <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
+        <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
+        <virtual scheme="shell-posix:script_control" subst-scheme="script_control"/>
+    </inherit>
+</scheme>
+
+<scheme name="script_control">
+    <!-- select ... done -->
+    <block start="/\M\b(select)\b/" end="/\b(done)\b/" scheme="select"
+        region01="PairStart" region10="PairEnd"
+        region00="CommandReserved" region11="CommandReserved"/>
+    <inherit scheme="shell-posix:script_control">
+        <virtual scheme="shell-posix:variables" subst-scheme="variables"/>
+        <virtual scheme="shell-posix:variable_assignments" subst-scheme="variable_assignments"/>
+        <virtual scheme="shell-posix:for" subst-scheme="for"/>
+        <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
+        <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
     </inherit>
 </scheme>
 
@@ -211,6 +238,22 @@
         region01="CommandReserved" region12="SymbolStrong"
         region02="PairStart"       region11="PairEnd"/>
     <inherit scheme="shell-posix:for"/>
+</scheme>
+
+<scheme name="select">
+    <inherit scheme="comments"/>
+    <!-- select VAR in ... done -->
+    <block start="/\b(select)\b\s+((?{VariableSpecial}%specvar;((\w)?!|$))|(?{Variable}%var;)|(?{Error}[^;\s]+))\s*(?{Error}.*?)\s*\b(?{CommandReserved}in)\b\s*/"
+        end="/\M(;|#|$)/" scheme="script_words"
+        region01="CommandReserved" region11="SymbolStrong"/>
+    <!-- select VAR ... done -->
+    <regexp match="/\b(select)\b\s+((?{VariableSpecial}%specvar;((\w)?!|$))|(?{Variable}%var;)|(?{Error}[^;\s]+))\s*(?{Error}.*?)\s*\M(?{SymbolStrong};|#|$)/"
+        region1="CommandReserved"/>
+    <!-- do ... done -->
+    <block start="/\bdo\b/" end="/\s*\M\b(done)\b/" scheme="script"
+        region00="CommandReserved" region11="CommandReserved"/>
+    <!-- keep everything highlighted as a script if above 'select' syntax failed to match -->
+    <block start="/\b(select)\b/" end="//" scheme="script" region01="CommandReserved"/>
 </scheme>
 
 <scheme name="variable_names">

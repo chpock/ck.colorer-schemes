@@ -38,6 +38,25 @@ done
 for (( i = "123"; i < ${CDPATH}; i = i / 100 )); do V1=456 command here; done
 for ((;;)); do V1=456 command here; done
 
+# 3.2.5.2 Conditional Constructs
+
+# select
+
+select var in $VAR; do
+
+done
+
+select var in; do done
+
+select VAR in "BLA" "FOO" "BAR"; do; done
+
+select VAR; do
+    command
+    if [ -n "$FOO" ]; then
+        something
+    fi
+done
+
 # 5.1 Bourne Shell Variables
 
 $CDPATH $HOME $IFS $MAIL $MAILPATH $OPTARG $OPTIND $PATH $PS1 $PS2
