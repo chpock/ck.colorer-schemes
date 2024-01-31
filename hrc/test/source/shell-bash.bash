@@ -2,8 +2,6 @@
 
 # 3.1.2.4 ANSI-C Quoting
 
-
-
 $'\nfoo\e'
 A=$'\\\'\"\?no special meaning'
 CDPATH=$'octal \1 \12 \123 foo' $'octal error \9 \19 \181 foo'
@@ -28,16 +26,16 @@ A=$(foo $"something $'ansi-c\t\\' ${CDPATH#$"msg"}") `in bq $"some\$th\\i\ng"`
 # 3.2.5.1 Looping Constructs
 # for (( expr1 ; expr2 ; expr3 )) ; do commands ; done
 
-for (( i = 0; i < $VAR; i++ )); do
+for (( i = 0; $i < $VAR; i++ )); do
    cmd
 done
 
-for (( i = 0; i < '$NO_VAR'; i = i + $'ansi-c' ))
+for (( i = 0; $i < '$NO_VAR'; i = $i + $'ansi-c' ))
 do
    cmd
 done
 
-for (( i = "123"; i < ${CDPATH}; i = i / 100 )); do V1=456 command here; done
+for (( i = "123"; $i < ${CDPATH}; i = $i / 100 )); do V1=456 command here; done
 for ((;;)); do V1=456 command here; done
 
 # 3.2.5.2 Conditional Constructs
@@ -61,6 +59,19 @@ done
 
 select IFS in; do done # POSIX special variable
 select CDPATH in; do done # Bash special variable
+
+# (( ... ))
+
+(( "asd" '123' $'\r\t123' $"foo" 1 )) # test strings / numbers
+(( $(V1=1 command) `command` )) # evaluations
+(( \$ \" \' \$ )) # escapes
+(( $VAR $IFS $CDPATH )) # variables
+(( ${VAR%10} ${IFS#10} ${CDPATH%10} )) # parameter expansion
+(( i++ i-- ++IFS --CDPATH )) # increment / decrement
+(( 1 + 1 - 2 ! 1 ~ 3 ** 3 * 4 / 5 % -6 >> 10 << 20 )) # operations
+(( 1 <= 2 >= 4 < 1 > 4 == 5 != 4 & 1 ^ 5 | 8 && 10 || 20 ? 30 : 2 )) # operations
+(( a = 1 || w *= 1 || IFS /= 10 || CDPATH %= 10 || x += 10 || y -= 10 )) # assignment
+(( a <<= 10 || b >>= 30 || c &= 1 || f |= 40 )) # assignment
 
 # 5.1 Bourne Shell Variables
 

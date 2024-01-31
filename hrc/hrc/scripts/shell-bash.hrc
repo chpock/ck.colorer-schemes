@@ -126,6 +126,11 @@
         region01="PairStart" region10="PairEnd"
         region00="CommandReserved" region11="CommandReserved"/>
 
+    <!-- (( ... )) -->
+    <block start="/(\(\()/" end="/(\)\))/" scheme="shell-arithmetic"
+        region01="PairStart" region10="PairEnd"
+        region00="Operator" region11="Operator"/>
+
     <inherit scheme="shell-posix:script_control">
         <virtual scheme="shell-posix:variables" subst-scheme="variables"/>
         <virtual scheme="shell-posix:variable_assignments" subst-scheme="variable_assignments"/>
@@ -237,7 +242,7 @@
 </scheme>
 
 <scheme name="for-arithmetic">
-    <block start="/((\(\()|;)/" end="/\M((\)\))|(?{SymbolStrong};))/" scheme="arithmetic_expansion"/>
+    <block start="/((\(\()|;)/" end="/\M((\)\))|(?{SymbolStrong};))/" scheme="shell-arithmetic"/>
 </scheme>
 
 <scheme name="for">
@@ -264,6 +269,36 @@
     <!-- anything else is an error -->
     <block start="/(done)?!\s*\m/" end="/\M(%cmdbreak;)/" scheme="def:empty"
         region="Error" region11="SymbolStrong"/>
+</scheme>
+
+<scheme name="shell-arithmetic">
+    <inherit scheme="shell-posix:escapes"/>
+    <inherit scheme="strings"/>
+    <inherit scheme="variables"/>
+    <inherit scheme="shell-posix:evaluations"/>
+    <inherit scheme="shell-posix:numbers"/>
+    <inherit scheme="comments"/>
+    <!-- increment / decrement -->
+    <block start="/(\+\+|--)\M%var;\b/" end="/~%var;\m\b/" scheme="variable_names"
+        region01="Symbol"/>
+    <block start="/\b\M%var;(\+\+|--)/" end="/~%var;\m(\+\+|--)/" scheme="variable_names"
+        region01="Symbol"/>
+    <!-- assignment -->
+    <block start="/\b\M%var;\s*(([\^*/%+&amp;|-]|&lt;&lt;|&gt;&gt;)?\=)/" end="/~%var;\m.*?\=/"
+        scheme="variable_names" region01="Symbol"/>
+    <keywords region="Symbol">
+        <symb name="+"/>          <symb name="-"/>
+        <symb name="~"/>          <symb name="!"/>
+        <symb name="**"/>         <symb name="/"/>
+        <symb name="%"/>          <symb name="*"/>
+        <symb name="&lt;&lt;"/>   <symb name="&gt;&gt;"/>
+        <symb name="&lt;="/>      <symb name="&gt;="/>
+        <symb name="&lt;"/>       <symb name="&gt;"/>
+        <symb name="=="/>         <symb name="!="/>
+        <symb name="&amp;&amp;"/> <symb name="||"/>
+        <symb name="&amp;"/>      <symb name="^"/>
+        <symb name="|"/>
+    </keywords>
 </scheme>
 
 </type>

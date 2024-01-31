@@ -443,24 +443,24 @@
     <inherit scheme="numbers"/>
     <inherit scheme="variable_names"/>
     <keywords region="Symbol">
+        <symb name="=="/>         <symb name="*="/>
+        <symb name="/="/>         <symb name="%="/>
+        <symb name="+="/>         <symb name="-="/>
+        <symb name="&amp;="/>     <symb name="^="/>
+        <symb name="|="/>         <symb name="!="/>
         <symb name="++"/>         <symb name="--"/>
         <symb name="+"/>          <symb name="-"/>
         <symb name="~"/>          <symb name="!"/>
         <symb name="*"/>          <symb name="/"/>
+        <symb name="="/>
         <symb name="%"/>
+        <symb name="&lt;&lt;="/>  <symb name="&ge;&ge;="/>
         <symb name="&lt;&lt;"/>   <symb name="&gt;&gt;"/>
-        <symb name="&lt;"/>       <symb name="&gt;"/>
         <symb name="&lt;="/>      <symb name="&gt;="/>
-        <symb name="=="/>         <symb name="!="/>
+        <symb name="&lt;"/>       <symb name="&gt;"/>
+        <symb name="&amp;&amp;"/> <symb name="||"/>
         <symb name="&amp;"/>      <symb name="^"/>
         <symb name="|"/>
-        <symb name="&amp;&amp;"/> <symb name="||"/>
-        <symb name="="/>          <symb name="*="/>
-        <symb name="/="/>         <symb name="%="/>
-        <symb name="+="/>         <symb name="-="/>
-        <symb name="&lt;&lt;="/>  <symb name="&ge;&ge;="/>
-        <symb name="&amp;="/>    <symb name="^="/>
-        <symb name="|="/>
     </keywords>
 </scheme>
 
