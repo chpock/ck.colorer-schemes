@@ -60,10 +60,10 @@ print_string() {
     LINE_LENGTH=$(( LINE_LENGTH + ${#LINE} ))
 }
 
-html2console() {
+load_hrd() {
     local LINE
     if ! declare -p HTML2CONS >/dev/null 2>&1; then
-        declare -A HTML2CONS
+        declare -gA HTML2CONS
         while read -r LINE || [ -n "$LINE" ]; do
             local X="${LINE#*<assign name=\"}"
             [ "$X" != "$LINE" ] || continue
@@ -77,6 +77,50 @@ html2console() {
             HTML2CONS["$C_NAME"]="$C_FORE|$C_BACK"
         done < "$HRD_FILE"
     fi
+}
+
+filter_diff() {
+    local LINE
+    load_hrd
+    while IFS= read -r LINE; do
+        # strip line numbers
+        LINE="${LINE#*: }"
+        local X="${LINE%%<span class=\'*}"
+        while [ "$X" != "$LINE" ]; do
+
+            printf '%s' "$X"
+
+            printf '%s' "${LINE:${#X}:13}"
+            LINE="${LINE:$((13+${#X}))}"
+            X="${LINE%%\'*}"
+
+            local C_NAME="${X##* }" ORIG="$X"
+            C_NAME="${C_NAME//-/:}"
+            while [ -n "$C_NAME" -a -z "${HTML2CONS["$C_NAME"]}" ]; do
+                [ "${X% *}" = "$X" ] && X="" || X="${X% *}"
+                C_NAME="${X##* }"
+                C_NAME="${C_NAME//-/:}"
+            done
+            printf '%s' "${C_NAME//:/-}"
+
+            printf '%s' "${LINE:${#ORIG}:2}"
+            LINE="${LINE:$((2+${#ORIG}))}"
+            X="${LINE%%</span>*}"
+            printf '%s' "$X"
+
+            printf '%s' "${LINE:${#X}:7}"
+            LINE="${LINE:$((7+${#X}))}"
+
+            X="${LINE%%<span class=\'*}"
+        done
+        printf '%s' "$LINE"
+        echo
+    done
+}
+
+html2console() {
+    local LINE
+    load_hrd
     while IFS= read -r LINE; do
         LINE_LENGTH=0
         local PRE="${LINE%% *}"
@@ -146,10 +190,14 @@ for SOURCE in "$SOURCE_DIR"/*; do
     fi
 
     printf "; Check ..."
-    if diff -rubBaN -U10 "$VALID" "$OUT" >"$DIFF"; then
+    filter_diff < "$VALID" > "${VALID}.filtered"
+    filter_diff < "$OUT" > "${OUT}.filtered"
+    if diff -rubBaN -U10 "${VALID}.filtered" "${OUT}.filtered" >"$DIFF"; then
         echo " OK"
+        rm -f "${VALID}.filtered" "${OUT}.filtered" "$DIFF"
         continue
     fi
+    rm -f "${VALID}.filtered" "${OUT}.filtered"
 
     echo " NOT OK"
     echo "Raw diff:"
