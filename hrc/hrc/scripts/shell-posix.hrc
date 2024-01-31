@@ -503,8 +503,8 @@
 <scheme name="for">
     <inherit scheme="comments"/>
     <!-- for VAR ... done -->
-    <block start="/\b(for)\b\s*/" end="/\s*(?{Error}[^;#]*?)(\M(?{SymbolStrong};)|\bin\b|\s+|#|$)/" scheme="script_words.maybe-variable"
-        region01="CommandReserved"/>
+    <block start="/\b(for)\b\s*/" end="/\s*(?{Error}[^;#]*?)(\M(?{SymbolStrong};)|\bin\b|\s+|#|$)/"
+        scheme="script_words.maybe-variable" region01="CommandReserved"/>
     <!-- in ... -->
     <block start="/\s*\b(in)\b/" end="/(;|#|$)/" scheme="script_words"
         region01="CommandReserved" region11="SymbolStrong"/>

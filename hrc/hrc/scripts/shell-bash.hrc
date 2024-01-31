@@ -120,10 +120,12 @@
 </scheme>
 
 <scheme name="script_control">
+
     <!-- select ... done -->
     <block start="/\M\b(select)\b/" end="/\b(done)\b/" scheme="select"
         region01="PairStart" region10="PairEnd"
         region00="CommandReserved" region11="CommandReserved"/>
+
     <inherit scheme="shell-posix:script_control">
         <virtual scheme="shell-posix:variables" subst-scheme="variables"/>
         <virtual scheme="shell-posix:variable_assignments" subst-scheme="variable_assignments"/>
@@ -131,6 +133,7 @@
         <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
         <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
     </inherit>
+
 </scheme>
 
 <scheme name="string-ansi-c">
@@ -187,6 +190,18 @@
     </inherit>
 </scheme>
 
+<scheme name="variable_names">
+    <!-- plain special variable VAR -->
+    <regexp match="/\b(?{VariableSpecial}(%specvar;)((\w)?!|$))\b/x"/>
+    <inherit scheme="shell-posix:variable_names"/>
+</scheme>
+
+<scheme name="script_words.maybe-variable">
+    <inherit scheme="shell-posix:script_words.maybe-variable">
+        <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
+    </inherit>
+</scheme>
+
 <scheme name="variables">
     <!-- special variables -->
     <!-- $VAR -->
@@ -226,42 +241,30 @@
 </scheme>
 
 <scheme name="for">
-    <!-- for special VAR in ... done -->
-    <block start="/\b(for)\b\s+(?{VariableSpecial}%specvar;((\w)?!|$))\s*(?{Error}.*?)\s*\b(?{CommandReserved}in)\b\s*/x"
-        end="/\M(;|#|$)/" scheme="script_words"
-        region01="CommandReserved" region11="SymbolStrong"/>
-    <!-- for special VAR ... done -->
-    <regexp match="/\b(for)\b\s+(?{VariableSpecial}%specvar;((\w)?!|$))\s*(?{Error}.*?)\s*\M(?{SymbolStrong};|#|$)/x"
-        region1="CommandReserved"/>
     <!-- for (( expr1 ; expr2 ; expr3 )) ... done -->
     <block start="/\b(for)\s+\M(\(\()/" end="/(\)\))\s*(?{Error}.*?)\M(;|#|$)/" scheme="for-arithmetic"
         region01="CommandReserved" region12="SymbolStrong"
         region02="PairStart"       region11="PairEnd"/>
-    <inherit scheme="shell-posix:for"/>
+    <inherit scheme="shell-posix:for">
+        <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
+    </inherit>
 </scheme>
 
 <scheme name="select">
     <inherit scheme="comments"/>
-    <!-- select VAR in ... done -->
-    <block start="/\b(select)\b\s+((?{VariableSpecial}%specvar;((\w)?!|$))|(?{Variable}%var;)|(?{Error}[^;\s]+))\s*(?{Error}.*?)\s*\b(?{CommandReserved}in)\b\s*/"
-        end="/\M(;|#|$)/" scheme="script_words"
-        region01="CommandReserved" region11="SymbolStrong"/>
     <!-- select VAR ... done -->
-    <regexp match="/\b(select)\b\s+((?{VariableSpecial}%specvar;((\w)?!|$))|(?{Variable}%var;)|(?{Error}[^;\s]+))\s*(?{Error}.*?)\s*\M(?{SymbolStrong};|#|$)/"
-        region1="CommandReserved"/>
+    <block start="/\b(select)\b\s*/" end="/\s*(?{Error}[^;#]*?)(\M(?{SymbolStrong};)|\bin\b|\s+|#|$)/"
+        scheme="script_words.maybe-variable" region01="CommandReserved"/>
+    <!-- in ... -->
+    <block start="/\s*\b(in)\b/" end="/(;|#|$)/" scheme="script_words"
+        region01="CommandReserved" region11="SymbolStrong"/>
     <!-- do ... done -->
-    <block start="/\bdo\b/" end="/\s*\M\b(done)\b/" scheme="script"
-        region00="CommandReserved" region11="CommandReserved"/>
-    <!-- keep everything highlighted as a script if above 'select' syntax failed to match -->
-    <block start="/\b(select)\b/" end="//" scheme="script" region01="CommandReserved"/>
+    <block start="/\s*\b(do)\b/" end="/\s*\M\b(done)\b/" scheme="script"
+        region01="CommandReserved" region11="CommandReserved"/>
+    <!-- anything else is an error -->
+    <block start="/(done)?!\s*\m/" end="/\M(%cmdbreak;)/" scheme="def:empty"
+        region="Error" region11="SymbolStrong"/>
 </scheme>
-
-<scheme name="variable_names">
-    <!-- plain special/normal variable VAR -->
-    <regexp match="/\b(?{VariableSpecial}(%specvar;)((\w)?!|$))/x"/>
-    <inherit scheme="shell-posix:variable_names"/>
-</scheme>
-
 
 </type>
 </hrc>

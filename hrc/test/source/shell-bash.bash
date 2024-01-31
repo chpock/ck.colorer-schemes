@@ -2,6 +2,8 @@
 
 # 3.1.2.4 ANSI-C Quoting
 
+
+
 $'\nfoo\e'
 A=$'\\\'\"\?no special meaning'
 CDPATH=$'octal \1 \12 \123 foo' $'octal error \9 \19 \181 foo'
@@ -56,6 +58,9 @@ select VAR; do
         something
     fi
 done
+
+select IFS in; do done # POSIX special variable
+select CDPATH in; do done # Bash special variable
 
 # 5.1 Bourne Shell Variables
 
