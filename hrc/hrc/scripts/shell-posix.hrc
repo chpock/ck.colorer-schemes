@@ -222,6 +222,19 @@
     </keywords>
 </scheme>
 
+<scheme name="script_words.maybe-variable">
+    <inherit scheme="escapes"/>
+    <inherit scheme="strings"/>
+    <inherit scheme="variables"/>
+    <inherit scheme="evaluations"/>
+    <inherit scheme="numbers"/>
+    <inherit scheme="variable_names"/>
+    <!-- errors -->
+    <keywords region="Error">
+        <symb name="$"/>
+    </keywords>
+</scheme>
+
 <!--
 
     Here we difine a script where 'evaluation_backquote' scheme is disabled.
@@ -489,18 +502,18 @@
 
 <scheme name="for">
     <inherit scheme="comments"/>
-    <!-- for VAR in ... done -->
-    <block start="/\b(for)\b\s+((?{VariableSpecial}%specvar;((\w)?!|$))|(?{Variable}%var;)|(?{Error}[^;\s]+))\s*(?{Error}.*?)\s*\b(?{CommandReserved}in)\b\s*/"
-        end="/\M(;|#|$)/" scheme="script_words"
-        region01="CommandReserved" region11="SymbolStrong"/>
     <!-- for VAR ... done -->
-    <regexp match="/\b(for)\b\s+((?{VariableSpecial}%specvar;((\w)?!|$))|(?{Variable}%var;)|(?{Error}[^;\s]+))\s*(?{Error}.*?)\s*\M(?{SymbolStrong};|#|$)/"
-        region1="CommandReserved"/>
+    <block start="/\b(for)\b\s*/" end="/\s*(?{Error}[^;#]*?)(\M(?{SymbolStrong};)|\bin\b|\s+|#|$)/" scheme="script_words.maybe-variable"
+        region01="CommandReserved"/>
+    <!-- in ... -->
+    <block start="/\s*\b(in)\b/" end="/(;|#|$)/" scheme="script_words"
+        region01="CommandReserved" region11="SymbolStrong"/>
     <!-- do ... done -->
-    <block start="/\bdo\b/" end="/\s*\M\b(done)\b/" scheme="script"
-        region00="CommandReserved" region11="CommandReserved"/>
-    <!-- keep everything highlighted as a script if above 'for' syntax failed to match -->
-    <block start="/\b(for)\b/" end="//" scheme="script" region01="CommandReserved"/>
+    <block start="/\s*\b(do)\b/" end="/\s*\M\b(done)\b/" scheme="script"
+        region01="CommandReserved" region11="CommandReserved"/>
+    <!-- anything else is an error -->
+    <block start="/(done)?!\s*\m/" end="/\M(%cmdbreak;)/" scheme="def:empty"
+        region="Error" region11="SymbolStrong"/>
 </scheme>
 
 <scheme name="case">

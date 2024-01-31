@@ -212,13 +212,37 @@ fi # <- close the above 'if'
 
 # The for Loop
 
+for IFS in 1 2 3 # comment here
+do
+done
+
+for IFS in $(V1=val command) 2 3; do command; done; # check special variable
+for "IFS" in $(V1=val command) 2 3; do command; done; # check variable in quotes
+
 for var in $VAR; do
 
 done
 
+for var in; error here do done
+do
+done
+
+for var in; error here; do done
+
 for var in; do done
 
 for VAR in "BLA" "FOO" "BAR"; do; done
+
+for VAR # comment here
+do
+done
+
+for $(V1=val command here); do
+   command
+done
+
+for VAR error here; do
+done
 
 for VAR; do
     command
@@ -226,6 +250,11 @@ for VAR; do
         something
     fi
 done
+
+for IFS; do command; done; # check special variable
+
+for "IFS"; do command; done; # variable in quotes <- 'in' word must not activate the 'in' syntax for form
+for "IFS"; do command; done; # variable _in quotes
 
 # Case Conditional Construct
 
