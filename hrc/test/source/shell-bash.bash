@@ -192,6 +192,19 @@ command here <(V=1 command here) >(V=1 command here)
 
 command here < <(V=1 command here)
 
+# 3.6 Redirections
+
+ls > dirlist 2>&1
+ls 2>&1 > dirlist
+
+# 3.6.1 Redirecting Input
+
+command < test < $VAR
+command 2< test 1<$CDPATH
+
+
+
+
 # 5.2 Bash Variables
 
 $_ $BASH $BASHOPTS $BASHPID $BASH_ALIASES $BASH_ARGC

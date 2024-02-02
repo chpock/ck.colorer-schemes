@@ -279,16 +279,7 @@
 </scheme>
 
 <scheme name="redirections_end_caught">
-    <!-- redirects from/to discriptor  -->
-    <regexp match="/((^|\s*\b[^\\]?#1)\d*|\s?#1)(&lt;&gt;|&gt;&gt;|&lt;|&gt;|&gt;\|)\s*(&amp;)(\d*)(-)?\s*/"
-        region1="RedirectDescriptor" region3="RedirectSymbol"
-        region4="RedirectPrefix" region5="RedirectDescriptor"
-        region6="RedirectPrefix"/>
-    <!-- redirects from/to file -->
-    <!-- &lt;(&lt;)?! - to not capture heredocs -->
-    <block start="/((^|\s*\b[^\\]?#1)\d*|\s?#1)(&lt;&gt;|&gt;&gt;|&lt;|&gt;|&gt;\|)(&lt;)?!\s*/"
-        end="/\M(^|[^\\]?#1)[%wrdbreakchars;\s]|$/"
-        scheme="script_words" region01="RedirectDescriptor" region03="RedirectSymbol"/>
+    <inherit scheme="redirections_start"/>
     <!-- heredoc in form [n]<<'word' -->
     <block start="/(?{HeredocDescriptor}\d*)(?{HeredocOperator}&lt;&lt;-?)([&quot;&amp;])(?{HeredocAnchor}[\w\d_-]+)(\1)/"
         end="/^(\y{HeredocAnchor})$/" scheme="heredoc_quoted"
