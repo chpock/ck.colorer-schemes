@@ -337,11 +337,9 @@
 </scheme>
 
 <scheme name="variable_expansion">
-    <!-- regexp match="/(\{)?#1./" region="Test2"/ -->
     <block start="/(\{)?#1\M((%specvar-strict;)|[\w_]+)/"
         end="/~(?:(?:%specvar-strict;)|(?:[\w_]+))\m((\:?[?=+-])|(#{1,2})|(%{1,2}))/"
         scheme="variable_names"/>
-    <!-- regexp match="/(\})?!/" region="Test2"/ -->
     <block start="/(\})?!/" end="/\M\}/" scheme="parameter_expansion"/>
 </scheme>
 
@@ -354,30 +352,12 @@
         region01="Variable" region11="Variable"
         region02="VariablePrefix"
         scheme="variable_names"/>
+    <!-- variable ${VAR:-...}, ${VAR+...} etc., ${VAR#...}, ${VAR%%...} etc. -->
     <block start="/((\$\{))\M((%specvar-strict;)|[\w_]+)(?{VariablePrefix}(\:?[?=+-])|(#{1,2})|(%{1,2}))/"
         end="/(\})/"
         region02="Variable"  region10="Variable"
         region01="PairStart" region11="PairEnd"
         scheme="variable_expansion"/>
-
-    <!-- special variables -->
-    <!-- variable ${VAR:-...}, ${VAR+...} etc. -->
-    <!-- block start="/(\$\{)(\d+|%specvar;)(:?[?=+-])/" end="/(\})/" scheme="parameter_expansion"
-        region00="VariableSpecial" region10="VariableSpecial" region03="VariablePrefix"
-        region01="PairStart"       region11="PairEnd"/ -->
-    <!-- variable ${VAR#...}, ${VAR%%...} etc. -->
-    <!-- block start="/(\$\{)(\d+|%specvar;)(\#{1,2}|\%{1,2})/" end="/(\})/" scheme="parameter_expansion"
-        region00="VariableSpecial"  region10="VariableSpecial" region03="VariablePrefix"
-        region01="PairStart"        region11="PairEnd"/ -->
-    <!-- normal variables -->
-    <!-- variable ${VAR:-...}, ${VAR+...} etc. -->
-    <!-- block start="/(\$\{)(%var;)(:?[?=+-])/" end="/(\})/" scheme="parameter_expansion"
-        region00="Variable"  region10="Variable" region03="VariablePrefix"
-        region01="PairStart" region11="PairEnd"/ -->
-    <!-- variable ${VAR#...}, ${VAR%%...} etc. -->
-    <!-- block start="/(\$\{)(%var;)(\#{1,2}|\%{1,2})/" end="/(\})/" scheme="parameter_expansion"
-        region00="Variable"  region10="Variable" region03="VariablePrefix"
-        region01="PairStart" region11="PairEnd"/ -->
 </scheme>
 
 <!--
