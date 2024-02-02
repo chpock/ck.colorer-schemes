@@ -235,33 +235,6 @@
     </keywords>
 </scheme>
 
-<!--
-
-    Here we difine a script where 'evaluation_backquote' scheme is disabled.
-
-    This is necessary because the 'evaluation_backquote' schema has the same
-    start and end anchors '`'. If we use the 'script' schema inside 'evaluation_backquote',
-    the terminating anchor '`' inside will simply start a new 'evaluation_backquote'
-    region. This leads to multiple nested `evaluation_backquote` schemes
-    that never end.
-
-    It is possible to avoid that by setting attribute priority="low" to
-    the scheme 'evaluation_backquote'. However, the scheme 'scripts' defines
-    that scheme 'words' can also end by the anchor '`'. This has the effect
-    of closing the 'scripts' schema, but the 'evaluation_backquote' schema
-    remains open.
-
-    That is why here we define a scheme without the 'evaluation_backquote'. By this
-    we avoid nested 'evaluation_backquote' schemas without the priority="low" attribute.
-
--->
-
-<scheme name="script_without_backquote">
-    <inherit scheme="script">
-        <virtual scheme="evaluation_backquote" subst-scheme="def:def"/>
-    </inherit>
-</scheme>
-
 <scheme name="double_quoted_string">
     <regexp match="/\\[$`&quot;\\]/" region="StringEscape"/>
     <inherit scheme="variables"/>
@@ -389,6 +362,33 @@
     <block start="/(\$\{)(%var;)(\#{1,2}|\%{1,2})/" end="/(\})/" scheme="parameter_expansion"
         region00="Variable"  region10="Variable" region03="VariablePrefix"
         region01="PairStart" region11="PairEnd"/>
+</scheme>
+
+<!--
+
+    Here we difine a script where 'evaluation_backquote' scheme is disabled.
+
+    This is necessary because the 'evaluation_backquote' schema has the same
+    start and end anchors '`'. If we use the 'script' schema inside 'evaluation_backquote',
+    the terminating anchor '`' inside will simply start a new 'evaluation_backquote'
+    region. This leads to multiple nested `evaluation_backquote` schemes
+    that never end.
+
+    It is possible to avoid that by setting attribute priority="low" to
+    the scheme 'evaluation_backquote'. However, the scheme 'scripts' defines
+    that scheme 'words' can also end by the anchor '`'. This has the effect
+    of closing the 'scripts' schema, but the 'evaluation_backquote' schema
+    remains open.
+
+    That is why here we define a scheme without the 'evaluation_backquote'. By this
+    we avoid nested 'evaluation_backquote' schemas without the priority="low" attribute.
+
+-->
+
+<scheme name="script_without_backquote">
+    <inherit scheme="script">
+        <virtual scheme="evaluation_backquote" subst-scheme="def:empty"/>
+    </inherit>
 </scheme>
 
 <scheme name="evaluation_backquote">

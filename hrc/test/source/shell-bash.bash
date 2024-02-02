@@ -54,11 +54,21 @@ select VAR; do
     command
     if [ -n "$FOO" ]; then
         something
+        select VAR; do
+        done
     fi
+    select VAR; do
+        select VAR; do
+        done
+    done
 done
 
 select IFS in; do done # POSIX special variable
 select CDPATH in; do done # Bash special variable
+
+( select VAR; do done )
+{ select VAR; do done; }
+
 
 # (( ... ))
 
@@ -72,6 +82,47 @@ select CDPATH in; do done # Bash special variable
 (( 1 <= 2 >= 4 < 1 > 4 == 5 != 4 & 1 ^ 5 | 8 && 10 || 20 ? 30 : 2 )) # operations
 (( a = 1 || w *= 1 || IFS /= 10 || CDPATH %= 10 || x += 10 || y -= 10 )) # assignment
 (( a <<= 10 || b >>= 30 || c &= 1 || f |= 40 )) # assignment
+
+# [[ ... ]]
+
+[[ a -f e || -f /bla || -o fofofof || -v varname || -R varname && -z "$STRING" ]]
+[[ 1 > 2 ]]
+[[ "asd" '123' $'\r\t123' $"foo" 1 ]] # test strings / numbers
+[[ $(V1=1 command) `command` ]] # evaluations
+[[ \$ \" \' \$ ]] # escapes
+[[ $VAR $IFS $CDPATH ]] # variables
+[[ ${VAR%10} ${IFS#10} ${CDPATH%10} ]] # parameter expansion
+[[ $fffj =~ [[:space:]]*(a)?b ]]
+[[ $line =~ ^"initial string" ]]
+[[ $line =~ "^initial string" ]]
+pattern='[[:space:]]*(a)?b'
+[[ $line =~ $pattern ]]
+[[ $line =~ $CDPATH ]] # special variable
+[[ 'Hello World' =~ Hello ]]
+[[ $digit =~ [0-9] ]]
+[[ $REPLY =~ ^[0-9]+$ ]] # special variable
+[[ "$email" =~ ^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$ ]]
+[[ $ip =~ ^[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}$ ]]
+
+# 3.2.6 Coprocesses
+
+coproc CDPATH {
+    select far in; do
+    done
+} 2>/dev/null
+
+coproc name_as_variable { V=1 command here; } 2>/dev/null 1<foo
+
+coproc command here 1>/dev/null
+
+coproc name_as_var {
+   V=1 command here
+}
+
+coproc {
+   V1=1 command here
+}
+
 
 # 5.1 Bourne Shell Variables
 

@@ -98,23 +98,12 @@
 
 <scheme name="shell-bash">
     <inherit scheme="shell-posix:shell-posix">
-        <virtual scheme="shell-posix:variables" subst-scheme="variables"/>
-        <virtual scheme="shell-posix:variable_assignments" subst-scheme="variable_assignments"/>
-        <virtual scheme="shell-posix:for" subst-scheme="for"/>
-        <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
-        <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
-        <virtual scheme="shell-posix:script_control" subst-scheme="script_control"/>
         <virtual scheme="shell-posix:script" subst-scheme="script"/>
     </inherit>
 </scheme>
 
 <scheme name="script">
     <inherit scheme="shell-posix:script">
-        <virtual scheme="shell-posix:variables" subst-scheme="variables"/>
-        <virtual scheme="shell-posix:variable_assignments" subst-scheme="variable_assignments"/>
-        <virtual scheme="shell-posix:for" subst-scheme="for"/>
-        <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
-        <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
         <virtual scheme="shell-posix:script_control" subst-scheme="script_control"/>
     </inherit>
 </scheme>
@@ -131,14 +120,31 @@
         region01="PairStart" region10="PairEnd"
         region00="Operator" region11="Operator"/>
 
+    <!-- [[ ... ]] -->
+    <block start="/(\[\[)/" end="/(\]\])/" scheme="test-bash"
+        region01="PairStart" region10="PairEnd"
+        region00="Operator" region11="Operator"/>
+
+    <!-- coproc ... -->
+    <block start="/\M\b(coproc)\b/" end="/\M%cmdbreak;/" scheme="coproc"
+        region01="CommandReserved"/>
+
     <inherit scheme="shell-posix:script_control">
         <virtual scheme="shell-posix:variables" subst-scheme="variables"/>
         <virtual scheme="shell-posix:variable_assignments" subst-scheme="variable_assignments"/>
         <virtual scheme="shell-posix:for" subst-scheme="for"/>
         <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
         <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
+        <virtual scheme="shell-posix:script_control" subst-scheme="script_control"/>
+        <virtual scheme="shell-posix:script_without_backquote" subst-scheme="script_without_backquote"/>
     </inherit>
 
+</scheme>
+
+<scheme name="script_without_backquote">
+    <inherit scheme="script">
+        <virtual scheme="evaluation_backquote" subst-scheme="def:empty"/>
+    </inherit>
 </scheme>
 
 <scheme name="string-ansi-c">
@@ -299,6 +305,35 @@
         <symb name="&amp;"/>      <symb name="^"/>
         <symb name="|"/>
     </keywords>
+</scheme>
+
+<scheme name="test-bash-regexp">
+    <inherit scheme="regexp:posix.regexp">
+        <!-- virtual scheme="regexp:posix.regexp" subst-scheme="sqlRegExp"/ -->
+        <virtual scheme="regexp:string" subst-scheme="strings"/>
+    </inherit>
+</scheme>
+
+<scheme name="test-bash">
+    <!-- =~ $VAR / =~ ${VAR} -->
+    <block start="/(\s)?#1(?{Symbol}=\~)\s+\M\$/" end="/\s+|$/" scheme="variables"/>
+    <!-- =~ <regexp> -->
+    <block start="/(\s)?#1(?{Symbol}=\~)\s+/" end="/\s+|$/" scheme="test-bash-regexp"/>
+    <inherit scheme="shell-posix:test">
+        <virtual scheme="shell-posix:variables" subst-scheme="variables"/>
+    </inherit>
+</scheme>
+
+<scheme name="coproc">
+    <!-- coproc VAR { ... } -->
+    <block start="/\b(coproc)\M\s+(%var;)\s+\{/" end="/\M%cmdbreak;/" scheme="coproc-variable"/>
+    <!-- coproc ... -->
+    <block start="/\b(coproc)\b\s*/" end="/\M%cmdbreak;/" scheme="script"/>
+</scheme>
+
+<scheme name="coproc-variable">
+    <block start="/(coproc)?#6\s+/" end="/\M\s|%cmdbreak;/" scheme="script_words.maybe-variable"/>
+    <block start="/\s*/" end="/\M%cmdbreak;/" scheme="script"/>
 </scheme>
 
 </type>
