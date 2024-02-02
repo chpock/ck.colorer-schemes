@@ -148,6 +148,7 @@
         <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
         <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
         <virtual scheme="shell-posix:script_control" subst-scheme="script_control"/>
+        <virtual scheme="shell-posix:script_words" subst-scheme="script_words"/>
         <virtual scheme="shell-posix:script_without_backquote" subst-scheme="script_without_backquote"/>
     </inherit>
 
@@ -208,8 +209,13 @@
 </scheme>
 
 <scheme name="script_words">
+    <!-- Process Substitution: <(list) and >(list) -->
+    <block start="/([&lt;&gt;]\()/" end="/(\))/" scheme="script"
+        region00="CommandReserved" region10="CommandReserved"
+        region01="PairStart"       region11="PairEnd"/>
     <inherit scheme="shell-posix:script_words">
         <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
+        <virtual scheme="shell-posix:variables" subst-scheme="variables"/>
     </inherit>
 </scheme>
 

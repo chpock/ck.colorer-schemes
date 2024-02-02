@@ -114,14 +114,14 @@
 
     <!-- subshell ( ... ) -->
     <block start="/(\()/" end="/(\))/" scheme="script"
-        region00="Operator" region01="PairStart"
-        region10="Operator" region11="PairEnd"/>
+        region00="Operator"  region10="Operator"
+        region01="PairStart" region11="PairEnd"/>
     <block start="/(\))?#1/" end="/\M%cmdbreak;/" scheme="cmd-error"/>
 
     <!-- group { ... } -->
     <block start="/(\{)/" end="/(\})/" scheme="script"
-        region00="CommandReserved" region01="PairStart"
-        region10="CommandReserved" region11="PairEnd"/>
+        region00="CommandReserved" region10="CommandReserved"
+        region01="PairStart"       region11="PairEnd"/>
     <block start="/(\})?#1/" end="/\M%cmdbreak;/" scheme="cmd-error"/>
 
     <!-- functions -->
@@ -148,7 +148,7 @@
 
     <!-- for case ... esac -->
     <block start="/\M\b(case)\b/" end="/\b(esac)\b/" scheme="case"
-        region01="PairStart" region10="PairEnd"
+        region01="PairStart"       region10="PairEnd"
         region00="CommandReserved" region11="CommandReserved"/>
     <block start="/(esac)?#4/" end="/\M%cmdbreak;/" scheme="cmd-error"/>
 
@@ -253,7 +253,7 @@
         region6="RedirectPrefix"/>
     <!-- redirects from/to file -->
     <!-- &lt;(&lt;)?! - to not capture heredocs -->
-    <block start="/((^|\s*\b[^\\]?#1)\d*|\s?#1)(&lt;&gt;|&gt;&gt;|&lt;|&gt;|&gt;\|)(&lt;)?!\s*/"
+    <block start="/((^|\s*\b[^\\]?#1)\d*|\s?#1)(&lt;&gt;|&gt;&gt;|&lt;|&gt;|&gt;\|)(&lt;|\()?!\s*/"
         end="/\M(^|[^\\]?#1)[%wrdbreakchars;\s]|$/"
         scheme="script_words" region01="RedirectDescriptor" region03="RedirectSymbol"/>
 </scheme>
@@ -261,7 +261,7 @@
 <scheme name="redirections_end">
     <!-- if we catch something that looks like a redirection/heredoc, consider
          that everything through the end of the command is a redirection -->
-    <block start="/\M[^\\]?#1\d*[^\\]?#1[&lt;&gt;]/" end="/\M%cmdbreak;/" scheme="redirections_end_caught"/>
+    <block start="/\M[^\\]?#1\d*[^\\]?#1[&lt;&gt;](\()?!/" end="/\M%cmdbreak;/" scheme="redirections_end_caught"/>
 </scheme>
 
 <scheme name="heredoc_quoted">

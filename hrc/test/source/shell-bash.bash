@@ -186,6 +186,12 @@ ${#CDPATH}
 
 CDPATH=1 CDPATH=somestring
 
+# 3.5.6 Process Substitution
+
+command here <(V=1 command here) >(V=1 command here)
+
+command here < <(V=1 command here)
+
 # 5.2 Bash Variables
 
 $_ $BASH $BASHOPTS $BASHPID $BASH_ALIASES $BASH_ARGC
