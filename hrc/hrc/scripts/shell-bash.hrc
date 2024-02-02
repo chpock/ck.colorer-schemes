@@ -150,6 +150,7 @@
         <virtual scheme="shell-posix:script_control" subst-scheme="script_control"/>
         <virtual scheme="shell-posix:script_words" subst-scheme="script_words"/>
         <virtual scheme="shell-posix:script_without_backquote" subst-scheme="script_without_backquote"/>
+        <virtual scheme="shell-posix:redirections_start" subst-scheme="redirections_start"/>
     </inherit>
 
 </scheme>
@@ -216,6 +217,16 @@
     <inherit scheme="shell-posix:script_words">
         <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
         <virtual scheme="shell-posix:variables" subst-scheme="variables"/>
+    </inherit>
+</scheme>
+
+<scheme name="redirections_start">
+    <!-- redirects to file [n]>|word -->
+    <!-- block start="/((^|\s*\b[^\\]?#1)\d*|\s?#1)(&gt;|&gt;&gt;|&lt;|&gt;|&gt;\|)(&lt;|\()?!\s*/"
+        end="/\M(^|[^\\]?#1)[%wrdbreakchars;\s]|$/"
+        scheme="script_words" region01="RedirectDescriptor" region03="RedirectSymbol"/ -->
+    <inherit scheme="shell-posix:redirections_start">
+        <virtual scheme="shell-posix:script_words" subst-scheme="script_words"/>
     </inherit>
 </scheme>
 
