@@ -189,6 +189,11 @@ for SOURCE in "$SOURCE_DIR"/*; do
         continue
     fi
 
+    if [ ! -e "$VALID" ]; then
+        printf "; Skip."
+        continue
+    fi
+
     printf "; Check ..."
     filter_diff < "$VALID" > "${VALID}.filtered"
     filter_diff < "$OUT" > "${OUT}.filtered"

@@ -90,6 +90,7 @@
     PWD|RANDOM|READLINE_ARGUMENT|READLINE_LINE|READLINE_MARK|READLINE_POINT|
     REPLY|SECONDS|SHELL|SHELLOPTS|SHLVL|SRANDOM|TIMEFORMAT|TMOUT|TMPDIR|UID
 "/>
+<entity name="funcname" value="[!*+,./:=?@A-Z\[\]\^_a-z{}~][#%0-9!*+,./:=?@A-Z\[\]\^_a-z{}~-]*"/>
 
 <entity name="wrdbreakchars" value="|;#)&amp;`"/>
 <entity name="wrdbreak" value="[%wrdbreakchars;]"/>
@@ -127,6 +128,16 @@
 
     <!-- coproc ... -->
     <block start="/\M\b(coproc)\b/" end="/\M%cmdbreak;/" scheme="coproc"
+        region01="CommandReserved"/>
+
+    <!-- functions: <funcname> () ... -->
+    <block start="/\b(%funcname;)\s*(\(\))\s*/" end="/\M%cmdbreak;/" scheme="script"
+        region01="FunctionName" region02="Symbol"/>
+    <!-- functions: function <funcname> [()] ... -->
+    <block start="/\b(function)\s+(%funcname;)(\s+\(\))?/" end="/\M%cmdbreak;/" scheme="script"
+        region01="CommandReserved" region02="FunctionName" region03="Symbol"/>
+    <!-- anything else that starts with the keyword 'function' is an error -->
+    <block start="/\b(function)\b\s*(?{Error}.*?)\M(%cmdbreak;)/" end="/\M%cmdbreak;/" scheme="def:empty"
         region01="CommandReserved"/>
 
     <inherit scheme="shell-posix:script_control">
@@ -214,23 +225,9 @@
 </scheme>
 
 <scheme name="variables">
-    <!-- special variables -->
-    <!-- $VAR -->
-    <regexp match="/\$(%specvar;)((\w)?!|$)/x" region="VariableSpecial"/>
-    <!-- ${VAR} -->
-    <regexp match="/\$\{(%specvar;)\}/x" region="VariableSpecial"/>
-    <!-- ${#VAR} -->
-    <regexp match="/\$\{(\#)(%specvar;)\}/x" region="VariableSpecial" region1="VariablePrefix"/>
-    <!-- ${VAR:-...}, ${VAR+...} etc. -->
-    <block start="/(\$\{)(%specvar;)(:?[?=+-])/x" end="/(\})/" scheme="parameter_expansion"
-        region00="VariableSpecial" region10="VariableSpecial" region03="VariablePrefix"
-        region01="PairStart"       region11="PairEnd"/>
-    <!-- ${VAR#...}, ${VAR%%...} etc. -->
-    <block start="/(\$\{)(%specvar;)(\#{1,2}|\%{1,2})/x" end="/(\})/" scheme="parameter_expansion"
-        region00="VariableSpecial"  region10="VariableSpecial" region03="VariablePrefix"
-        region01="PairStart"        region11="PairEnd"/>
     <inherit scheme="shell-posix:variables">
         <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
+        <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
     </inherit>
 </scheme>
 

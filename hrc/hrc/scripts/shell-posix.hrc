@@ -72,7 +72,8 @@
 
 <entity name="word" value="[a-zA-Z_][\w_]*"/>
 <entity name="var" value="%word;"/>
-<entity name="specvar" value="\d|\#|\*|\@|\?|\$|!|-|ENV|HOME|IFS|LANG|LANGUAGE|LC_ALL|LC_COLLATE|LC_TYPE|LC_MESSAGES|LINENO|NLSPATH|PATH|PPID|PS1|PS2|PS4|PWD"/>
+<entity name="specvar" value="ENV|HOME|IFS|LANG|LANGUAGE|LC_ALL|LC_COLLATE|LC_TYPE|LC_MESSAGES|LINENO|NLSPATH|PATH|PPID|PS1|PS2|PS4|PWD"/>
+<entity name="specvar-strict" value="[\d#*@?$!-]"/>
 
 <entity name="utility_no-param" value="batch|false|logname|times|true|tty"/>
 <entity name="utility_one-param" value="uname"/>
@@ -335,33 +336,48 @@
         region00="StringEdge" region10="StringEdge"/>
 </scheme>
 
+<scheme name="variable_expansion">
+    <!-- regexp match="/(\{)?#1./" region="Test2"/ -->
+    <block start="/(\{)?#1\M((%specvar-strict;)|[\w_]+)/"
+        end="/~(?:(?:%specvar-strict;)|(?:[\w_]+))\m((\:?[?=+-])|(#{1,2})|(%{1,2}))/"
+        scheme="variable_names"/>
+    <!-- regexp match="/(\})?!/" region="Test2"/ -->
+    <block start="/(\})?!/" end="/\M\}/" scheme="parameter_expansion"/>
+</scheme>
+
 <scheme name="variables">
-    <!-- special/normal variable $VAR -->
-    <regexp match="/((?{VariableSpecial}\$(%specvar;)((\w)?!|$)|\$\d)|(?{Variable}\$(%var;)))/"/>
-    <!-- special/normal variable ${VAR} -->
-    <regexp match="/(?{VariableSpecial}\$\{(\d+|%specvar;)\})|(?{Variable}\$\{(%var;)\})/"/>
+    <!-- variable $VAR -->
+    <block start="/(\$)\M((%specvar-strict;)|(%var;))/" end="/\M[^\w_]|%cmdbreak;/"
+        region01="Variable" scheme="variable_names"/>
+    <!-- variable ${VAR} / ${#VAR} -->
+    <block start="/(\$\{)(#)?\M((%specvar-strict;)|[\w_]+)\}/" end="/~(?:(?:%specvar-strict;)|(?:[\w_]+))\m(\})/"
+        region01="Variable" region11="Variable"
+        region02="VariablePrefix"
+        scheme="variable_names"/>
+    <block start="/((\$\{))\M((%specvar-strict;)|[\w_]+)(?{VariablePrefix}(\:?[?=+-])|(#{1,2})|(%{1,2}))/"
+        end="/(\})/"
+        region02="Variable"  region10="Variable"
+        region01="PairStart" region11="PairEnd"
+        scheme="variable_expansion"/>
+
     <!-- special variables -->
-    <!-- variable ${#VAR} -->
-    <regexp match="/\$\{(\#)(\d+|%specvar;)\}/" region="VariableSpecial" region1="VariablePrefix"/>
     <!-- variable ${VAR:-...}, ${VAR+...} etc. -->
-    <block start="/(\$\{)(\d+|%specvar;)(:?[?=+-])/" end="/(\})/" scheme="parameter_expansion"
+    <!-- block start="/(\$\{)(\d+|%specvar;)(:?[?=+-])/" end="/(\})/" scheme="parameter_expansion"
         region00="VariableSpecial" region10="VariableSpecial" region03="VariablePrefix"
-        region01="PairStart"       region11="PairEnd"/>
+        region01="PairStart"       region11="PairEnd"/ -->
     <!-- variable ${VAR#...}, ${VAR%%...} etc. -->
-    <block start="/(\$\{)(\d+|%specvar;)(\#{1,2}|\%{1,2})/" end="/(\})/" scheme="parameter_expansion"
+    <!-- block start="/(\$\{)(\d+|%specvar;)(\#{1,2}|\%{1,2})/" end="/(\})/" scheme="parameter_expansion"
         region00="VariableSpecial"  region10="VariableSpecial" region03="VariablePrefix"
-        region01="PairStart"        region11="PairEnd"/>
+        region01="PairStart"        region11="PairEnd"/ -->
     <!-- normal variables -->
-    <!-- variable ${#VAR} -->
-    <regexp match="/\$\{(\#)(%var;)\}/" region="Variable" region1="VariablePrefix"/>
     <!-- variable ${VAR:-...}, ${VAR+...} etc. -->
-    <block start="/(\$\{)(%var;)(:?[?=+-])/" end="/(\})/" scheme="parameter_expansion"
+    <!-- block start="/(\$\{)(%var;)(:?[?=+-])/" end="/(\})/" scheme="parameter_expansion"
         region00="Variable"  region10="Variable" region03="VariablePrefix"
-        region01="PairStart" region11="PairEnd"/>
+        region01="PairStart" region11="PairEnd"/ -->
     <!-- variable ${VAR#...}, ${VAR%%...} etc. -->
-    <block start="/(\$\{)(%var;)(\#{1,2}|\%{1,2})/" end="/(\})/" scheme="parameter_expansion"
+    <!-- block start="/(\$\{)(%var;)(\#{1,2}|\%{1,2})/" end="/(\})/" scheme="parameter_expansion"
         region00="Variable"  region10="Variable" region03="VariablePrefix"
-        region01="PairStart" region11="PairEnd"/>
+        region01="PairStart" region11="PairEnd"/ -->
 </scheme>
 
 <!--
@@ -477,6 +493,9 @@
 <scheme name="variable_names">
     <!-- plain special/normal variable VAR -->
     <regexp match="/\b((?{VariableSpecial}(%specvar;)((\w)?!|$))|(?{Variable}(%var;)))\b/"/>
+    <regexp match="/(\$)?#1(?{VariableSpecial}%specvar-strict;)/"/>
+    <regexp match="/(\$|\{|#)?#1(?{VariableSpecial}%specvar-strict;)((\w)?!|$)/"/>
+    <regexp match="/(\{|#)?#1(?{Variable}[\w_]+)/"/>
 </scheme>
 
 <scheme name="if">

@@ -123,6 +123,48 @@ coproc {
    V1=1 command here
 }
 
+# 3.3 Shell Functions
+
+func-name () command here 2>/dev/null
+
+func%name () {
+    command here
+} 2>/dev/null
+
+func-name () { command here; }
+
+function fu1[nc]name command here 1>/dev/null
+
+function f-un[c () command here
+
+function f123 () {
+    command here
+}
+
+function func-name { command here; }
+
+function -error here;
+
+# 3.5.3 Shell Parameter Expansion
+
+${A:-word} ${BASH:-word}
+${A:=word} ${BASH:=word}
+${A:?word} ${BASH:?word}
+${A:+word} ${BASH:+word}
+${A:0} ${A:0:10} ${A: -1} ${A: -1:-10} ${BASH:0} ${BASH:0:10} ${BASH: -1} ${BASH: -1:-10}
+${A[0]:7} ${A[0]:1:10} ${A[@]:1} ${A[*]:1}
+${@:7} ${@:1:2} ${*:1} ${*:1:2}
+${!prefix*} ${!prefix@}
+${!name[@]} ${!name[*]}
+${#A} ${#BASH} ${#*} ${#@}
+${A#word} ${BASH#word} ${A##word} ${BASH##word}
+${A%word} ${BASH%word} ${A%%word} ${BASH%%word}
+${A/pat/str} ${BASH/pat/str} ${A//pat/str} ${BASH//pat/str}
+${A/#pat/str} ${BASH/#pat/str} ${A/%pat/str} ${BASH/%pat/str}
+${A^pat} ${BASH^pat} ${A^^pat} ${BASH^^pat}
+${A,pat} ${BASH,pat} ${A,,pat} ${BASH,,pat}
+${A@U} ${A@u} ${A@L} ${A@Q} ${A@E} ${A@P} ${A@A} ${A@K} ${A@a} ${A@k}
+${BASH@U} ${BASH@u} ${BASH@L} ${BASH@Q} ${BASH@E} ${BASH@P} ${BASH@A} ${BASH@K} ${BASH@a} ${BASH@k}
 
 # 5.1 Bourne Shell Variables
 
