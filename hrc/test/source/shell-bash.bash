@@ -151,18 +151,30 @@ ${A:-word} ${BASH:-word}
 ${A:=word} ${BASH:=word}
 ${A:?word} ${BASH:?word}
 ${A:+word} ${BASH:+word}
+
 ${A:0} ${A:0:10} ${A: -1} ${A: -1:-10} ${BASH:0} ${BASH:0:10} ${BASH: -1} ${BASH: -1:-10}
-${A[0]:7} ${A[0]:1:10} ${A[@]:1} ${A[*]:1}
 ${@:7} ${@:1:2} ${*:1} ${*:1:2}
-${!prefix*} ${!prefix@}
+${A:$(( ${#B} + 10 )):$(command here)} ${A:"10":$'\r\t10'}
+
+${!prefix*} ${!prefix@} ${!1@}
+
 ${!name[@]} ${!name[*]}
+
+# TODO:
+${A[0]:7} ${A[0]:1:10} ${A[@]:1} ${A[*]:1}
+
 ${#A} ${#BASH} ${#*} ${#@}
 ${A#word} ${BASH#word} ${A##word} ${BASH##word}
 ${A%word} ${BASH%word} ${A%%word} ${BASH%%word}
+
 ${A/pat/str} ${BASH/pat/str} ${A//pat/str} ${BASH//pat/str}
 ${A/#pat/str} ${BASH/#pat/str} ${A/%pat/str} ${BASH/%pat/str}
+${A/$(command)/`test`"dbl"$'ansi'}
+
 ${A^pat} ${BASH^pat} ${A^^pat} ${BASH^^pat}
 ${A,pat} ${BASH,pat} ${A,,pat} ${BASH,,pat}
+${A^$(command here)} ${BASH,,`test`"sdfasdf"$'\r\t\e'}
+
 ${A@U} ${A@u} ${A@L} ${A@Q} ${A@E} ${A@P} ${A@A} ${A@K} ${A@a} ${A@k}
 ${BASH@U} ${BASH@u} ${BASH@L} ${BASH@Q} ${BASH@E} ${BASH@P} ${BASH@A} ${BASH@K} ${BASH@a} ${BASH@k}
 

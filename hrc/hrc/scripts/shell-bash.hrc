@@ -73,6 +73,7 @@
 
 <entity name="word" value="[a-zA-Z_][\w_]*"/>
 <entity name="var" value="%word;"/>
+<entity name="specvar-strict" value="[\d#*@?$!-]"/>
 <entity name="specvar" value="
     CDPATH|HOME|IFS|MAIL|MAILPATH|OPTARG|OPTIND|PATH|PS1|PS2|
     _|BASH|BASHOPTS|BASHPID|BASH_ALIASES|BASH_ARGC|
@@ -215,6 +216,7 @@
 <scheme name="variable_names">
     <!-- plain special variable VAR -->
     <regexp match="/\b(?{VariableSpecial}(%specvar;)((\w)?!|$))\b/x"/>
+    <regexp match="/(\{!)?#2(?{VariableSpecial}%specvar-strict;)((\w)?!|$)/"/>
     <inherit scheme="shell-posix:variable_names"/>
 </scheme>
 
@@ -224,7 +226,64 @@
     </inherit>
 </scheme>
 
+<scheme name="variable_expansion_substring">
+    <!-- variable name -->
+    <block start="/(\{)?#1/" end="/:|$/" scheme="variable_names"/>
+    <!-- possible 2nd block -->
+    <block start="/:/" end="/\M[:\}]|$/" scheme="parameter_expansion" region00="VariablePrefix"/>
+    <!-- the 1st block -->
+    <block start="/(\})?!(:)?#1/" end="/\M[:\}]|$/" scheme="parameter_expansion"/>
+</scheme>
+
+<scheme name="variable_expansion_replacement">
+    <!-- variable name -->
+    <block start="/(\{)?#1/" end="/\/[#%/]?|$/" scheme="variable_names"/>
+    <!-- possible 2nd block -->
+    <block start="/\//" end="/\M[\/\}]|$/" scheme="parameter_expansion" region00="VariablePrefix"/>
+    <!-- the 1st block -->
+    <block start="/(\})?!((\/)?#1|(\/[#%/])?#2)/" end="/\M[\/\}]|$/" scheme="parameter_expansion"/>
+</scheme>
+
+<scheme name="variable_expansion">
+    <block start="/(\{)?#1\M((%specvar-strict;)|[\w_]+)/"
+        end="/~(?:(?:%specvar-strict;)|(?:[\w_]+))\m(\^{1,2}|,{1,2})/"
+        scheme="variable_names"/>
+    <inherit scheme="shell-posix:variable_expansion">
+        <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
+    </inherit>
+</scheme>
+
 <scheme name="variables">
+    <!-- variable ${VAR:...}, ${VAR:...:...} -->
+    <block start="/((\$\{))\M((%specvar-strict;)|[\w_]+)(?{VariablePrefix}\:([?=+-])?!)/"
+        end="/(\}|$)/"
+        region02="Variable"  region10="Variable"
+        region01="PairStart" region11="PairEnd"
+        scheme="variable_expansion_substring"/>
+    <!-- ${!prefix*} ${!prefix@} -->
+    <block start="/((\$\{))(?{VariablePrefix}!)\M((%specvar-strict;)|[\w_]+)([*@]|\[[*@]\])?=/"
+        end="/(?{VariablePrefix}[*@]|\[[*@]\])(\}|$)/"
+        region02="Variable"  region10="Variable"
+        region01="PairStart" region11="PairEnd"
+        scheme="variable_names"/>
+    <!-- ${VAR@...} -->
+    <block start="/((\$\{))\M((%specvar-strict;)|[\w_]+)(@[UuLQEPAKak])?=/"
+        end="/(?{VariablePrefix}@[UuLQEPAKak])(\}|$)/"
+        region02="Variable"  region10="Variable"
+        region01="PairStart" region11="PairEnd"
+        scheme="variable_names"/>
+    <!-- ${VAR^...} ${VAR^^...} ${VAR,...} ${VAR,,...} -->
+    <block start="/((\$\{))\M((%specvar-strict;)|[\w_]+)(?{VariablePrefix}\^{1,2}|,{1,2})/"
+        end="/(\})/"
+        region02="Variable"  region10="Variable"
+        region01="PairStart" region11="PairEnd"
+        scheme="variable_expansion"/>
+    <!-- ${VAR/.../...} ${VAR//.../...} etc. -->
+    <block start="/((\$\{))\M((%specvar-strict;)|[\w_]+)(?{VariablePrefix}\/[#%/]?)/"
+        end="/(\}|$)/"
+        region02="Variable"  region10="Variable"
+        region01="PairStart" region11="PairEnd"
+        scheme="variable_expansion_replacement"/>
     <inherit scheme="shell-posix:variables">
         <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
         <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
