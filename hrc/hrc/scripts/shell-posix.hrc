@@ -299,21 +299,15 @@
      <!-- regexp match="/[^%wrdbreakchars;\s]*/" region="Error"/ -->
 </scheme>
 
+<scheme name="variable_assignments_caught">
+    <!-- variable name -->
+    <block start="/\M%var;/" end="/\M(=)/" scheme="variable_names" region11="Symbol"/>
+    <!-- expression -->
+    <block start="/=/" end="/\M\s|%cmdbreak;/" scheme="script_words"/>
+</scheme>
+
 <scheme name="variable_assignments">
-    <!-- special variables -->
-    <!-- variable assignment: var=<number> -->
-    <regexp match="/\s*(%specvar;)(=)(\d+)\b/" region1="VariableSpecial"
-        region2="Symbol" region3="Number"/>
-    <!-- variable assignment: var=<something> -->
-    <block start="/\s*(%specvar;)(=)/" end="/\M\s|%cmdbreak;/" scheme="script_words"
-        region01="VariableSpecial" region02="Symbol"/>
-    <!-- random variables -->
-    <!-- variable assignment: var=<number> -->
-    <regexp match="/\s*(%var;)(=)(\d+)\b/" region1="Variable"
-        region2="Symbol" region3="Number"/>
-    <!-- variable assignment: var=<something> -->
-    <block start="/\s*(%var;)(=)/" end="/\M\s|%cmdbreak;/" scheme="script_words"
-        region01="Variable" region02="Symbol"/>
+    <block start="/\s*\M(%var;)(=)/" end="/\M\s|%cmdbreak;/" scheme="variable_assignments_caught"/>
 </scheme>
 
 <scheme name="strings">

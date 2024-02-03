@@ -77,7 +77,7 @@ A=123 A="sdfasdf" A=$(V=1 command here 2>/dev/null) B=`cd asd`
 A=123; cd test
 A=1|B=2|topipe command
 A=1;nextcmd
-A=1>A=1 cmd here
+A=1>A=1 cmd here # <- 'A=1' is not a variable assignment, it is a file
 
 # 2.6.3 Command Substitution
 exec 1 $( { V=123 V2="sdsdf"; }; execute something 2>&1 1>/dev/null && X=1 echo 123 V=1)

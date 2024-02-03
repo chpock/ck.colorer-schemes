@@ -378,15 +378,9 @@
 </scheme>
 
 <scheme name="variable_assignments">
-    <!-- special variables -->
-    <!-- variable assignment: var=<number> -->
-    <regexp match="/\s*(%specvar;)(=)(\d+)\b/x" region1="VariableSpecial"
-        region2="Symbol" region3="Number"/>
-    <!-- variable assignment: var=<something> -->
-    <block start="/\s*(%specvar;)(=)/x" end="/\M\s|%cmdbreak;/" scheme="script_words"
-        region01="VariableSpecial" region02="Symbol"/>
     <inherit scheme="shell-posix:variable_assignments">
         <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
+        <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
     </inherit>
 </scheme>
 

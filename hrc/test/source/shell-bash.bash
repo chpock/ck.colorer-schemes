@@ -358,3 +358,12 @@ unset CDPATH
 
 bash; bash -c fff
 
+# 6.7 Arrays
+
+ARR[1]="val"
+ARR=("val1" "val2" "val3")
+
+ARR["FOO"]="val"
+ARR[$IDX]="val"
+ADD=(["foo"]="val1" [$VAR]="val2" [$(V=1 command)]="foo")
+
