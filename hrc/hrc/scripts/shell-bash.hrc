@@ -340,7 +340,28 @@
     </inherit>
 </scheme>
 
+<scheme name="variable_array">
+    <!-- hash key -->
+    <block start="/(\[)/" end="/\M((\]))/" scheme="script_words"
+                                  region13="Symbol"
+        region00="VariablePrefix" region11="VariablePrefix"
+        region01="PairStart"      region12="PairEnd"/>
+    <!-- variable ${VAR:...}, ${VAR:...:...} -->
+    <block start="/\](?{VariablePrefix}\:([?=+-])?!)/" end="/\M\}|$/"
+        scheme="variable_expansion_substring"/>
+    <!-- ${VAR@...} -->
+    <regexp match="/\](?{VariablePrefix}@[UuLQEPAKak])/"/>
+    <!-- ${VAR^...} ${VAR^^...} ${VAR,...} ${VAR,,...}
+         ${VAR:-...}, ${VAR+...} etc., ${VAR#...}, ${VAR%%...} etc. -->
+    <block start="/\](?{VariablePrefix}\^{1,2}|,{1,2}|#{1,2}|%{1,2}|:?[?=+-])/" end="/\M\}|$/"
+        scheme="parameter_expansion"/>
+    <!-- ${VAR/.../...} ${VAR//.../...} etc. -->
+    <block start="/\](?{VariablePrefix}\/[#%/]?)/" end="/\M\}|$/"
+        scheme="variable_expansion_replacement"/>
+</scheme>
+
 <scheme name="variables">
+
     <!-- variable ${VAR:...}, ${VAR:...:...} -->
     <block start="/((\$\{))\M((%specvar-strict;)|[\w_]+)(?{VariablePrefix}\:([?=+-])?!)/"
         end="/(\}|$)/"
@@ -371,16 +392,72 @@
         region02="Variable"  region10="Variable"
         region01="PairStart" region11="PairEnd"
         scheme="variable_expansion_replacement"/>
+
+    <!-- ${#VAR[...]} -->
+    <block start="/(\$\{)(?{VariablePrefix}#)[\w_]+\M\[.*\]\}/"
+        end="/\]\m((\}|$))/"
+        region00="Variable"  region10="Variable"
+        region01="PairStart" region11="PairEnd"
+        scheme="variable_assignment_array_hash"/>
+    <!-- ${VAR[...]...} -->
+    <block start="/(\$\{)[\w_]+\M\[.*\]/"
+        end="/(\}|$)/"
+        region00="Variable"  region10="Variable"
+        region01="PairStart" region11="PairEnd"
+        scheme="variable_array"/>
+
     <inherit scheme="shell-posix:variables">
         <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
         <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
     </inherit>
 </scheme>
 
-<scheme name="variable_assignments">
-    <inherit scheme="shell-posix:variable_assignments">
+<scheme name="variable_assignments_caught">
+    <inherit scheme="shell-posix:variable_assignments_caught">
         <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
         <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
+    </inherit>
+</scheme>
+
+<scheme name="variable_assignment_array_hash">
+    <!-- hash key -->
+    <block start="/(\[)/" end="/\M((\]))(=)?/" scheme="script_words"
+                                  region13="Symbol"
+        region00="VariablePrefix" region11="VariablePrefix"
+        region01="PairStart"      region12="PairEnd"/>
+    <!-- hash value -->
+    <block start="/\]=/" end="/\M\s|%cmdbreak;/" scheme="script_words"/>
+</scheme>
+
+<scheme name="variable_assignment_array">
+    <!-- variable name -->
+    <block start="/\M%var;/" end="/\M(=\()/" scheme="variable_names"/>
+    <!-- array elements [key]=value ... -->
+    <block start="/(=)((\())\s*(\[)?=/" end="/\M((\)))/" scheme="variable_assignment_array_hash"
+        region01="Symbol"
+        region02="Symbol"    region11="Symbol"
+        region03="PairStart" region12="PairEnd"/>
+    <!-- array elements value ... -->
+    <block start="/(=)((\())/" end="/\M((\)))/" scheme="script_words"
+        region01="Symbol"
+        region02="Symbol"    region11="Symbol"
+        region03="PairStart" region12="PairEnd"/>
+</scheme>
+
+<scheme name="variable_assignment_array_element">
+    <!-- variable name -->
+    <block start="/\M%var;/" end="/\M(\[)/" scheme="variable_names"/>
+    <!-- hash key/value -->
+    <block start="/\M\[/" end="/\M\M\s|%cmdbreak;/" scheme="variable_assignment_array_hash"/>
+</scheme>
+
+<scheme name="variable_assignments">
+    <!-- whole array assignment -->
+    <block start="/\s*\M(%var;)=\(/" end="/\)/" scheme="variable_assignment_array"/>
+    <!-- element array assignment -->
+    <block start="/\s*\M(%var;)\[.*\]=/" end="/\M\s|%cmdbreak;/" scheme="variable_assignment_array_element"/>
+    <inherit scheme="shell-posix:variable_assignments">
+        <virtual scheme="shell-posix:variable_assignments_caught" subst-scheme="variable_assignments_caught"/>
     </inherit>
 </scheme>
 

@@ -160,9 +160,6 @@ ${!prefix*} ${!prefix@} ${!1@}
 
 ${!name[@]} ${!name[*]}
 
-# TODO:
-${A[0]:7} ${A[0]:1:10} ${A[@]:1} ${A[*]:1}
-
 ${#A} ${#BASH} ${#*} ${#@}
 ${A#word} ${BASH#word} ${A##word} ${BASH##word}
 ${A%word} ${BASH%word} ${A%%word} ${BASH%%word}
@@ -360,10 +357,41 @@ bash; bash -c fff
 
 # 6.7 Arrays
 
+ARR=("val1" "val2"   "val3" $(command here; echo \)) $'ansi-str')
+ARR=(["foo"]="val1"    [$VAR $VAR2 \] $VAR3]="val2" [$(V=1 command)]="foo" ["str"'str'$'\rstr']="str"'str'$'\rstr' )
+
 ARR[1]="val"
-ARR=("val1" "val2" "val3")
 
-ARR["FOO"]="val"
+ARR["FOO"]="val" [sdfsdf ] # '[sdfsdf ]' is a command
 ARR[$IDX]="val"
-ADD=(["foo"]="val1" [$VAR]="val2" [$(V=1 command)]="foo")
 
+echo $A["foo"] # <- here is A["foo"] is not an array, it is "$A" and '["foo"]'
+echo ${A["foo"]} # <- here is A["foo"] is an array
+
+A[$(echo bla)] # <- this should be the command 'A[bla]', not a variable/array
+A[$(echo bla)]=1 command here foo # <- this should be an array assignment and a command
+
+A[fla echo 1]=1 # assignment
+A[fla "echo]=" 1]=foo # assignment
+echo ${A[fla "echo]=" 1]} # echo the assignment
+
+# Arrays + Shell Parameter Expansion
+
+${A[foo]:-word} ${A['sdf']:=word} ${A[1]:?word} ${A[fff]:+word}
+
+${A[foo]:0} ${A[$'bla']:0:10} ${A[$(command)]: -1} ${A[10]: -1:-10}
+${A[1]:$(( ${#B} + 10 )):$(command here)} ${A[foo]:"10":$'\r\t10'}
+${A[0]:7} ${A[0]:1:10} ${A[@]:1} ${A[*]:1}
+
+${#A[foo]}
+
+${A[1]#word} ${A[foo]##word} ${A['sdf']%word} ${A[$(test)]%%word}
+
+${A[10]/pat/str} ${A[foo]//pat/str} ${A["a"]/#pat/str} ${A[0]/%pat/str}
+${A[foo]/$(command)/`test`"dbl"$'ansi'}
+
+${A[10]^pat} ${A[foo]^^pat} ${A["bla bla"],pat} ${A[iii],,pat}
+${A[0]^$(command here)} ${A[1],,`test`"sdfasdf"$'\r\t\e'}
+
+${A[0]@U} ${A[1]@u} ${A[foo]@L} ${A["bla"]@Q} ${A[1]@E}
+${A[$'ansi']@P} ${A[$(command here)]@A} ${A[`command here`]@K} ${A[$VAR]@a} ${A[0]@k}
