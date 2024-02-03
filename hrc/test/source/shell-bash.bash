@@ -402,3 +402,13 @@ dirs -c -l +N; dirs
 popd; popd -n
 pushd; pushd -n dir
 
+# 7.2 Job Control Builtins
+
+bg; bg 1
+fg; fg 1 error here
+jobs; jobs -l 123
+kill; kill -l 1
+wait; wait -f 10 1
+disown; disown -a id $ID
+suspend; suspend -f; suspend -f error here
+
