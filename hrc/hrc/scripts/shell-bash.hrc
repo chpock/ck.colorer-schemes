@@ -91,6 +91,12 @@
     PWD|RANDOM|READLINE_ARGUMENT|READLINE_LINE|READLINE_MARK|READLINE_POINT|
     REPLY|SECONDS|SHELL|SHELLOPTS|SHLVL|SRANDOM|TIMEFORMAT|TMOUT|TMPDIR|UID
 "/>
+
+<!-- entity name="utility_no-param" value=""/ -->
+<entity name="utility_one-param" value="source"/>
+<entity name="utility_one-param-number" value="caller|logout"/>
+<entity name="utility_common" value="bind|enable|help|mapfile|readarray"/>
+
 <entity name="funcname" value="[!*+,./:=?@A-Z\[\]\^_a-z{}~][#%0-9!*+,./:=?@A-Z\[\]\^_a-z{}~-]*"/>
 
 <entity name="wrdbreakchars" value="|;#)&amp;`"/>
@@ -157,18 +163,48 @@
 </scheme>
 
 <scheme name="script_command">
+
     <!-- . -->
     <block start="/\.(\s+|$)/" end="/\M%cmdbreak;/" scheme="script_parameters"
         region00="CommandBuiltin"/>
+
     <!-- export -fnp name[=word]... -->
     <block start="/\b(export)\b(\s+-[fnp]+)*/" end="/\M%cmdbreak;/" scheme="cmd-parameter-variable-assignments"
         region01="CommandBuiltin"/>
+
     <!-- readonly -aAfp name[=word]... -->
     <block start="/\b(readonly)\b(\s+-[aAfp]+)*/" end="/\M%cmdbreak;/" scheme="cmd-parameter-variable-assignments"
         region01="CommandBuiltin"/>
+
+    <!-- declare/local/typeset -aAfFgiIlnrtux -p name[=word]... -->
+    <block start="/\b(declare|local|typeset)\b(\s+-[aAfFgiIlnrtuxp]+)*/" end="/\M%cmdbreak;/" scheme="cmd-parameter-variable-assignments"
+        region01="CommandBuiltin"/>
+
     <!-- unset -fnv name... -->
     <block start="/\b(unset)\b(\s+-[fnv]+)*/" end="/\M%cmdbreak;/" scheme="cmd-parameter-variables"
         region01="CommandBuiltin"/>
+
+    <!-- builtin ... -->
+    <block start="/\b(builtin)\b\s*/" end="/\M%cmdbreak;/" scheme="script_command"
+        region01="CommandBuiltin"/>
+
+    <!-- let ... -->
+    <block start="/\blet\b/" end="/\M%cmdbreak;/" scheme="shell-arithmetic"
+        region00="CommandBuiltin"/>
+
+    <!-- <utility> <single parameter> -->
+    <block start="/\b(%utility_one-param;)\b\s*/" end="/\M%cmdbreak;/" scheme="cmd-one-parameter"
+        region00="CommandBuiltin"/>
+    <!-- <utility> <number expected> -->
+    <block start="/\b(%utility_one-param-number;)\b\s*/" end="/\M%cmdbreak;/" scheme="cmd-one-parameter-number"
+        region00="CommandBuiltin"/>
+    <!-- <utility> ... -->
+    <block start="/\b(%utility_common;)\b/" end="/\M%cmdbreak;/" scheme="script_parameters"
+        region00="CommandBuiltin"/>
+    <!-- <utility> -->
+    <!-- block start="/\b(%utility_no-param;)\b/" end="/\M%cmdbreak;/" scheme="cmd-error"
+        region00="CommandBuiltin"/ -->
+
     <inherit scheme="shell-posix:script_command">
         <virtual scheme="shell-posix:variables" subst-scheme="variables"/>
         <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
@@ -441,6 +477,12 @@
 <scheme name="coproc-variable">
     <block start="/(coproc)?#6\s+/" end="/\M\s|%cmdbreak;/" scheme="script_words.maybe-variable"/>
     <block start="/\s*/" end="/\M%cmdbreak;/" scheme="script"/>
+</scheme>
+
+<scheme name="cmd-error">
+    <inherit scheme="shell-posix:cmd-error">
+        <virtual scheme="shell-posix:redirections_start" subst-scheme="redirections_start"/>
+    </inherit>
 </scheme>
 
 <scheme name="cmd-one-parameter-number">

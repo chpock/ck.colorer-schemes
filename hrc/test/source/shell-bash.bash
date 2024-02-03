@@ -278,6 +278,38 @@ trap; trap -l -p a s df
 umask -p -S 0444
 unset -f -n -v VAR1 VAR2 $VAR_IN_VAR CDPATH BASH
 
+# 4.2 Bash Builtin Commands
+
+alias; alias -p foo=bla
+bind; bind -m aaa -f foo
+builtin; builtin umask 0444 # <- should be as a command
+caller; caller $VAR; caller 123 error here
+command -pV grep here
+declare -aA -p VAR1 VAR2=$FOO VAR3=$(command here) VAR4="str"'str'$'str'
+echo -neE foo
+enable -a -d fff
+help -d patt
+local -aA -p VAR1 VAR2=$FOO VAR3=$(command here) VAR4="str"'str'$'str'
+logout; logout $VAR; logout 1; logout error here
+mapfile -d 'f' file array
+printf -v VAR 'format' foo
+read -a -r VAR bla
+readarray -d dd -C call array
+source file; source file error here
+type -af name
+typeset -afFg VAR1 VAR2=$FOO VAR3=$(command here) VAR4="str"'str'$'str'
+ulimit; ulimit -a; ulimit -H name
+unalias; unalias -a; unalias name1 name2
+
+let a=4
+let z=a++
+let y=--b
+let result=~a
+let "result=a<<2"
+let "result=a&b"
+let i=5 result=~a "result=a<<2"
+let "myvar=7" "myvar2=4" "myvar3= myvar ^ myvar2"
+
 # 5.2 Bash Variables
 
 $_ $BASH $BASHOPTS $BASHPID $BASH_ALIASES $BASH_ARGC

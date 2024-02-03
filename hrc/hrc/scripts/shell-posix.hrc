@@ -188,8 +188,8 @@
     <block start="/\b(%utility_no-param;)\b/" end="/\M%cmdbreak;/" scheme="cmd-error"
         region00="CommandBuiltin"/>
     <!-- exec ... -->
-    <block start="/\bexec\b/" end="/\M%cmdbreak;/" scheme="script_command"
-        region00="CommandBuiltin"/>
+    <block start="/\b(exec)\b\s*/" end="/\M%cmdbreak;/" scheme="script_command"
+        region01="CommandBuiltin"/>
     <!-- export/readonly -p -->
     <block start="/\b(export|readonly)\s+(-p)\b/" end="/\M%cmdbreak;/" scheme="cmd-error"
         region01="CommandBuiltin"/>
