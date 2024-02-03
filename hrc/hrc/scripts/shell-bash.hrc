@@ -144,7 +144,7 @@
         region01="CommandReserved"/>
 
     <!-- functions: <funcname> () ... -->
-    <block start="/\b(%funcname;)\s*(\(\))\s*/" end="/\M%cmdbreak;/" scheme="script"
+    <block start="/(%funcname;)\s*(\(\))\s*/" end="/\M%cmdbreak;/" scheme="script"
         region01="FunctionName" region02="Symbol"/>
     <!-- functions: function <funcname> [()] ... -->
     <block start="/\b(function)\s+(%funcname;)(\s+\(\))?/" end="/\M%cmdbreak;/" scheme="script"

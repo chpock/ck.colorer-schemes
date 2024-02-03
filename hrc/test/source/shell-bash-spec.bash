@@ -133,6 +133,8 @@ func%name () {
 
 func-name () { command here; }
 
+,func-name-comma () { command here; }
+
 function fu1[nc]name command here 1>/dev/null
 
 function f-un[c () command here
