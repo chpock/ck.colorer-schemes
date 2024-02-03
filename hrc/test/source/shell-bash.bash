@@ -418,3 +418,7 @@ compgen -o word
 complete -a name name
 compopt -o opt name
 
+# 9.2 Bash History Builtins
+
+fc; fc -e name
+history; history 1; history -c
