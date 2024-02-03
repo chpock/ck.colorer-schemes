@@ -159,6 +159,7 @@ ${A:$(( ${#B} + 10 )):$(command here)} ${A:"10":$'\r\t10'}
 ${!prefix*} ${!prefix@} ${!1@}
 
 ${!name[@]} ${!name[*]}
+${!A} ${!BASH} ${!1} ${!@}
 
 ${#A} ${#BASH} ${#*} ${#@}
 ${A#word} ${BASH#word} ${A##word} ${BASH##word}
@@ -176,6 +177,11 @@ ${A^$(command here)} ${BASH,,`test`"sdfasdf"$'\r\t\e'}
 
 ${A@U} ${A@u} ${A@L} ${A@Q} ${A@E} ${A@P} ${A@A} ${A@K} ${A@a} ${A@k}
 ${BASH@U} ${BASH@u} ${BASH@L} ${BASH@Q} ${BASH@E} ${BASH@P} ${BASH@A} ${BASH@K} ${BASH@a} ${BASH@k}
+
+for i in; do
+   "'${M:$i:1}" # <- test in for loop
+done
+
 
 # 5.1 Bourne Shell Variables
 
@@ -361,6 +367,8 @@ bash; bash -c fff
 
 ARR=("val1" "val2"   "val3" $(command here; echo \)) $'ansi-str')
 ARR=(["foo"]="val1"    [$VAR $VAR2 \] $VAR3]="val2" [$(V=1 command)]="foo" ["str"'str'$'\rstr']="str"'str'$'\rstr' )
+
+${!A[1]} ${!A["idx"]}
 
 ARR[1]="val"
 
