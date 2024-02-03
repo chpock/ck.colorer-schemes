@@ -310,6 +310,14 @@ let "result=a&b"
 let i=5 result=~a "result=a<<2"
 let "myvar=7" "myvar2=4" "myvar3= myvar ^ myvar2"
 
+# 4.3.1 The Set Builtin
+
+set -a a b d
+
+# 4.3.2 The Shopt Builtin
+
+shopt -p -o opt
+
 # 5.2 Bash Variables
 
 $_ $BASH $BASHOPTS $BASHPID $BASH_ALIASES $BASH_ARGC
