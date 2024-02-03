@@ -221,10 +221,14 @@
 </scheme>
 
 <scheme name="redirections_start">
-    <!-- redirects to file [n]>|word -->
-    <!-- block start="/((^|\s*\b[^\\]?#1)\d*|\s?#1)(&gt;|&gt;&gt;|&lt;|&gt;|&gt;\|)(&lt;|\()?!\s*/"
+    <!-- redirections: &>word &>>word -->
+    <block start="/((^|\s*\b[^\\]?#1)\d*|\s?#1)(&amp;&gt;&gt;?)\s*/"
         end="/\M(^|[^\\]?#1)[%wrdbreakchars;\s]|$/"
-        scheme="script_words" region01="RedirectDescriptor" region03="RedirectSymbol"/ -->
+        scheme="script_words" region01="RedirectDescriptor" region03="RedirectSymbol"/>
+    <!-- here strings -->
+    <block start="/((^|\s*\b[^\\]?#1)\d*|\s?#1)(&gt;&gt;&gt;|&lt;&lt;&lt;)\s*/"
+        end="/\M(^|[^\\]?#1)[%wrdbreakchars;\s]|$/"
+        scheme="script_words" region01="RedirectDescriptor" region03="RedirectSymbol"/>
     <inherit scheme="shell-posix:redirections_start">
         <virtual scheme="shell-posix:script_words" subst-scheme="script_words"/>
     </inherit>

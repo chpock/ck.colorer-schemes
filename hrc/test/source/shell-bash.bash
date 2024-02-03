@@ -202,8 +202,57 @@ ls 2>&1 > dirlist
 command < test < $VAR
 command 2< test 1<$CDPATH
 
+# 3.6.2 Redirecting Output
 
+command >test >$VAR
+command >|test >|$VAR
+command 1>test 2>$VAR
+command 1>|test 0>|$VAR
 
+# 3.6.3 Appending Redirected Output
+
+command >>test >>$VAR
+command 2>>test 2>>$VAR
+
+# 3.6.4 Redirecting Standard Output and Standard Error
+
+command &>test >&test
+command >test 2>&1
+
+# 3.6.5 Appending Standard Output and Standard Error
+
+command &>>test
+
+# 3.6.7 Here Strings
+
+command <<< word
+command <<< $VAR
+command <<< $(V=1 command here)
+command 1<<< word
+command 1<<< "string"$'ansi''single'
+
+# 3.6.8 Duplicating File Descriptors
+
+command <&1
+command 1<&1
+command 1<&$VAR
+command 1<&-
+command >&1
+command 2>&3
+command 1>&$VAR
+command 1>&-
+
+# 3.6.9 Moving File Descriptors
+
+command <&1-
+command 1<&1-
+command >&1-
+command 1>&1-
+
+# 3.6.10 Opening File Descriptors for Reading and Writing
+
+command <> test
+command 1<>test
 
 # 5.2 Bash Variables
 
