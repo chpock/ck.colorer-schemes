@@ -95,7 +95,12 @@
 <!-- entity name="utility_no-param" value=""/ -->
 <entity name="utility_one-param" value="source|suspend"/>
 <entity name="utility_one-param-number" value="caller|logout"/>
-<entity name="utility_common" value="bind|enable|help|mapfile|readarray|shopt|bash|dirs|pushd|popd|disown"/>
+<entity name="utility_common" value="
+    bind|enable|help|mapfile|readarray|shopt|
+    bash|
+    dirs|pushd|popd|disown|
+    compgen|complete|compopt
+"/>
 
 <entity name="funcname" value="[!*+,./:=?@A-Z\[\]\^_a-z{}~][#%0-9!*+,./:=?@A-Z\[\]\^_a-z{}~-]*"/>
 
@@ -199,7 +204,7 @@
     <block start="/\b(%utility_one-param-number;)\b\s*/" end="/\M%cmdbreak;/" scheme="cmd-one-parameter-number"
         region00="CommandBuiltin"/>
     <!-- <utility> ... -->
-    <block start="/\b(%utility_common;)\b/" end="/\M%cmdbreak;/" scheme="script_parameters"
+    <block start="/\b(%utility_common;)\b/x" end="/\M%cmdbreak;/" scheme="script_parameters"
         region00="CommandBuiltin"/>
     <!-- <utility> -->
     <!-- block start="/\b(%utility_no-param;)\b/" end="/\M%cmdbreak;/" scheme="cmd-error"

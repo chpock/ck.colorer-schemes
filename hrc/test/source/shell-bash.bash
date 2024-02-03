@@ -412,3 +412,9 @@ wait; wait -f 10 1
 disown; disown -a id $ID
 suspend; suspend -f; suspend -f error here
 
+# 8.7 Programmable Completion Builtins
+
+compgen -o word
+complete -a name name
+compopt -o opt name
+
