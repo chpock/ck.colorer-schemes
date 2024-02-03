@@ -264,7 +264,9 @@
 
 <scheme name="strings">
     <inherit scheme="strings-dollar"/>
-    <inherit scheme="shell-posix:strings"/>
+    <inherit scheme="shell-posix:strings">
+        <virtual scheme="shell-posix:variables" subst-scheme="variables"/>
+    </inherit>
 </scheme>
 
 <scheme name="parameter_expansion">
