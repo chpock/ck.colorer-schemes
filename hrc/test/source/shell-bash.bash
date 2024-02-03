@@ -399,4 +399,6 @@ ${A[$'ansi']@P} ${A[$(command here)]@A} ${A[`command here`]@K} ${A[$VAR]@a} ${A[
 # 6.8.1 Directory Stack Builtins
 
 dirs -c -l +N; dirs
+popd; popd -n
+pushd; pushd -n dir
 
