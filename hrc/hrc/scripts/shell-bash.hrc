@@ -95,7 +95,7 @@
 <!-- entity name="utility_no-param" value=""/ -->
 <entity name="utility_one-param" value="source"/>
 <entity name="utility_one-param-number" value="caller|logout"/>
-<entity name="utility_common" value="bind|enable|help|mapfile|readarray|shopt|bash"/>
+<entity name="utility_common" value="bind|enable|help|mapfile|readarray|shopt|bash|dirs"/>
 
 <entity name="funcname" value="[!*+,./:=?@A-Z\[\]\^_a-z{}~][#%0-9!*+,./:=?@A-Z\[\]\^_a-z{}~-]*"/>
 

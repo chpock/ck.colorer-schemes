@@ -395,3 +395,8 @@ ${A[0]^$(command here)} ${A[1],,`test`"sdfasdf"$'\r\t\e'}
 
 ${A[0]@U} ${A[1]@u} ${A[foo]@L} ${A["bla"]@Q} ${A[1]@E}
 ${A[$'ansi']@P} ${A[$(command here)]@A} ${A[`command here`]@K} ${A[$VAR]@a} ${A[0]@k}
+
+# 6.8.1 Directory Stack Builtins
+
+dirs -c -l +N; dirs
+
