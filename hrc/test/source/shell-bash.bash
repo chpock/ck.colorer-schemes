@@ -354,3 +354,7 @@ done
 export CDPATH CDPATH=123
 unset CDPATH
 
+# 6.1 Invoking Bash
+
+bash; bash -c fff
+
