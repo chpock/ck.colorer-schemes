@@ -254,6 +254,30 @@ command 1>&1-
 command <> test
 command 1<>test
 
+# 4.1 Bourne Shell Builtins
+
+: a b c d
+. file arg1 arg2 arg3
+break; break $VAR; break 1; break error here
+cd; cd -L -e dir
+continue; continue $VAR; continue 1; continue error here
+eval a b c d
+exec -c -a foo command a f g
+exit; exit $VAR; exit 1; exit error here
+export -fn -p VARNAME VAR="value" BASH CDPATH
+getopts optstring NAME foo rrr ooo
+hash -r -p name
+pwd; pwd -L -P
+readonly -aA VARNAME VAR="value" BASH IFS
+return; return $VAR; return 1; return error here
+shift; shift $VAR; shift 1; shift error here
+test -x foo -o $ASD
+[ -x foo -o $VAR ]
+times; times error here
+trap; trap -l -p a s df
+umask -p -S 0444
+unset -f -n -v VAR1 VAR2 $VAR_IN_VAR CDPATH BASH
+
 # 5.2 Bash Variables
 
 $_ $BASH $BASHOPTS $BASHPID $BASH_ALIASES $BASH_ARGC

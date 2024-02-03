@@ -151,8 +151,38 @@
         <virtual scheme="shell-posix:script_words" subst-scheme="script_words"/>
         <virtual scheme="shell-posix:script_without_backquote" subst-scheme="script_without_backquote"/>
         <virtual scheme="shell-posix:redirections_start" subst-scheme="redirections_start"/>
+        <virtual scheme="shell-posix:script_command" subst-scheme="script_command"/>
     </inherit>
 
+</scheme>
+
+<scheme name="script_command">
+    <!-- . -->
+    <block start="/\.(\s+|$)/" end="/\M%cmdbreak;/" scheme="script_parameters"
+        region00="CommandBuiltin"/>
+    <!-- export -fnp name[=word]... -->
+    <block start="/\b(export)\b(\s+-[fnp]+)*/" end="/\M%cmdbreak;/" scheme="cmd-parameter-variable-assignments"
+        region01="CommandBuiltin"/>
+    <!-- readonly -aAfp name[=word]... -->
+    <block start="/\b(readonly)\b(\s+-[aAfp]+)*/" end="/\M%cmdbreak;/" scheme="cmd-parameter-variable-assignments"
+        region01="CommandBuiltin"/>
+    <!-- unset -fnv name... -->
+    <block start="/\b(unset)\b(\s+-[fnv]+)*/" end="/\M%cmdbreak;/" scheme="cmd-parameter-variables"
+        region01="CommandBuiltin"/>
+    <inherit scheme="shell-posix:script_command">
+        <virtual scheme="shell-posix:variables" subst-scheme="variables"/>
+        <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
+        <virtual scheme="shell-posix:variable_assignments" subst-scheme="variable_assignments"/>
+        <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
+        <virtual scheme="shell-posix:redirections_start" subst-scheme="redirections_start"/>
+        <virtual scheme="shell-posix:script_words" subst-scheme="script_words"/>
+        <virtual scheme="shell-posix:script_without_backquote" subst-scheme="script_without_backquote"/>
+    </inherit>
+</scheme>
+
+<scheme name="script_parameters">
+    <inherit scheme="shell-posix:script_parameters">
+    </inherit>
 </scheme>
 
 <scheme name="script_without_backquote">
@@ -412,6 +442,38 @@
     <block start="/(coproc)?#6\s+/" end="/\M\s|%cmdbreak;/" scheme="script_words.maybe-variable"/>
     <block start="/\s*/" end="/\M%cmdbreak;/" scheme="script"/>
 </scheme>
+
+<scheme name="cmd-one-parameter-number">
+    <inherit scheme="shell-posix:cmd-one-parameter-number">
+        <virtual scheme="shell-posix:redirections_start" subst-scheme="redirections_start"/>
+        <virtual scheme="shell-posix:script_words" subst-scheme="script_words"/>
+    </inherit>
+</scheme>
+
+<scheme name="cmd-one-parameter">
+    <inherit scheme="shell-posix:cmd-one-parameter">
+        <virtual scheme="shell-posix:redirections_start" subst-scheme="redirections_start"/>
+        <virtual scheme="shell-posix:script_words" subst-scheme="script_words"/>
+    </inherit>
+</scheme>
+
+<scheme name="cmd-parameter-variable-assignments">
+    <inherit scheme="shell-posix:cmd-parameter-variable-assignments">
+        <virtual scheme="shell-posix:redirections_start" subst-scheme="redirections_start"/>
+        <virtual scheme="shell-posix:script_words" subst-scheme="script_words"/>
+        <virtual scheme="shell-posix:variable_assignments" subst-scheme="variable_assignments"/>
+        <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
+    </inherit>
+</scheme>
+
+<scheme name="cmd-parameter-variables">
+    <inherit scheme="shell-posix:cmd-parameter-variable-assignments">
+        <virtual scheme="shell-posix:redirections_start" subst-scheme="redirections_start"/>
+        <virtual scheme="shell-posix:script_words" subst-scheme="script_words"/>
+        <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
+    </inherit>
+</scheme>
+
 
 </type>
 </hrc>
