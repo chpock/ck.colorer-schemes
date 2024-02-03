@@ -487,6 +487,7 @@
     <inherit scheme="shell-posix:for">
         <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
         <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
+        <virtual scheme="shell-posix:redirections_start" subst-scheme="redirections_start"/>
     </inherit>
 </scheme>
 

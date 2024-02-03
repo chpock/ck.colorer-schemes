@@ -182,7 +182,6 @@ for i in; do
    "'${M:$i:1}" # <- test in for loop
 done
 
-
 # 5.1 Bourne Shell Variables
 
 $CDPATH $HOME $IFS $MAIL $MAILPATH $OPTARG $OPTIND $PATH $PS1 $PS2
@@ -235,6 +234,14 @@ command <<< $VAR
 command <<< $(V=1 command here)
 command 1<<< word
 command 1<<< "string"$'ansi''single'
+command <<< "HERE STRING"
+
+for i in; do
+    if bla; then
+        while read -r; do
+        done <<< "HERE STRING"
+    fi
+done
 
 # 3.6.8 Duplicating File Descriptors
 
