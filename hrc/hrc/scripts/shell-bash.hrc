@@ -356,7 +356,7 @@
     <!-- hash key -->
     <block start="/(\[)/" end="/\M((\]))/" scheme="script_words"
                                   region13="Symbol"
-        region00="VariablePrefix" region11="VariablePrefix"
+        region00="VariableStrong" region11="VariableStrong"
         region01="PairStart"      region12="PairEnd"/>
     <!-- variable ${VAR:...}, ${VAR:...:...} -->
     <block start="/\](?{VariablePrefix}\:([?=+-])?!)/" end="/\M\}|$/"
@@ -412,15 +412,17 @@
         scheme="variable_expansion_replacement"/>
 
     <!-- ${!VAR[...]} ${#VAR[...]} -->
-    <block start="/(\$\{)(?{VariablePrefix}[!#])[\w_]+\M\[.*\]\}/"
+    <block start="/((\$\{))(?{VariablePrefix}[!#])[\w_]+\M\[.*\]\}/"
         end="/\]\m((\}|$))/"
-        region00="VariableStrong" region10="VariableStrong"
+        region00="Variable"
+        region02="VariableStrong" region10="VariableStrong"
         region01="PairStart"      region11="PairEnd"
         scheme="variable_assignment_array_hash"/>
     <!-- ${VAR[...]...} -->
-    <block start="/(\$\{)[\w_]+\M\[.*\]/"
+    <block start="/((\$\{))[\w_]+\M\[.*\]/"
         end="/(\}|$)/"
-        region00="VariableStrong" region10="VariableStrong"
+        region00="Variable"
+        region02="VariableStrong" region10="VariableStrong"
         region01="PairStart"      region11="PairEnd"
         scheme="variable_array"/>
 
@@ -441,7 +443,7 @@
     <!-- hash key -->
     <block start="/(\[)/" end="/\M((\]))(=)?/" scheme="script_words"
                                   region13="Symbol"
-        region00="VariablePrefix" region11="VariablePrefix"
+        region00="VariableStrong" region11="VariableStrong"
         region01="PairStart"      region12="PairEnd"/>
     <!-- hash value -->
     <block start="/\]=\m/" end="/\M\s|%cmdbreak;/" scheme="parameter_expansion" region="String"/>
