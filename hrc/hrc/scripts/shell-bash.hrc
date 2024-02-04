@@ -354,7 +354,7 @@
 
 <scheme name="variable_array">
     <!-- hash key -->
-    <block start="/(\[)/" end="/\M((\]))/" scheme="script_words"
+    <block start="/(\[)/" end="/\M((\]))/" scheme="parameter_expansion" region="String"
                                   region13="Symbol"
         region00="VariableStrong" region11="VariableStrong"
         region01="PairStart"      region12="PairEnd"/>
@@ -441,7 +441,7 @@
 
 <scheme name="variable_assignment_array_hash">
     <!-- hash key -->
-    <block start="/(\[)/" end="/\M((\]))(=)?/" scheme="script_words"
+    <block start="/(\[)/" end="/\M((\]))(=)?/" scheme="parameter_expansion" region="String"
                                   region13="Symbol"
         region00="VariableStrong" region11="VariableStrong"
         region01="PairStart"      region12="PairEnd"/>
