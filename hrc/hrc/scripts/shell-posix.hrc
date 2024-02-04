@@ -521,11 +521,11 @@
         region01="CommandReserved" region11="CommandReserved"/>
     <!-- each pattern -->
     <block start="/(in|;;)(\s*esac)?!\m/" end="/\M(\)(\s*|$)|esac)/"
-        scheme="script_words"/>
+        scheme="parameter_expansion" region="String"/>
     <!-- each body -->
     <block start="/((\)))(\s*|$)/" end="/\M((;;|esac))/" scheme="script"
-        region01="PairStart" region12="PairEnd"
-        region02="Operator"  region11="Operator"/>
+        region01="PairStart"    region12="PairEnd"
+        region02="SymbolStrong" region11="SymbolStrong"/>
 </scheme>
 
 <scheme name="test">
