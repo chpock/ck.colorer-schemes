@@ -133,20 +133,20 @@
     <!-- (( ... )) -->
     <block start="/(\(\()/" end="/(\)\))/" scheme="shell-arithmetic"
         region01="PairStart" region10="PairEnd"
-        region00="Operator" region11="Operator"/>
+        region00="Symbol"    region11="Symbol"/>
 
     <!-- [[ ... ]] -->
     <block start="/(\[\[)/" end="/(\]\])/" scheme="test-bash"
         region01="PairStart" region10="PairEnd"
-        region00="Operator" region11="Operator"/>
+        region00="Symbol"    region11="Symbol"/>
 
     <!-- coproc ... -->
     <block start="/\M\b(coproc)\b/" end="/\M%cmdbreak;/" scheme="coproc"
         region01="CommandReserved"/>
 
     <!-- functions: <funcname> () ... -->
-    <block start="/(%funcname;)\s*(\(\))\s*/" end="/\M%cmdbreak;/" scheme="script"
-        region01="FunctionName" region02="Symbol"/>
+    <block start="/(%funcname;)\s*(=)?~1(\(\))\s*/" end="/\M%cmdbreak;/" scheme="script"
+        region01="FunctionName" region03="Symbol"/>
     <!-- functions: function <funcname> [()] ... -->
     <block start="/\b(function)\s+(%funcname;)(\s+\(\))?/" end="/\M%cmdbreak;/" scheme="script"
         region01="CommandReserved" region02="FunctionName" region03="Symbol"/>
@@ -273,6 +273,7 @@
 <scheme name="parameter_expansion">
     <inherit scheme="shell-posix:parameter_expansion">
         <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
+        <!-- virtual scheme="shell-posix:variables" subst-scheme="variables"/ -->
     </inherit>
 </scheme>
 
@@ -482,13 +483,14 @@
 </scheme>
 
 <scheme name="for-arithmetic">
-    <block start="/((\(\()|;)/" end="/\M((\)\))|(?{SymbolStrong};))/" scheme="shell-arithmetic"/>
+    <block start="/((\(\()|;)/" end="/\M((\)\))|(?{Symbol};))/" scheme="shell-arithmetic"/>
 </scheme>
 
 <scheme name="for">
     <!-- for (( expr1 ; expr2 ; expr3 )) ... done -->
-    <block start="/\b(for)\s+\M(\(\()/" end="/(\)\))\s*(?{Error}.*?)\M(;|#|$)/" scheme="for-arithmetic"
-        region01="CommandReserved" region12="SymbolStrong"
+    <block start="/\b(for)\s+\M((\(\())/" end="/((\)\)))\s*(?{Error}.*?)\M(;|#|$)/" scheme="for-arithmetic"
+        region01="CommandReserved"
+        region03="Symbol"          region12="Symbol"
         region02="PairStart"       region11="PairEnd"/>
     <inherit scheme="shell-posix:for">
         <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>

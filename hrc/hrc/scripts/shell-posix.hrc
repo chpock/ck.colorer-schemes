@@ -124,7 +124,7 @@
 
     <!-- subshell ( ... ) -->
     <block start="/(\()/" end="/(\))/" scheme="script"
-        region00="Operator"  region10="Operator"
+        region00="Symbol"    region10="Symbol"
         region01="PairStart" region11="PairEnd"/>
     <block start="/(\))?#1/" end="/\M%cmdbreak;/" scheme="cmd-error"/>
 
@@ -175,7 +175,7 @@
 
 <scheme name="script_command">
     <!-- test/[ commands -->
-    <block start="/(\[)(\s|$)?=/" end="/((\M(^|\s?#1|[^\\]?#1[;])\]))/" scheme="test"
+    <block start="/(\[)(\s|$)?=/" end="/((\M(^|\s?#1|[^\\]?#1[;])(?{Symbol}\])))/" scheme="test"
         region01="PairStart" region11="PairEnd"
         region00="Symbol"    region10="Symbol"/>
     <block start="/\btest\b/" end="/\M%cmdbreak;/" scheme="test"

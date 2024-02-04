@@ -378,6 +378,7 @@ bash; bash -c fff
 
 # 6.7 Arrays
 
+ADD=()
 ARR=("val1" "val2" value\$one  "val3" $(command here; echo \)) $'ansi-str')
 ARR+=("val1" "val2"   "val3" $(command here; echo \)) $'ansi-str')
 ARR=(["foo"]="val1"    [$VAR $VAR2 \] $VAR3]="val2" [$(V=1 command)]="foo" ["str"'str'$'\rstr']="str"'str'$'\rstr' )
@@ -388,6 +389,8 @@ ARR[1]="val"
 
 ARR["FOO"]="val" [sdfsdf] # '[sdfsdf]' is a command
 ARR[$IDX]="val"
+ADD[${IDX[0]}]="foo" # <- index as array element
+ADD[${#IDX[@]}]="foo" # <- index as array element
 
 echo $A["foo"] # <- here is A["foo"] is not an array, it is "$A" and '["foo"]'
 echo ${A["foo"]} # <- here is A["foo"] is an array
