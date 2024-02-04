@@ -273,7 +273,7 @@
 <scheme name="parameter_expansion">
     <inherit scheme="shell-posix:parameter_expansion">
         <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
-        <!-- virtual scheme="shell-posix:variables" subst-scheme="variables"/ -->
+        <virtual scheme="shell-posix:variables" subst-scheme="variables"/>
     </inherit>
 </scheme>
 
