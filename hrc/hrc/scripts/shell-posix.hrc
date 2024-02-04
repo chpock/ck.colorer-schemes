@@ -56,7 +56,7 @@
 
 <region name="RedirectDescriptor" parent="def:Prefix"/>
 <region name="RedirectPrefix" parent="Operator"/>
-<region name="RedirectSymbol" parent="Operator"/>
+<region name="RedirectSymbol" parent="InterfaceKeyword"/>
 
 <region name="HeredocDescriptor" parent="def:Prefix"/>
 <region name="HeredocOperator" parent="Operator"/>
