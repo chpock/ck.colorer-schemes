@@ -228,6 +228,13 @@
     </inherit>
 </scheme>
 
+<scheme name="evaluations">
+    <inherit scheme="shell-posix:evaluations">
+        <virtual scheme="shell-posix:variable_names" subst-scheme="variable_names"/>
+        <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
+    </inherit>
+</scheme>
+
 <scheme name="script_without_backquote">
     <inherit scheme="script">
         <virtual scheme="evaluation_backquote" subst-scheme="def:empty"/>
@@ -293,6 +300,7 @@
     <inherit scheme="shell-posix:script_words">
         <virtual scheme="shell-posix:strings" subst-scheme="strings"/>
         <virtual scheme="shell-posix:variables" subst-scheme="variables"/>
+        <virtual scheme="shell-posix:evaluations" subst-scheme="evaluations"/>
     </inherit>
 </scheme>
 
@@ -531,7 +539,7 @@
     <block start="/\b\M%var;\s*(([\^*/%+&amp;|-]|&lt;&lt;|&gt;&gt;)?\=)/" end="/~%var;\m.*?\=/"
         scheme="variable_names" region01="Symbol"/>
     <!-- anything that looks like a variable is a variable -->
-    <regexp match="/%var;/" region="Variable"/>
+    <inherit scheme="variable_names"/>
     <keywords region="Symbol">
         <symb name="+"/>          <symb name="-"/>
         <symb name="~"/>          <symb name="!"/>
