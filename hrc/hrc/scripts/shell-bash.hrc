@@ -446,7 +446,7 @@
         region00="VariableStrong" region11="VariableStrong"
         region01="PairStart"      region12="PairEnd"/>
     <!-- hash value -->
-    <block start="/\]=\m/" end="/\M\s|%cmdbreak;/" scheme="parameter_expansion" region="String"/>
+    <block start="/\]=\m/" end="/\M[\s\);&amp;&lt;&gt;|]|$/" scheme="parameter_expansion" region="String"/>
 </scheme>
 
 <scheme name="variable_assignment_array">
@@ -468,14 +468,14 @@
     <!-- variable name -->
     <block start="/\M%var;/" end="/\M(\[)/" scheme="variable_names"/>
     <!-- hash key/value -->
-    <block start="/\M\[/" end="/\M\s|%cmdbreak;/" scheme="variable_assignment_array_hash"/>
+    <block start="/\M\[/" end="/\M[\s\);&amp;&lt;&gt;|]|$/" scheme="variable_assignment_array_hash"/>
 </scheme>
 
 <scheme name="variable_assignments">
     <!-- whole array assignment -->
     <block start="/\s*\M(%var;)\+?\=\(/" end="/\)/" scheme="variable_assignment_array"/>
     <!-- element array assignment -->
-    <block start="/\s*\M(%var;)\[.*\]=/" end="/\M\s|%cmdbreak;/" scheme="variable_assignment_array_element"/>
+    <block start="/\s*\M(%var;)\[.*\]=/" end="/\M[\s\);&amp;&lt;&gt;|]|$/" scheme="variable_assignment_array_element"/>
     <inherit scheme="shell-posix:variable_assignments">
         <virtual scheme="shell-posix:variable_assignments_caught" subst-scheme="variable_assignments_caught"/>
     </inherit>

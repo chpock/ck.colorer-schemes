@@ -11,6 +11,17 @@
 echo asd# asd # <- here are "asd#" and "asd" parameters, but not comments
 echo asd #asd # <- here is "asd" and then a comment starting from "#"
 
+VAR=foo#bar VAR2=foo2 # <- here is VAR = 'foo#bar'
+VAR=foo)bar VAR2=foo2 # <- here is 'syntax error'
+VAR=foo;command       # <- here is 'VAR=foo' and a command
+VAR=foo&command       # <- here is 'VAR=foo' in background and a command
+VAR=foo|command       # <- here is 'VAR=foo' and a command
+VAR=foo>command       # <- here is 'VAR=foo' redirected to 'command'
+VAR=foo<command       # <- here is 'VAR=foo' with redirected stdin
+VAR=foo2>command      # <- here is 'VAR=foo2' redirected to 'command'
+VAR=foo1<command      # <- here is 'VAR=foo1' with redirected stdin
+VAR=foo1>&2           # <- here is 'VAR=foo1' with redirected stdout
+
 "double quote string" "double quote $VAR here"111 "double quote $ error here" "escape does \work here"
 
 'single'mix"double"string'double inside"here'or"single inside'here"
