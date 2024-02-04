@@ -470,7 +470,7 @@ exit $(V=1 eval something here) but error here
 export ; export VAR FOO BLA=1 PATH $IFS PATH=123 -wrong variable name
 export X="fff" R="$(V=1 cmd here)" $VAR_ALSO 'quoted' 1wrong variable name
 export -p; export only; #comment here
-export -p a# <- error here
+export -p a # <- error here
 export -p  error here; export VAR one two
 export X=$(false)
 
@@ -486,7 +486,7 @@ readonly DFF 1>/b123
 readonly; readonly VAR FOO BLA=1 PATH $IFS PATH=123 -wrong variable name
 readonly X="fff" R="$(V=1 cmd here)" $VAR_ALSO 'quoted' 1wrong variable name
 readonly -p; readonly only; #comment here
-readonly -p a# comment here
+readonly -p a # comment here
 readonly -p  error here; readonly VAR one two
 readonly X=$(false)
 
@@ -544,7 +544,7 @@ shift $(V=1 eval something here) but error here
 #     times
 
 times; times error here; #comment here
-times aaa# comment here
+times aaa # comment here
 times error here; times 2>/dev/null sdfsdfasf
 
 # NAME

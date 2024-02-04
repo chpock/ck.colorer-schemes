@@ -8,6 +8,9 @@
 
     # comment here with indent
 
+echo asd# asd # <- here are "asd#" and "asd" parameters, but not comments
+echo asd #asd # <- here is "asd" and then a comment starting from "#"
+
 "double quote string" "double quote $VAR here"111 "double quote $ error here" "escape does \work here"
 
 'single'mix"double"string'double inside"here'or"single inside'here"

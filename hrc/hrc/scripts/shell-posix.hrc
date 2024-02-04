@@ -226,7 +226,6 @@
     <inherit scheme="variables"/>
     <inherit scheme="evaluations"/>
     <inherit scheme="numbers"/>
-    <inherit scheme="comments"/>
     <!-- errors -->
     <keywords region="Error">
         <symb name="$"/>
@@ -386,7 +385,7 @@
 <scheme name="evaluation_backquote">
     <block start="/(`)/" end="/(`)/" scheme="script_without_backquote" region="Insertion"
         region01="PairStart" region11="PairEnd"
-        region00="Operator"  region10="Operator"/>
+        region00="Symbol"    region10="Symbol"/>
 </scheme>
 
 <scheme name="evaluations">
@@ -409,7 +408,7 @@
 
 <scheme name="comments">
     <!-- linear comment -->
-    <block start="/\#/" end="/$/" scheme="def:Comment" region="Comment"/>
+    <block start="/(^|(\s|%wrdbreak;)?#1)\#/" end="/$/" scheme="def:Comment" region="Comment"/>
 </scheme>
 
 <scheme name="escapes">
@@ -505,7 +504,7 @@
     <block start="/\b(for)\b\s*/" end="/\s*(?{Error}[^;#]*?)(\M(?{SymbolStrong};)|\bin\b|\s+|#|$)/"
         scheme="script_words.maybe-variable" region01="CommandReserved"/>
     <!-- in ... -->
-    <block start="/\s*\b(in)\b/" end="/(;|#|$)/" scheme="script_words"
+    <block start="/\s*\b(in)\b/" end="/\M(;|#|$)/" scheme="script_words"
         region01="CommandReserved" region11="SymbolStrong"/>
     <!-- do ... done -->
     <block start="/\s*\b(do)\b/" end="/\s*\M\b(done)\b/" scheme="script"
