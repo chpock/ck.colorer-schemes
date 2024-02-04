@@ -444,7 +444,7 @@
         region00="VariablePrefix" region11="VariablePrefix"
         region01="PairStart"      region12="PairEnd"/>
     <!-- hash value -->
-    <block start="/\]=/" end="/\M\s|%cmdbreak;/" scheme="script_words"/>
+    <block start="/\]=\m/" end="/\M\s|%cmdbreak;/" scheme="parameter_expansion" region="String"/>
 </scheme>
 
 <scheme name="variable_assignment_array">
@@ -456,7 +456,7 @@
         region02="Symbol"    region11="Symbol"
         region03="PairStart" region12="PairEnd"/>
     <!-- array elements value ... -->
-    <block start="/(\+?\=)((\())/" end="/\M((\)))/" scheme="script_words"
+    <block start="/(\+?\=)((\())/" end="/\M((\)))/" scheme="parameter_expansion" region="String"
         region01="Symbol"
         region02="Symbol"    region11="Symbol"
         region03="PairStart" region12="PairEnd"/>
@@ -466,7 +466,7 @@
     <!-- variable name -->
     <block start="/\M%var;/" end="/\M(\[)/" scheme="variable_names"/>
     <!-- hash key/value -->
-    <block start="/\M\[/" end="/\M\M\s|%cmdbreak;/" scheme="variable_assignment_array_hash"/>
+    <block start="/\M\[/" end="/\M\s|%cmdbreak;/" scheme="variable_assignment_array_hash"/>
 </scheme>
 
 <scheme name="variable_assignments">
