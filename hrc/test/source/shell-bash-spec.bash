@@ -30,6 +30,10 @@ for (( i = 0; $i < $VAR; i++ )); do
    cmd
 done
 
+for (( i = 0; i < $VAR; i++ )); do
+   cmd
+done
+
 for (( i = 0; $i < '$NO_VAR'; i = $i + $'ansi-c' ))
 do
    cmd
@@ -375,13 +379,14 @@ bash; bash -c fff
 # 6.7 Arrays
 
 ARR=("val1" "val2"   "val3" $(command here; echo \)) $'ansi-str')
+ARR+=("val1" "val2"   "val3" $(command here; echo \)) $'ansi-str')
 ARR=(["foo"]="val1"    [$VAR $VAR2 \] $VAR3]="val2" [$(V=1 command)]="foo" ["str"'str'$'\rstr']="str"'str'$'\rstr' )
 
 ${!A[1]} ${!A["idx"]}
 
 ARR[1]="val"
 
-ARR["FOO"]="val" [sdfsdf ] # '[sdfsdf ]' is a command
+ARR["FOO"]="val" [sdfsdf] # '[sdfsdf]' is a command
 ARR[$IDX]="val"
 
 echo $A["foo"] # <- here is A["foo"] is not an array, it is "$A" and '["foo"]'

@@ -41,30 +41,40 @@
 <region name="String"  parent="def:String"/>
 <region name="Number"  parent="def:Number"/>
 <region name="Operator" parent="def:Operator"/>
+<region name="TestOperator" parent="def:Operator"/>
+
 <region name="StringEscape" parent="def:StringContent"/>
 <region name="StringEdge" parent="def:StringEdge"/>
+
 <region name="Variable" parent="def:Var"/>
+<region name="VariableStrong" parent="def:VarStrong"/>
 <region name="VariableSpecial" parent="def:Constant"/>
+<region name="VariablePrefix" parent="def:Prefix"/>
+
 <region name="Symbol" parent="def:Symbol"/>
 <region name="SymbolStrong" parent="def:SymbolStrong"/>
-<region name="PairStart" parent="def:PairStart"/>
-<region name="PairEnd" parent="def:PairEnd"/>
-<region name="Error" parent="def:Error"/>
-<region name="FunctionName" parent="def:Function"/>
-<region name="FunctionKeyword" parent="def:FunctionKeyword"/>
+
 <region name="RedirectDescriptor" parent="def:Prefix"/>
 <region name="RedirectPrefix" parent="Operator"/>
 <region name="RedirectSymbol" parent="Operator"/>
-<region name="CommandPrefix" parent="def:Prefix"/>
-<region name="VariablePrefix" parent="def:Prefix"/>
-<region name="Insertion" parent="def:Insertion"/>
-<region name="TestOperator" parent="def:Operator"/>
-<region name="CommandReserved" parent="def:Keyword"/>
+
 <region name="HeredocDescriptor" parent="def:Prefix"/>
 <region name="HeredocOperator" parent="Operator"/>
 <region name="HeredocAnchor" parent="def:Label"/>
 <region name="Heredoc" parent="def:String"/>
-<region name="CommandBuiltin" parent="def:KeywordStrong"/>
+
+<region name="FunctionName" parent="def:ClassKeyword"/>
+<region name="FunctionKeyword" parent="def:KeywordStrong"/>
+<region name="CommandPrefix" parent="def:Prefix"/>
+<region name="CommandReserved" parent="def:Keyword"/>
+<region name="CommandBuiltin" parent="def:FunctionKeyword"/>
+
+<region name="PairStart" parent="def:PairStart"/>
+<region name="PairEnd" parent="def:PairEnd"/>
+
+<region name="Insertion" parent="def:Insertion"/>
+
+<region name="Error" parent="def:Error"/>
 
 <!-- for testing -->
 <region name="Test" parent="def:URL"/>
@@ -120,7 +130,7 @@
 
     <!-- group { ... } -->
     <block start="/(\{)/" end="/(\})/" scheme="script"
-        region00="CommandReserved" region10="CommandReserved"
+        region00="SymbolStrong"    region10="SymbolStrong"
         region01="PairStart"       region11="PairEnd"/>
     <block start="/(\})?#1/" end="/\M%cmdbreak;/" scheme="cmd-error"/>
 
@@ -164,7 +174,7 @@
 
 <scheme name="script_command">
     <!-- test/[ commands -->
-    <block start="/(\[)/" end="/((\M(^|\s?#1|[^\\]?#1[;])\]))/" scheme="test"
+    <block start="/(\[)(\s|$)?=/" end="/((\M(^|\s?#1|[^\\]?#1[;])\]))/" scheme="test"
         region01="PairStart" region11="PairEnd"
         region00="Symbol"    region10="Symbol"/>
     <block start="/\btest\b/" end="/\M%cmdbreak;/" scheme="test"
@@ -331,17 +341,18 @@
 <scheme name="variables">
     <!-- variable $VAR -->
     <block start="/(\$)\M((%specvar-strict;)|(%var;))/" end="/\M[^\w_]|%cmdbreak;/"
-        region01="Variable" scheme="variable_names"/>
+        region01="VariableStrong" scheme="variable_names"/>
     <!-- variable ${VAR} / ${#VAR} -->
-    <block start="/(\$\{)(#)?\M((%specvar-strict;)|[\w_]+)\}/" end="/~(?:(?:%specvar-strict;)|(?:[\w_]+))\m(\})/"
-        region01="Variable" region11="Variable"
-        region02="VariablePrefix"
+    <block start="/((\$\{))(#)?\M((%specvar-strict;)|[\w_]+)\}/" end="/~(?:(?:%specvar-strict;)|(?:[\w_]+))\m((\}))/"
+        region01="VariableStrong" region11="VariableStrong"
+        region03="VariablePrefix"
+        region02="PairStart"      region12="PairEnd"
         scheme="variable_names"/>
     <!-- variable ${VAR:-...}, ${VAR+...} etc., ${VAR#...}, ${VAR%%...} etc. -->
     <block start="/((\$\{))\M((%specvar-strict;)|[\w_]+)(?{VariablePrefix}(\:?[?=+-])|(#{1,2})|(%{1,2}))/"
         end="/(\})/"
-        region02="Variable"  region10="Variable"
-        region01="PairStart" region11="PairEnd"
+        region02="VariableStrong" region10="VariableStrong"
+        region01="PairStart"      region11="PairEnd"
         scheme="variable_expansion"/>
 </scheme>
 
@@ -442,6 +453,7 @@
         <symb name="&amp;&amp;"/> <symb name="||"/>
         <symb name="&amp;"/>      <symb name="^"/>
         <symb name="|"/>
+        <symb name="("/>          <symb name=")"/>
     </keywords>
 </scheme>
 

@@ -45,6 +45,7 @@
 <region name="StringEscape" parent="shell-posix:StringEscape"/>
 <region name="StringEdge" parent="shell-posix:StringEdge"/>
 <region name="Variable" parent="shell-posix:Variable"/>
+<region name="VariableStrong" parent="shell-posix:VariableStrong"/>
 <region name="VariableSpecial" parent="shell-posix:VariableSpecial"/>
 <region name="Symbol" parent="shell-posix:Symbol"/>
 <region name="SymbolStrong" parent="shell-posix:SymbolStrong"/>
@@ -325,7 +326,8 @@
     <!-- variable name -->
     <block start="/(\{)?#1/" end="/:|$/" scheme="variable_names"/>
     <!-- possible 2nd block -->
-    <block start="/:/" end="/\M[:\}]|$/" scheme="parameter_expansion" region00="VariablePrefix"/>
+    <block start="/:/" end="/\M[:\}]|$/" scheme="parameter_expansion"
+        region00="VariablePrefix"/>
     <!-- the 1st block -->
     <block start="/(\})?!(:)?#1/" end="/\M[:\}]|$/" scheme="parameter_expansion"/>
 </scheme>
@@ -373,51 +375,51 @@
     <!-- variable ${VAR:...}, ${VAR:...:...} -->
     <block start="/((\$\{))\M((%specvar-strict;)|[\w_]+)(?{VariablePrefix}\:([?=+-])?!)/"
         end="/(\}|$)/"
-        region02="Variable"  region10="Variable"
-        region01="PairStart" region11="PairEnd"
+        region02="VariableStrong" region10="VariableStrong"
+        region01="PairStart"      region11="PairEnd"
         scheme="variable_expansion_substring"/>
     <!-- ${!VAR} -->
     <block start="/((\$\{))(?{VariablePrefix}!)\M((%specvar-strict;)|[\w_]+)(\})?=/"
         end="/(\}|$)/"
-        region02="Variable"  region10="Variable"
-        region01="PairStart" region11="PairEnd"
+        region02="VariableStrong" region10="VariableStrong"
+        region01="PairStart"      region11="PairEnd"
         scheme="variable_names"/>
     <!-- ${!prefix*} ${!prefix@} -->
     <block start="/((\$\{))(?{VariablePrefix}!)\M((%specvar-strict;)|[\w_]+)([*@]|\[[*@]\])?=/"
         end="/(?{VariablePrefix}[*@]|\[[*@]\])(\}|$)/"
-        region02="Variable"  region10="Variable"
-        region01="PairStart" region11="PairEnd"
+        region02="VariableStrong" region10="VariableStrong"
+        region01="PairStart"      region11="PairEnd"
         scheme="variable_names"/>
     <!-- ${VAR@...} -->
     <block start="/((\$\{))\M((%specvar-strict;)|[\w_]+)(@[UuLQEPAKak])?=/"
         end="/(?{VariablePrefix}@[UuLQEPAKak])(\}|$)/"
-        region02="Variable"  region10="Variable"
-        region01="PairStart" region11="PairEnd"
+        region02="VariableStrong" region10="VariableStrong"
+        region01="PairStart"      region11="PairEnd"
         scheme="variable_names"/>
     <!-- ${VAR^...} ${VAR^^...} ${VAR,...} ${VAR,,...} -->
     <block start="/((\$\{))\M((%specvar-strict;)|[\w_]+)(?{VariablePrefix}\^{1,2}|,{1,2})/"
         end="/(\})/"
-        region02="Variable"  region10="Variable"
-        region01="PairStart" region11="PairEnd"
+        region02="VariableStrong" region10="VariableStrong"
+        region01="PairStart"      region11="PairEnd"
         scheme="variable_expansion"/>
     <!-- ${VAR/.../...} ${VAR//.../...} etc. -->
     <block start="/((\$\{))\M((%specvar-strict;)|[\w_]+)(?{VariablePrefix}\/[#%/]?)/"
         end="/(\}|$)/"
-        region02="Variable"  region10="Variable"
-        region01="PairStart" region11="PairEnd"
+        region02="VariableStrong" region10="VariableStrong"
+        region01="PairStart"      region11="PairEnd"
         scheme="variable_expansion_replacement"/>
 
     <!-- ${!VAR[...]} ${#VAR[...]} -->
     <block start="/(\$\{)(?{VariablePrefix}[!#])[\w_]+\M\[.*\]\}/"
         end="/\]\m((\}|$))/"
-        region00="Variable"  region10="Variable"
-        region01="PairStart" region11="PairEnd"
+        region00="VariableStrong" region10="VariableStrong"
+        region01="PairStart"      region11="PairEnd"
         scheme="variable_assignment_array_hash"/>
     <!-- ${VAR[...]...} -->
     <block start="/(\$\{)[\w_]+\M\[.*\]/"
         end="/(\}|$)/"
-        region00="Variable"  region10="Variable"
-        region01="PairStart" region11="PairEnd"
+        region00="VariableStrong" region10="VariableStrong"
+        region01="PairStart"      region11="PairEnd"
         scheme="variable_array"/>
 
     <inherit scheme="shell-posix:variables">
@@ -445,14 +447,14 @@
 
 <scheme name="variable_assignment_array">
     <!-- variable name -->
-    <block start="/\M%var;/" end="/\M(=\()/" scheme="variable_names"/>
+    <block start="/\M%var;/" end="/\M(\+?\=\()/" scheme="variable_names"/>
     <!-- array elements [key]=value ... -->
-    <block start="/(=)((\())\s*(\[)?=/" end="/\M((\)))/" scheme="variable_assignment_array_hash"
+    <block start="/(\+?\=)((\())\s*(\[)?=/" end="/\M((\)))/" scheme="variable_assignment_array_hash"
         region01="Symbol"
         region02="Symbol"    region11="Symbol"
         region03="PairStart" region12="PairEnd"/>
     <!-- array elements value ... -->
-    <block start="/(=)((\())/" end="/\M((\)))/" scheme="script_words"
+    <block start="/(\+?\=)((\())/" end="/\M((\)))/" scheme="script_words"
         region01="Symbol"
         region02="Symbol"    region11="Symbol"
         region03="PairStart" region12="PairEnd"/>
@@ -467,7 +469,7 @@
 
 <scheme name="variable_assignments">
     <!-- whole array assignment -->
-    <block start="/\s*\M(%var;)=\(/" end="/\)/" scheme="variable_assignment_array"/>
+    <block start="/\s*\M(%var;)\+?\=\(/" end="/\)/" scheme="variable_assignment_array"/>
     <!-- element array assignment -->
     <block start="/\s*\M(%var;)\[.*\]=/" end="/\M\s|%cmdbreak;/" scheme="variable_assignment_array_element"/>
     <inherit scheme="shell-posix:variable_assignments">
@@ -519,9 +521,11 @@
         region01="Symbol"/>
     <block start="/\b\M%var;(\+\+|--)/" end="/~%var;\m(\+\+|--)/" scheme="variable_names"
         region01="Symbol"/>
-    <!-- assignment -->
+    <!-- assignments -->
     <block start="/\b\M%var;\s*(([\^*/%+&amp;|-]|&lt;&lt;|&gt;&gt;)?\=)/" end="/~%var;\m.*?\=/"
         scheme="variable_names" region01="Symbol"/>
+    <!-- anything that looks like a variable is a variable -->
+    <regexp match="/%var;/" region="Variable"/>
     <keywords region="Symbol">
         <symb name="+"/>          <symb name="-"/>
         <symb name="~"/>          <symb name="!"/>
