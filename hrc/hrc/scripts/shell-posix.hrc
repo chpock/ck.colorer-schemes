@@ -335,7 +335,7 @@
     <block start="/(\{)?#1\M((%specvar-strict;)|[\w_]+)/"
         end="/~(?:(?:%specvar-strict;)|(?:[\w_]+))\m((\:?[?=+-])|(#{1,2})|(%{1,2}))/"
         scheme="variable_names"/>
-    <block start="/(\})?!/" end="/\M\}/" scheme="parameter_expansion"/>
+    <block start="/(\})?!/" end="/\M\}/" scheme="parameter_expansion" region="String"/>
 </scheme>
 
 <scheme name="variables">
@@ -420,6 +420,9 @@
 </scheme>
 
 <scheme name="parameter_expansion">
+    <!-- paraeter_expansion region intended to be a string. Thus, mark
+         escaped symbols as StringEscape -->
+    <regexp match="/\\./" region="StringEscape"/>
     <inherit scheme="escapes"/>
     <inherit scheme="strings"/>
     <inherit scheme="variables"/>

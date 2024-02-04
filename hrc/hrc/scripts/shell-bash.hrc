@@ -326,19 +326,21 @@
     <!-- variable name -->
     <block start="/(\{)?#1/" end="/:|$/" scheme="variable_names"/>
     <!-- possible 2nd block -->
-    <block start="/:/" end="/\M[:\}]|$/" scheme="parameter_expansion"
+    <block start="/:/" end="/\M[:\}]|$/" scheme="parameter_expansion" region="String"
         region00="VariablePrefix"/>
     <!-- the 1st block -->
-    <block start="/(\})?!(:)?#1/" end="/\M[:\}]|$/" scheme="parameter_expansion"/>
+    <block start="/(\})?!(:)?#1/" end="/\M[:\}]|$/" scheme="parameter_expansion" region="String"/>
 </scheme>
 
 <scheme name="variable_expansion_replacement">
     <!-- variable name -->
     <block start="/(\{)?#1/" end="/\/[#%/]?|$/" scheme="variable_names"/>
     <!-- possible 2nd block -->
-    <block start="/\//" end="/\M[\/\}]|$/" scheme="parameter_expansion" region00="VariablePrefix"/>
+    <block start="/\//" end="/\M[\/\}]|$/" scheme="parameter_expansion" region="String"
+        region00="VariablePrefix"/>
     <!-- the 1st block -->
-    <block start="/(\})?!((\/)?#1|(\/[#%/])?#2)/" end="/\M[\/\}]|$/" scheme="parameter_expansion"/>
+    <block start="/(\})?!((\/)?#1|(\/[#%/])?#2)/" end="/\M[\/\}]|$/" region="String"
+        scheme="parameter_expansion"/>
 </scheme>
 
 <scheme name="variable_expansion">
@@ -363,8 +365,8 @@
     <regexp match="/\](?{VariablePrefix}@[UuLQEPAKak])/"/>
     <!-- ${VAR^...} ${VAR^^...} ${VAR,...} ${VAR,,...}
          ${VAR:-...}, ${VAR+...} etc., ${VAR#...}, ${VAR%%...} etc. -->
-    <block start="/\](?{VariablePrefix}\^{1,2}|,{1,2}|#{1,2}|%{1,2}|:?[?=+-])/" end="/\M\}|$/"
-        scheme="parameter_expansion"/>
+    <block start="/\]\m(?{VariablePrefix}\^{1,2}|,{1,2}|#{1,2}|%{1,2}|:?[?=+-])/" end="/\M\}|$/"
+        region="String" scheme="parameter_expansion"/>
     <!-- ${VAR/.../...} ${VAR//.../...} etc. -->
     <block start="/\](?{VariablePrefix}\/[#%/]?)/" end="/\M\}|$/"
         scheme="variable_expansion_replacement"/>
