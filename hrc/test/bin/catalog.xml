@@ -14,5 +14,8 @@
         &catalog-console;
         &catalog-rgb;
         &catalog-text;
+        <hrd class="rgb" name="gruvbox_dark_hard" description="Gruvbox (dark-hard)">
+            <location link="./gruvbox_dark_hard.hrd"/>
+        </hrd>
     </hrd-sets>
 </catalog>

@@ -9,13 +9,21 @@ BIN_DIR="$SELF_DIR/bin"
 SOURCE_DIR="$SELF_DIR/source"
 OUT_DIR="$SELF_DIR/_out"
 VALID_DIR="$SELF_DIR/valid"
+PREVIEW_DIR="$SELF_DIR/../../preview"
 
-[ -z "$1" ] || MODE_CREATE=1
+if [ "$1" = "save" ]; then
+    MODE_CREATE=1
+elif [ "$1" = "preview" ]; then
+    MODE_PREVIEW=1
+elif [ -n "$1" ]; then
+    echo "Error: unknown mode: '$1'"
+    exit 1
+fi
 
-set -- "$BIN_DIR/colorer" -c "$BIN_DIR"/catalog.xml -el debug -ed "$OUT_DIR"
+set -- "$BIN_DIR/colorer" -c "$BIN_DIR"/catalog.xml -i gruvbox_dark_hard
 
 LOG_FILE="$OUT_DIR"/consoletools.log
-HRD_FILE="$BIN_DIR"/blue.hrd
+HRD_FILE="$BIN_DIR"/gruvbox_dark_hard.hrd
 
 rm -f "$OUT_DIR"/*
 
@@ -163,6 +171,62 @@ html2console() {
     done
 }
 
+style2color() {
+    local LINE="$1" X OUT_FG="$2" OUT_BG="$3" _FG="" _BG=""
+    local X="${LINE#*style=\'}"
+    if [ "$X" = "$LINE" ]; then
+        echo "Error: could not find style in the line: '$LINE'" >&2
+        exit 1
+    fi
+    LINE="${X%%\'*}"
+    X="${LINE#*color:#}"
+    [ "$X" = "$LINE" ] || _FG="${X:0:6}"
+    X="${LINE#*background:#}"
+    [ "$X" = "$LINE" ] || _BG="${X:0:6}"
+    printf -v "$OUT_FG" '%s' "$_FG"
+    printf -v "$OUT_BG" '%s' "$_BG"
+}
+
+html2ans() {
+    local MAX_LENGTH="$1" LINE X DEF_FG DEF_BG FG BG
+    while IFS= read -r LINE; do
+        if [ "${LINE:0:6}" = "<html>" ]; then
+            style2color "$LINE" DEF_FG DEF_BG
+            continue
+        elif [ "${LINE:0:6}" = "</pre>" ]; then
+            continue
+        fi
+        LINE_LENGTH=0
+        print_color fg "$DEF_FG"
+        print_color bg "$DEF_BG"
+        local X="${LINE%%<span *}"
+        while [ "$X" != "$LINE" ]; do
+            print_string "$X"
+
+            LINE="${LINE:$((6+${#X}))}"
+            X="${LINE%%>*}"
+            style2color "$X" FG BG
+            print_color fg "${FG:-$DEF_FG}"
+            print_color bg "${BG:-$DEF_BG}"
+
+            LINE="${LINE#*>}"
+
+            X="${LINE%%</span>*}"
+            print_string "$X"
+            LINE="${LINE:$((7+${#X}))}"
+
+            print_color fg "$DEF_FG"
+            print_color bg "$DEF_BG"
+
+            X="${LINE%%<span style=\'*}"
+        done
+        print_string "$LINE"
+        [ $LINE_LENGTH -ge $MAX_LENGTH ] || print_string "$(printf "%$(( MAX_LENGTH - LINE_LENGTH ))s")"
+        print_color
+        echo
+    done
+}
+
 for SOURCE in "$SOURCE_DIR"/*; do
 
     if [ "${SOURCE##*.}" = "template" ]; then
@@ -178,9 +242,32 @@ for SOURCE in "$SOURCE_DIR"/*; do
 
     printf "Generate: %s ..." "$BASE"
     [ ! -e "$TEMPLATE" ] || (cd "$SOURCE_DIR" && sh "$TEMPLATE") > "$SOURCE"
-    "$@" -ht "$SOURCE" -dc -dh -ln -o "$OUT_DIR"/${BASE}.html
+    if [ -n "$MODE_PREVIEW" ]; then
+        if [ -e "$TEMPLATE" ]; then
+            echo " Skip."
+            rm -f "$SOURCE"
+            continue
+        fi
+        MAX_LENGTH=$(( $(wc -L "$SOURCE" | awk '{print $1}') + 2 ))
+        PREVIEW_ANS="$PREVIEW_DIR/${BASE}.ans"
+        "$@" -h "$SOURCE" -db | tr -d '\r' | html2ans "$MAX_LENGTH" >"$PREVIEW_ANS"
+    else
+        "$@" -ht "$SOURCE" -dc -dh -ln -o "$OUT_DIR"/${BASE}.html -el debug -ed "$OUT_DIR"
+    fi
     printf " OK"
     [ ! -e "$TEMPLATE" ] || rm -f "$SOURCE"
+
+    if [ -n "$MODE_PREVIEW" ]; then
+       printf "; Convert to SVG ..."
+       PREVIEW_SVG="$PREVIEW_DIR/${BASE}.svg"
+       if command -v ansisvg >/dev/null 2>&1; then
+           ansisvg < "$PREVIEW_ANS" > "$PREVIEW_SVG"
+           echo " OK"
+       else
+           echo " Failed. ansisvg not found."
+       fi
+       continue
+    fi
 
     if [ -n "$MODE_CREATE" ]; then
         printf "; Save ..."
@@ -211,6 +298,8 @@ for SOURCE in "$SOURCE_DIR"/*; do
     cat "$DIFF" | html2console
 
 done
+
+[ -z "$MODE_PREVIEW" ] || exit 0
 
 echo
 printf "Check logs ..."

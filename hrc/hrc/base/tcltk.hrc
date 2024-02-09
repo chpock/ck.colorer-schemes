@@ -20,7 +20,12 @@
            And many minor changes.
   ]]></contributors></annotation>
 
-  <type name="tcltk">
+  <type name="tcltk-mod">
+
+    <scheme name="tcltk-mod">
+        <inherit scheme="tcltk"/>
+    </scheme>
+
     <import type="def"/>
 
     <region name="tclString" parent="String"/>
