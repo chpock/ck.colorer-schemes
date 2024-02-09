@@ -128,6 +128,10 @@ Single-quoted here-doc <<'FOO'
 not $expanded
 FOO
 
+heredoc after redirection >foobar << BLA
+with space before label
+BLA
+
 # 2.7.5 Duplicating an Input File Descriptor
 1<&2 <&-
 
