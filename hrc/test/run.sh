@@ -102,11 +102,11 @@ filter_diff() {
             LINE="${LINE:$((13+${#X}))}"
             X="${LINE%%\'*}"
 
-            local C_NAME="${X##* }" ORIG="$X"
+            local C_NAME="${X%% *}" ORIG="$X"
             C_NAME="${C_NAME//-/:}"
             while [ -n "$C_NAME" -a -z "${HTML2CONS["$C_NAME"]}" ]; do
-                [ "${X% *}" = "$X" ] && X="" || X="${X% *}"
-                C_NAME="${X##* }"
+                [ "${X#* }" = "$X" ] && X="" || X="${X#* }"
+                C_NAME="${X%% *}"
                 C_NAME="${C_NAME//-/:}"
             done
             printf '%s' "${C_NAME//:/-}"
