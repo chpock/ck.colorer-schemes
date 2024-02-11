@@ -42,9 +42,17 @@
 <region name="Text" parent="def:Text"/>
 <region name="Comment" parent="def:Comment"/>
 <region name="String"  parent="def:String"/>
-<region name="Number"  parent="def:Number"/>
 <region name="Operator" parent="def:Operator"/>
 <region name="TestOperator" parent="def:Operator"/>
+
+<region name="Number" parent="def:Number"/>
+<region name="NumberDec" parent="def:NumberDec"/>
+<region name="NumberHex" parent="def:NumberHex"/>
+<region name="NumberBin" parent="def:NumberBin"/>
+<region name="NumberOct" parent="def:NumberOct"/>
+<region name="NumberFloat" parent="def:NumberFloat"/>
+<region name="NumberSuffix" parent="def:NumberSuffix"/>
+<region name="NumberPrefix" parent="def:NumberPrefix"/>
 
 <region name="StringEscape" parent="def:StringContent"/>
 <region name="StringEdge" parent="def:StringEdge"/>

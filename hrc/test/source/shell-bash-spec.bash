@@ -87,6 +87,11 @@ select CDPATH in; do done # Bash special variable
 (( a = 1 || w *= 1 || IFS /= 10 || CDPATH %= 10 || x += 10 || y -= 10 )) # assignment
 (( a <<= 10 || b >>= 30 || c &= 1 || f |= 40 )) # assignment
 
+(( 0174 + 0$VAR + 8#123 + 09874 + 8#845 )) # octal + octal var + bad octal numbers
+(( 0x12F + 0XDeaDBeEf111 + 0x$VAR + 16#411Ab + 0x1Z23 + 16#123K )) # hex + hex var + bad hex numbers
+(( 3#10 + 10#$VAR + 44#50 + 65#567 )) # any base + wrong base (65+)
+(( 2#45 + 10#45A )) # bad bin/dec bases
+
 # [[ ... ]]
 
 [[ a -f e || -f /bla || -o fofofof || -v varname || -R varname && -z "$STRING" ]]

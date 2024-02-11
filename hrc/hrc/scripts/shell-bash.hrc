@@ -42,8 +42,15 @@
 
 <region name="Text" parent="shell-posix:Text"/>
 <region name="Comment" parent="shell-posix:Comment"/>
-<region name="String"  parent="shell-posix:String"/>
-<region name="Number"  parent="shell-posix:Number"/>
+<region name="String" parent="shell-posix:String"/>
+<region name="Number" parent="shell-posix:Number"/>
+<region name="NumberDec" parent="shell-posix:NumberDec"/>
+<region name="NumberHex" parent="shell-posix:NumberHex"/>
+<region name="NumberBin" parent="shell-posix:NumberBin"/>
+<region name="NumberOct" parent="shell-posix:NumberOct"/>
+<region name="NumberFloat" parent="shell-posix:NumberFloat"/>
+<region name="NumberSuffix" parent="shell-posix:NumberSuffix"/>
+<region name="NumberPrefix" parent="shell-posix:NumberPrefix"/>
 <region name="Operator" parent="shell-posix:Operator"/>
 <region name="StringEscape" parent="shell-posix:StringEscape"/>
 <region name="StringEdge" parent="shell-posix:StringEdge"/>
@@ -531,8 +538,33 @@
     <inherit scheme="strings"/>
     <inherit scheme="variables"/>
     <inherit scheme="shell-posix:evaluations"/>
-    <inherit scheme="shell-posix:numbers"/>
     <inherit scheme="comments"/>
+
+    <!-- octal / hex / any-base numbers + variable value -->
+    <regexp match="/\b(0|0[xX]|[2-9]#|[1-5][0-9]#|6[0-4]#)\M\$/" region="NumberPrefix"/>
+    <!-- hex numbers -->
+    <regexp match="/\b(?{NumberPrefix}0[xX]|16#)[0-9a-fA-F]+\b/" region="NumberHex"/>
+    <!-- bad hex numbers -->
+    <regexp match="/\b(?{NumberPrefix}0[xX]|16#)\w+?\b/" region="Error"/>
+    <!-- octal numbers -->
+    <regexp match="/\b(?{NumberPrefix}0|8#)[0-7]+\b/" region="NumberOct"/>
+    <!-- bad octal numbers -->
+    <regexp match="/\b(?{NumberPrefix}0|8#)\w+?\b/" region="Error"/>
+    <!-- bin numbers -->
+    <regexp match="/\b(?{NumberPrefix}2#)[0-1]+\b/" region="NumberBin"/>
+    <!-- bad bin numbers -->
+    <regexp match="/\b(?{NumberPrefix}2#)\w+?\b/" region="Error"/>
+    <!-- dec numbers -->
+    <regexp match="/\b(?{NumberPrefix}10#)[0-9]+\b/" region="NumberDec"/>
+    <!-- bad dec numbers -->
+    <regexp match="/\b(?{NumberPrefix}10#)\w+?\b/" region="Error"/>
+    <!-- any base numbers -->
+    <regexp match="/\b(?{NumberPrefix}[2-9]#|[1-5][0-9]#|6[0-4]#)[0-9a-zA-Z@_]+\b/" region="Number"/>
+    <!-- bad any base numbers -->
+    <regexp match="/\b\d+#\w+?\b/" region="Error"/>
+
+    <inherit scheme="shell-posix:numbers"/>
+
     <!-- increment / decrement -->
     <block start="/(\+\+|--)\M%var;\b/" end="/~%var;\m\b/" scheme="variable_names"
         region01="Symbol"/>
