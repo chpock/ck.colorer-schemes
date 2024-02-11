@@ -17,6 +17,9 @@
 
         Notes:
             - nested here-docs are not supported.
+
+        Home: https://github.com/chpock/ck.colorer-schemes
+        Send requests there for bug fixes and features.
     </documentation>
     <contributors><![CDATA[
         Konstantin Kushnir <chpock@gmail.com>
@@ -145,10 +148,10 @@
         region01="CommandReserved"/>
 
     <!-- functions: <funcname> () ... -->
-    <block start="/(%funcname;)\s*(=)?~1(\(\))\s*/" end="/\M%cmdbreak;/" scheme="script"
+    <block start="/(%funcname;)\s*(=)?~1(\(\s*\))\s*/" end="/\M%cmdbreak;/" scheme="script"
         region01="FunctionName" region03="Symbol"/>
     <!-- functions: function <funcname> [()] ... -->
-    <block start="/\b(function)\s+(%funcname;)(\s+\(\))?/" end="/\M%cmdbreak;/" scheme="script"
+    <block start="/\b(function)\s+(%funcname;)(\s+\(\s*\))?/" end="/\M%cmdbreak;/" scheme="script"
         region01="CommandReserved" region02="FunctionName" region03="Symbol"/>
     <!-- anything else that starts with the keyword 'function' is an error -->
     <block start="/\b(function)\b\s*(?{Error}.*?)\M(%cmdbreak;)/" end="/\M%cmdbreak;/" scheme="def:empty"

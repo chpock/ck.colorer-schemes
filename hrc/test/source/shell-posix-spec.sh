@@ -373,6 +373,9 @@ somefn()
 errorfn() { blalbla }
 close the curved bracket from above; }
 
+func(  ) cmd function with space between brackets
+func    (  ) cmd function with space between brackets#2
+
 # 2.14. Special Built-In Utilities
 
 # NAME

@@ -17,6 +17,9 @@
 
         Notes:
             - nested here-docs are not supported.
+
+        Home: https://github.com/chpock/ck.colorer-schemes
+        Send requests there for bug fixes and features.
     </documentation>
     <contributors><![CDATA[
         Konstantin Kushnir <chpock@gmail.com>
@@ -135,7 +138,7 @@
     <block start="/(\})?#1/" end="/\M%cmdbreak;/" scheme="cmd-error"/>
 
     <!-- functions -->
-    <block start="/\b(%word;)\s*(\(\))\s*/" end="//" scheme="script"
+    <block start="/\b(%word;)\s*(\(\s*\))\s*/" end="//" scheme="script"
         region01="FunctionName" region02="Symbol"/>
 
     <!-- if ... fi -->
