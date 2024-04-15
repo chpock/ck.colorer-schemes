@@ -9,7 +9,7 @@
 
     <prototype name="tcltk-mod" group="main" description="Tcl/Tk/Expect (Chpock)">
         <location link="hrc/base/tcltk.hrc"/>
-        <filename weight='3'>/\.(tcl|tk|exp|action|condition)$/i</filename>
+        <filename weight='3'>/\.(tcl|tk|exp|action|condition|test|tm)$/i</filename>
         <firstline weight='3'>/^\#(!\s*.+(tcl|wi)sh\b)/</firstline>
     </prototype>
 
