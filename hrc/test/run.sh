@@ -20,12 +20,18 @@ elif [ -n "$1" ]; then
     exit 1
 fi
 
-set -- "$BIN_DIR/colorer" -c "$BIN_DIR"/catalog.xml -i gruvbox_dark_hard
+if [ "$(uname -o)" = "Cygwin" ]; then
+    COLORER_BIN="colorer.exe"
+else
+    COLORER_BIN="colorer"
+fi
+
+set -- "$BIN_DIR/$COLORER_BIN" -c "$BIN_DIR"/catalog.xml -i gruvbox_dark_hard
 
 LOG_FILE="$OUT_DIR"/consoletools.log
 HRD_FILE="$BIN_DIR"/gruvbox_dark_hard.hrd
 
-rm -f "$OUT_DIR"/*
+rm -fr "$OUT_DIR"/*
 
 print_color() {
     local NAME="$1" COL
@@ -227,14 +233,21 @@ html2ans() {
     done
 }
 
-for SOURCE in "$SOURCE_DIR"/*; do
+for SOURCE in "$SOURCE_DIR"/* "$SOURCE_DIR"/*/*; do
+
+    [ ! -d "$SOURCE" ] || continue
 
     if [ "${SOURCE##*.}" = "template" ]; then
         [ ! -e "${SOURCE%.*}" ] || continue
         SOURCE="${SOURCE%.*}"
     fi
 
-    BASE="${SOURCE##*/}"
+    BASE="${SOURCE##$SOURCE_DIR/}"
+
+    BASE_DIR="${BASE%/*}"
+    [ "$BASE" != "$BASE_DIR" ] || BASE_DIR=""
+    BASE_DIR="$OUT_DIR/$BASE_DIR"
+    [ -d "$BASE_DIR" ] || mkdir -p "$BASE_DIR"
     OUT="$OUT_DIR/${BASE}.html"
     DIFF="$OUT_DIR/${BASE}.diff"
     VALID="$VALID_DIR/${BASE}.html"
@@ -277,7 +290,7 @@ for SOURCE in "$SOURCE_DIR"/*; do
     fi
 
     if [ ! -e "$VALID" ]; then
-        printf "; Skip."
+        echo "; Skip."
         continue
     fi
 
