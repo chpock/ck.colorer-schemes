@@ -11,14 +11,24 @@ OUT_DIR="$SELF_DIR/_out"
 VALID_DIR="$SELF_DIR/valid"
 PREVIEW_DIR="$SELF_DIR/../../preview"
 
-if [ "$1" = "save" ]; then
+if [ "$1" = "show" ]; then
+    MODE_SHOW=1
+    shift
+elif [ "$1" = "save" ]; then
     MODE_CREATE=1
+    shift
 elif [ "$1" = "preview" ]; then
     MODE_PREVIEW=1
+    shift
+elif [ "$1" = "test" ]; then
+    # normal mode
+    shift
 elif [ -n "$1" ]; then
     echo "Error: unknown mode: '$1'"
     exit 1
 fi
+
+MASKS="$1"
 
 if [ "$(uname -o)" = "Cygwin" ]; then
     COLORER_BIN="colorer.exe"
@@ -235,7 +245,19 @@ html2ans() {
 
 for SOURCE in "$SOURCE_DIR"/* "$SOURCE_DIR"/*/*; do
 
+    # Skip directories
     [ ! -d "$SOURCE" ] || continue
+
+    if [ -n "$MASKS" ]; then
+        case "$SOURCE" in
+        *$MASKS*)
+            : noop
+            ;;
+        *)
+            continue
+            ;;
+        esac
+    fi
 
     if [ "${SOURCE##*.}" = "template" ]; then
         [ ! -e "${SOURCE%.*}" ] || continue
@@ -255,6 +277,12 @@ for SOURCE in "$SOURCE_DIR"/* "$SOURCE_DIR"/*/*; do
 
     printf "Generate: %s ..." "$BASE"
     [ ! -e "$TEMPLATE" ] || (cd "$SOURCE_DIR" && sh "$TEMPLATE") > "$SOURCE"
+    if [ -n "$MODE_SHOW" ]; then
+        echo
+        MAX_LENGTH=$(( $(wc -L "$SOURCE" | awk '{print $1}') + 2 ))
+        "$@" -h "$SOURCE" -db | tr -d '\r' | html2ans "$MAX_LENGTH"
+        continue
+    fi
     if [ -n "$MODE_PREVIEW" ]; then
         if [ -e "$TEMPLATE" ]; then
             echo " Skip."
