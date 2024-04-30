@@ -132,3 +132,12 @@ fn() {
     run cmd
 
 }
+
+case x in # comment here
+#comment here
+    blalba)
+      echo foo
+      ;; # comment here
+esac
+
+

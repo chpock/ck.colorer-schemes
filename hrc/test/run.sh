@@ -291,6 +291,10 @@ for SOURCE in "$SOURCE_DIR"/* "$SOURCE_DIR"/*/*; do
         fi
         MAX_LENGTH=$(( $(wc -L "$SOURCE" | awk '{print $1}') + 2 ))
         PREVIEW_ANS="$PREVIEW_DIR/${BASE}.ans"
+        if [ ! -e "$PREVIEW_ANS" ]; then
+            echo " Preview doesn't exist. Skip as not needed."
+            continue
+        fi
         "$@" -h "$SOURCE" -db | tr -d '\r' | html2ans "$MAX_LENGTH" >"$PREVIEW_ANS"
     else
         "$@" -ht "$SOURCE" -dc -dh -ln -o "$OUT_DIR"/${BASE}.html -el debug -ed "$OUT_DIR"

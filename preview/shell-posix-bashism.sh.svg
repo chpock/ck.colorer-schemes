@@ -10,23 +10,36 @@
             white-space: pre;
             fill: #bbbbbb;
         }
+        .bg {
+            stroke-width: "0.5px";
+        }
+        <!-- Background custom colors -->
+        .bc0 { stroke: #1d2021; fill: #1d2021; }
+        .bc1 { stroke: #cc241d; fill: #cc241d; }
+        <!-- Foreground custom colors -->
+        .fc0 { fill: #ebdbb2; }
+        .fc1 { fill: #928374; }
+        .fc2 { fill: #458588; }
+        .fc3 { fill: #a89984; }
     </style>
     <rect width="100%" height="100%" x="0" y="0" style="fill: #000000"/>
-<rect x="0ch" y="0em" width="48ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="1em" width="18ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="2em" width="18ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="3em" width="18ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="4em" width="18ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="5em" width="18ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="6em" width="13ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="13ch" y="6em" width="1ch" height="1em" stroke-width="0.5px" stroke="#cc241d" style="fill:#cc241d"/>
-<rect x="14ch" y="6em" width="4ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="7em" width="18ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="8em" width="18ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="9em" width="18ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<text x="0" y="0.5em"><tspan style="fill:#ebdbb2">Created with colorer library. Type &#39;shell-posix&#39;</tspan></text>
-<text x="0" y="2.5em"><tspan style="fill:#928374">#!</tspan><tspan style="fill:#458588">/bin/sh</tspan></text>
-<text x="0" y="4.5em"><tspan style="fill:#928374"># Functions</tspan></text>
-<text x="0" y="6.5em"><tspan style="fill:#ebdbb2">function bla() </tspan><tspan style="fill:#a89984">{</tspan></text>
-<text x="0" y="7.5em"><tspan style="fill:#a89984">}</tspan></text>
+<g class="bg">
+<rect x="0ch" y="0em" width="48ch" height="1em" class="bc0"/>
+<rect x="0ch" y="1em" width="18ch" height="1em" class="bc0"/>
+<rect x="0ch" y="2em" width="18ch" height="1em" class="bc0"/>
+<rect x="0ch" y="3em" width="18ch" height="1em" class="bc0"/>
+<rect x="0ch" y="4em" width="18ch" height="1em" class="bc0"/>
+<rect x="0ch" y="5em" width="18ch" height="1em" class="bc0"/>
+<rect x="0ch" y="6em" width="13ch" height="1em" class="bc0"/>
+<rect x="13ch" y="6em" width="1ch" height="1em" class="bc1"/>
+<rect x="14ch" y="6em" width="4ch" height="1em" class="bc0"/>
+<rect x="0ch" y="7em" width="18ch" height="1em" class="bc0"/>
+<rect x="0ch" y="8em" width="18ch" height="1em" class="bc0"/>
+<rect x="0ch" y="9em" width="18ch" height="1em" class="bc0"/>
+</g>
+<text x="0ch" y="0.5em"><tspan class="fc0">Created with colorer library. Type &#39;shell-posix&#39;</tspan></text>
+<text x="0ch" y="2.5em"><tspan class="fc1">#!</tspan><tspan class="fc2">/bin/sh         </tspan></text>
+<text x="0ch" y="4.5em"><tspan class="fc1"># Functions       </tspan></text>
+<text x="0ch" y="6.5em"><tspan class="fc0">function bla() </tspan><tspan class="fc3">{  </tspan></text>
+<text x="0ch" y="7.5em"><tspan class="fc3">}                 </tspan></text>
 </svg>

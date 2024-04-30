@@ -10,44 +10,65 @@
             white-space: pre;
             fill: #bbbbbb;
         }
+        .bg {
+            stroke-width: "0.5px";
+        }
+        <!-- Background custom colors -->
+        .bc0 { stroke: #1d2021; fill: #1d2021; }
+        .bc1 { stroke: #cc241d; fill: #cc241d; }
+        <!-- Foreground custom colors -->
+        .fc0 { fill: #ebdbb2; }
+        .fc1 { fill: #928374; }
+        .fc2 { fill: #458588; }
+        .fc3 { fill: #83a598; }
+        .fc4 { fill: #00c23e; }
+        .fc5 { fill: #b57614; }
+        .fc6 { fill: #98971a; }
+        .fc7 { fill: #a89984; }
+        .fc8 { fill: #d65d0e; }
+        .fc9 { fill: #689d6a; }
+        .fc10 { fill: #4075ff; }
+        .fc11 { fill: #8b8eff; }
     </style>
     <rect width="100%" height="100%" x="0" y="0" style="fill: #000000"/>
-<rect x="0ch" y="0em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="1em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="2em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="3em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="4em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="5em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="6em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="7em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="8em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="9em" width="11ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="11ch" y="9em" width="3ch" height="1em" stroke-width="0.5px" stroke="#cc241d" style="fill:#cc241d"/>
-<rect x="14ch" y="9em" width="1ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="15ch" y="9em" width="9ch" height="1em" stroke-width="0.5px" stroke="#cc241d" style="fill:#cc241d"/>
-<rect x="24ch" y="9em" width="53ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="10em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="11em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="12em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="13em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="14em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="15em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="16em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="17em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<rect x="0ch" y="18em" width="77ch" height="1em" stroke-width="0.5px" stroke="#1d2021" style="fill:#1d2021"/>
-<text x="0" y="0.5em"><tspan style="fill:#ebdbb2">Created with colorer library. Type &#39;shell-bash&#39;                              </tspan></text>
-<text x="0" y="2.5em"><tspan style="fill:#928374">#!</tspan><tspan style="fill:#458588">/bin/sh</tspan></text>
-<text x="0" y="4.5em"><tspan style="fill:#928374"># -------------------------------------------------------------</tspan></text>
-<text x="0" y="5.5em"><tspan style="fill:#928374"># some random tests</tspan></text>
-<text x="0" y="6.5em"><tspan style="fill:#928374"># -------------------------------------------------------------</tspan></text>
-<text x="0" y="8.5em"><tspan style="fill:#83a598">VAR</tspan><tspan style="fill:#458588">[</tspan><tspan style="fill:#00c23e">1</tspan><tspan style="fill:#458588">]</tspan><tspan style="fill:#b57614">=</tspan><tspan style="fill:#98971a">foo#bar</tspan><tspan style="fill:#ebdbb2"> </tspan><tspan style="fill:#83a598">VAR2</tspan><tspan style="fill:#b57614">=</tspan><tspan style="fill:#98971a">foo2</tspan><tspan style="fill:#ebdbb2"> </tspan><tspan style="fill:#928374"># &lt;- here is VAR = &#39;foo#bar&#39;</tspan></text>
-<text x="0" y="9.5em"><tspan style="fill:#83a598">VAR</tspan><tspan style="fill:#458588">[</tspan><tspan style="fill:#00c23e">1</tspan><tspan style="fill:#458588">]</tspan><tspan style="fill:#b57614">=</tspan><tspan style="fill:#98971a">foo</tspan><tspan style="fill:#ebdbb2">)bar VAR2=foo2 </tspan><tspan style="fill:#928374"># &lt;- here is &#39;syntax error&#39;</tspan></text>
-<text x="0" y="10.5em"><tspan style="fill:#83a598">VAR</tspan><tspan style="fill:#458588">[</tspan><tspan style="fill:#00c23e">1</tspan><tspan style="fill:#458588">]</tspan><tspan style="fill:#b57614">=</tspan><tspan style="fill:#98971a">foo</tspan><tspan style="fill:#a89984">;</tspan><tspan style="fill:#d65d0e">command</tspan><tspan style="fill:#ebdbb2">       </tspan><tspan style="fill:#928374"># &lt;- here is &#39;VAR=foo&#39; and a command</tspan></text>
-<text x="0" y="11.5em"><tspan style="fill:#83a598">VAR</tspan><tspan style="fill:#458588">[</tspan><tspan style="fill:#00c23e">1</tspan><tspan style="fill:#458588">]</tspan><tspan style="fill:#b57614">=</tspan><tspan style="fill:#98971a">foo</tspan><tspan style="fill:#689d6a">&amp;</tspan><tspan style="fill:#d65d0e">command</tspan><tspan style="fill:#ebdbb2">       </tspan><tspan style="fill:#928374"># &lt;- here is &#39;VAR=foo&#39; in background and a command</tspan></text>
-<text x="0" y="12.5em"><tspan style="fill:#83a598">VAR</tspan><tspan style="fill:#458588">[</tspan><tspan style="fill:#00c23e">1</tspan><tspan style="fill:#458588">]</tspan><tspan style="fill:#b57614">=</tspan><tspan style="fill:#98971a">foo</tspan><tspan style="fill:#689d6a">|</tspan><tspan style="fill:#d65d0e">command</tspan><tspan style="fill:#ebdbb2">       </tspan><tspan style="fill:#928374"># &lt;- here is &#39;VAR=foo&#39; and a command</tspan></text>
-<text x="0" y="13.5em"><tspan style="fill:#83a598">VAR</tspan><tspan style="fill:#458588">[</tspan><tspan style="fill:#00c23e">1</tspan><tspan style="fill:#458588">]</tspan><tspan style="fill:#b57614">=</tspan><tspan style="fill:#98971a">foo</tspan><tspan style="fill:#4075ff">&gt;</tspan><tspan style="fill:#ebdbb2">command       </tspan><tspan style="fill:#928374"># &lt;- here is &#39;VAR=foo&#39; redirected to &#39;command&#39;</tspan></text>
-<text x="0" y="14.5em"><tspan style="fill:#83a598">VAR</tspan><tspan style="fill:#458588">[</tspan><tspan style="fill:#00c23e">1</tspan><tspan style="fill:#458588">]</tspan><tspan style="fill:#b57614">=</tspan><tspan style="fill:#98971a">foo</tspan><tspan style="fill:#4075ff">&lt;</tspan><tspan style="fill:#ebdbb2">command       </tspan><tspan style="fill:#928374"># &lt;- here is &#39;VAR=foo&#39; with redirected stdin</tspan></text>
-<text x="0" y="15.5em"><tspan style="fill:#83a598">VAR</tspan><tspan style="fill:#458588">[</tspan><tspan style="fill:#00c23e">1</tspan><tspan style="fill:#458588">]</tspan><tspan style="fill:#b57614">=</tspan><tspan style="fill:#98971a">foo2</tspan><tspan style="fill:#4075ff">&gt;</tspan><tspan style="fill:#ebdbb2">command      </tspan><tspan style="fill:#928374"># &lt;- here is &#39;VAR=foo2&#39; redirected to &#39;command&#39;</tspan></text>
-<text x="0" y="16.5em"><tspan style="fill:#83a598">VAR</tspan><tspan style="fill:#458588">[</tspan><tspan style="fill:#00c23e">1</tspan><tspan style="fill:#458588">]</tspan><tspan style="fill:#b57614">=</tspan><tspan style="fill:#98971a">foo1</tspan><tspan style="fill:#4075ff">&lt;</tspan><tspan style="fill:#ebdbb2">command      </tspan><tspan style="fill:#928374"># &lt;- here is &#39;VAR=foo1&#39; with redirected stdin</tspan></text>
-<text x="0" y="17.5em"><tspan style="fill:#83a598">VAR</tspan><tspan style="fill:#458588">[</tspan><tspan style="fill:#00c23e">1</tspan><tspan style="fill:#458588">]</tspan><tspan style="fill:#b57614">=</tspan><tspan style="fill:#98971a">foo1</tspan><tspan style="fill:#4075ff">&gt;</tspan><tspan style="fill:#689d6a">&amp;</tspan><tspan style="fill:#8b8eff">2</tspan><tspan style="fill:#ebdbb2">           </tspan><tspan style="fill:#928374"># &lt;- here is &#39;VAR=foo1&#39; with redirected stdout</tspan></text>
+<g class="bg">
+<rect x="0ch" y="0em" width="77ch" height="1em" class="bc0"/>
+<rect x="0ch" y="1em" width="77ch" height="1em" class="bc0"/>
+<rect x="0ch" y="2em" width="77ch" height="1em" class="bc0"/>
+<rect x="0ch" y="3em" width="77ch" height="1em" class="bc0"/>
+<rect x="0ch" y="4em" width="77ch" height="1em" class="bc0"/>
+<rect x="0ch" y="5em" width="77ch" height="1em" class="bc0"/>
+<rect x="0ch" y="6em" width="77ch" height="1em" class="bc0"/>
+<rect x="0ch" y="7em" width="77ch" height="1em" class="bc0"/>
+<rect x="0ch" y="8em" width="77ch" height="1em" class="bc0"/>
+<rect x="0ch" y="9em" width="11ch" height="1em" class="bc0"/>
+<rect x="11ch" y="9em" width="3ch" height="1em" class="bc1"/>
+<rect x="14ch" y="9em" width="1ch" height="1em" class="bc0"/>
+<rect x="15ch" y="9em" width="9ch" height="1em" class="bc1"/>
+<rect x="24ch" y="9em" width="53ch" height="1em" class="bc0"/>
+<rect x="0ch" y="10em" width="77ch" height="1em" class="bc0"/>
+<rect x="0ch" y="11em" width="77ch" height="1em" class="bc0"/>
+<rect x="0ch" y="12em" width="77ch" height="1em" class="bc0"/>
+<rect x="0ch" y="13em" width="77ch" height="1em" class="bc0"/>
+<rect x="0ch" y="14em" width="77ch" height="1em" class="bc0"/>
+<rect x="0ch" y="15em" width="77ch" height="1em" class="bc0"/>
+<rect x="0ch" y="16em" width="77ch" height="1em" class="bc0"/>
+<rect x="0ch" y="17em" width="77ch" height="1em" class="bc0"/>
+<rect x="0ch" y="18em" width="77ch" height="1em" class="bc0"/>
+</g>
+<text x="0ch" y="0.5em"><tspan class="fc0">Created with colorer library. Type &#39;shell-bash&#39;                              </tspan></text>
+<text x="0ch" y="2.5em"><tspan class="fc1">#!</tspan><tspan class="fc2">/bin/sh                                                                    </tspan></text>
+<text x="0ch" y="4.5em"><tspan class="fc1"># -------------------------------------------------------------              </tspan></text>
+<text x="0ch" y="5.5em"><tspan class="fc1"># some random tests                                                          </tspan></text>
+<text x="0ch" y="6.5em"><tspan class="fc1"># -------------------------------------------------------------              </tspan></text>
+<text x="0ch" y="8.5em"><tspan class="fc3">VAR</tspan><tspan class="fc2">[</tspan><tspan class="fc4">1</tspan><tspan class="fc2">]</tspan><tspan class="fc5">=</tspan><tspan class="fc6">foo#bar </tspan><tspan class="fc3">VAR2</tspan><tspan class="fc5">=</tspan><tspan class="fc6">foo2 </tspan><tspan class="fc1"># &lt;- here is VAR = &#39;foo#bar&#39;                        </tspan></text>
+<text x="0ch" y="9.5em"><tspan class="fc3">VAR</tspan><tspan class="fc2">[</tspan><tspan class="fc4">1</tspan><tspan class="fc2">]</tspan><tspan class="fc5">=</tspan><tspan class="fc6">foo</tspan><tspan class="fc0">)bar VAR2=foo2 </tspan><tspan class="fc1"># &lt;- here is &#39;syntax error&#39;                         </tspan></text>
+<text x="0ch" y="10.5em"><tspan class="fc3">VAR</tspan><tspan class="fc2">[</tspan><tspan class="fc4">1</tspan><tspan class="fc2">]</tspan><tspan class="fc5">=</tspan><tspan class="fc6">foo</tspan><tspan class="fc7">;</tspan><tspan class="fc8">command       </tspan><tspan class="fc1"># &lt;- here is &#39;VAR=foo&#39; and a command                </tspan></text>
+<text x="0ch" y="11.5em"><tspan class="fc3">VAR</tspan><tspan class="fc2">[</tspan><tspan class="fc4">1</tspan><tspan class="fc2">]</tspan><tspan class="fc5">=</tspan><tspan class="fc6">foo</tspan><tspan class="fc9">&amp;</tspan><tspan class="fc8">command       </tspan><tspan class="fc1"># &lt;- here is &#39;VAR=foo&#39; in background and a command  </tspan></text>
+<text x="0ch" y="12.5em"><tspan class="fc3">VAR</tspan><tspan class="fc2">[</tspan><tspan class="fc4">1</tspan><tspan class="fc2">]</tspan><tspan class="fc5">=</tspan><tspan class="fc6">foo</tspan><tspan class="fc9">|</tspan><tspan class="fc8">command       </tspan><tspan class="fc1"># &lt;- here is &#39;VAR=foo&#39; and a command                </tspan></text>
+<text x="0ch" y="13.5em"><tspan class="fc3">VAR</tspan><tspan class="fc2">[</tspan><tspan class="fc4">1</tspan><tspan class="fc2">]</tspan><tspan class="fc5">=</tspan><tspan class="fc6">foo</tspan><tspan class="fc10">&gt;</tspan><tspan class="fc0">command       </tspan><tspan class="fc1"># &lt;- here is &#39;VAR=foo&#39; redirected to &#39;command&#39;      </tspan></text>
+<text x="0ch" y="14.5em"><tspan class="fc3">VAR</tspan><tspan class="fc2">[</tspan><tspan class="fc4">1</tspan><tspan class="fc2">]</tspan><tspan class="fc5">=</tspan><tspan class="fc6">foo</tspan><tspan class="fc10">&lt;</tspan><tspan class="fc0">command       </tspan><tspan class="fc1"># &lt;- here is &#39;VAR=foo&#39; with redirected stdin        </tspan></text>
+<text x="0ch" y="15.5em"><tspan class="fc3">VAR</tspan><tspan class="fc2">[</tspan><tspan class="fc4">1</tspan><tspan class="fc2">]</tspan><tspan class="fc5">=</tspan><tspan class="fc6">foo2</tspan><tspan class="fc10">&gt;</tspan><tspan class="fc0">command      </tspan><tspan class="fc1"># &lt;- here is &#39;VAR=foo2&#39; redirected to &#39;command&#39;     </tspan></text>
+<text x="0ch" y="16.5em"><tspan class="fc3">VAR</tspan><tspan class="fc2">[</tspan><tspan class="fc4">1</tspan><tspan class="fc2">]</tspan><tspan class="fc5">=</tspan><tspan class="fc6">foo1</tspan><tspan class="fc10">&lt;</tspan><tspan class="fc0">command      </tspan><tspan class="fc1"># &lt;- here is &#39;VAR=foo1&#39; with redirected stdin       </tspan></text>
+<text x="0ch" y="17.5em"><tspan class="fc3">VAR</tspan><tspan class="fc2">[</tspan><tspan class="fc4">1</tspan><tspan class="fc2">]</tspan><tspan class="fc5">=</tspan><tspan class="fc6">foo1</tspan><tspan class="fc10">&gt;</tspan><tspan class="fc9">&amp;</tspan><tspan class="fc11">2           </tspan><tspan class="fc1"># &lt;- here is &#39;VAR=foo1&#39; with redirected stdout      </tspan></text>
 </svg>
