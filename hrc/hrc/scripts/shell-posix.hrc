@@ -114,6 +114,7 @@
 
 <scheme name="script">
     <regexp match="/\s+/"/>
+    <inherit scheme="escape_newline"/>
     <inherit scheme="comments"/>
     <inherit scheme="operators"/>
     <block start="/!\s*/" end="/\M%cmdbreak;/" scheme="script_control" region00="CommandReserved"/>
@@ -423,11 +424,15 @@
     <block start="/(^|(\s|%wrdbreak;)?#1)\#/" end="/$/" scheme="def:Comment" region="Comment"/>
 </scheme>
 
-<scheme name="escapes">
+<scheme name="escape_newline">
     <!-- spaces between backslash and EOL are usually unexpected -->
     <block start="/\\\s+$/" end="/$/" scheme="def:empty" region="Error"/>
     <!-- escape new line -->
     <block start="/\\$/" end="/^/" scheme="def:empty"/>
+</scheme>
+
+<scheme name="escapes">
+    <inherit scheme="escape_newline"/>
     <!-- ignore other escaped char -->
     <regexp match="/\\./"/>
 </scheme>

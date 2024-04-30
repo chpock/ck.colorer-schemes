@@ -45,6 +45,11 @@ VAR=1 ! command
 VAR=1 command escaped ampersand \& VAR2= command2 \
     THIS_IS_NOT_VAR=1 because the above line continues
 
+command here | \
+    command here && \
+    echo "must be recognized as a command" || \
+    true sdkfj # <- here should be an error
+
 command plain \# quoted comment
 
 ( VAR=foo subshell && VAR3= run command >/test 2>&1 )
