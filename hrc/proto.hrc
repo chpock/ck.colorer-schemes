@@ -27,6 +27,18 @@
         <firstline weight='5'>/^\#!(\s*.+bash\b)/</firstline>
     </prototype>
 
+    <prototype name="autoconf" group="scripts" description="autoconf">
+        <location link="hrc/scripts/autoconf.hrc"/>
+        <filename weight='6'>/^configure\.(ac|in)$/i</filename>
+        <filename weight='6'>/^(libtool|aclocal|acinclude)\.m4$/i</filename>
+        <filename>/\.m4$/i</filename>
+        <firstline weight='4'>/^AC_DEFUN\(/</firstline>
+        <firstline weight='4'>/^AC_PREREQ\(/</firstline>
+        <firstline weight='4'>/^m4_include\(/</firstline>
+        <firstline weight='2'>/^dnl /</firstline>
+        <firstline>/autoconf/i</firstline>
+    </prototype>
+
 </hrc>
 <!-- ***** BEGIN LICENSE BLOCK *****
    - Version: MPL 1.1/GPL 2.0/LGPL 2.1
