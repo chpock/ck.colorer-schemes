@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hrc PUBLIC "-//Cail Lomecb//DTD Colorer HRC take5//EN"
+  "http://colorer.sf.net/2003/hrc.dtd">
+<hrc version="take5"
+     xmlns="http://colorer.sf.net/2003/hrc"
+     xmlns:xinc="http://www.w3.org/2001/XInclude"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://colorer.sf.net/2003/hrc http://colorer.sf.net/2003/hrc.xsd">
+
+<!--
+
+    This is not a completely correct autoconf/m4 parser. Unfortunatelly, it is
+    impossible to parse it correctly by regexps. There are also boundary issues.
+    For example, if we have the following line:
+
+        AC_DEFUN([MY_MACRO],[echo 123])
+
+    Then parser should enter to shell code starting from 'echo...'. However,
+    the shell code parser doesn't know that it must return control the the ']' symbol
+    because 'echo 123]' is correct shell command.
+
+    Another issue with C/C++ lang. For example, if we have the line:
+
+        AC_LANG_SOURCE([[#include <stdio.h>]])
+
+    Then parser should enter to C/C++ code starting from '#include...'.
+    But the C/C++ scheme assumes that definitions start on a new line, not
+    the middle of the line. It will mark that '#include' as an error.
+
+    Because of this problem, m4 parser will enter to other another language's scheme
+    when the block starts on a new line. For example:
+
+        AC_DEFUN([MY_MACRO], [
+            echo 123
+        ])
+
+    This will not resolve the problem if parameter is not closed on a new line.
+    For example, this code will be broken:
+
+        AC_DEFUN([MY_MACRO], [
+            echo 123])
+
+    However, we tried.
+
+    There is also issues with macros inside another language's scheme. For example,
+    this will not work:
+
+        AC_LINK_IFELSE([AC_LANG_PROGRAM([
+            m4_case([$1],
+                [alias], [
+                    int foo( void ) { return 0; }
+                    int bar( void ) __attribute__(($1("foo")));
+                ],
+                [aligned], [
+                    int foo( void ) __attribute__(($1(32)));
+                ],
+                [
+                 m4_warn([syntax], [Unsupported attribute $1, the test may fail])
+                 int foo( void ) __attribute__(($1));
+                ]
+            )], [])
+
+    Starting with "m4_case..." we have to enter the C/C++ scheme, which obviously
+    knows nothing about these macros. Such macros will sometimes work in
+    shell scheme, but not always. Any will not work completely in C/C++ scheme.
+
+    It is difficult for any highlighter to correctly parse macro language.
+
+    However, colorer is trying its best.
+
+-->
+
+<annotation>
+    <documentation>
+        autoconf
+
+        Home: https://github.com/chpock/ck.colorer-schemes
+        Send requests there for bug fixes and features.
+    </documentation>
+    <contributors><![CDATA[
+        Konstantin Kushnir <chpock@gmail.com>
+    ]]></contributors>
+
+    <appinfo>
+        <prototype name="autoconf" group="scripts" description="autoconf">
+            <location link="scripts/autoconf.hrc"/>
+            <filename weight='6'>/^configure\.(ac|in)$/i</filename>
+            <filename weight='6'>/^(libtool|aclocal|acinclude)\.m4$/i</filename>
+            <filename>/\.m4$/i</filename>
+            <firstline weight='4'>/^AC_DEFUN\(/</firstline>
+            <firstline weight='4'>/^AC_PREREQ\(/</firstline>
+            <firstline weight='4'>/^m4_include\(/</firstline>
+            <firstline weight='2'>/^dnl /</firstline>
+            <firstline>/autoconf/i</firstline>
+        </prototype>
+    </appinfo>
+</annotation>
+
+<type name="autoconf">
+
+<region name="Text" parent="def:Text"/>
+<region name="Comment" parent="def:Comment"/>
+<region name="String" parent="def:String"/>
+<region name="StringEdge" parent="def:StringEdge"/>
+<region name="Parameter" parent="def:StringContent"/>
+
+<region name="Variable" parent="def:Var"/>
+
+<region name="FunctionName" parent="def:ClassKeyword"/>
+<region name="Keyword" parent="def:Keyword"/>
+
+<region name="Symbol" parent="def:Symbol"/>
+
+<region name="PairStart" parent="def:PairStart"/>
+<region name="PairEnd" parent="def:PairEnd"/>
+
+<region name="Insertion" parent="def:Insertion"/>
+
+<region name="Error" parent="def:Error"/>
+
+<!-- for testing -->
+<region name="Test" parent="def:URL"/>
+<region name="Test2" parent="def:TODO"/>
+
+<entity name="macro_m4" value="(?:m4_)?(?:
+    define|defn|pushdef|include|sinclude|syscmd|esyscmd|
+    ifdef|ifelse|indir|builtin|shift|errprint|m4exit|changecom|
+    changequote|changeword|m4wrap|debugfile|divert|undivert|
+    len|index|regexp|substr|translit|patsubst|format|
+    incr|decr|eval|maketemp|undefine|popdef|
+
+    toupper|version_prereq|default|case|defun|version_compare|
+    if|fatal|pattern_forbid|pattern_allow|ifvaln
+)"/>
+
+<entity name="macro_custom" value="(?:[_A-Z][_A-Z0-9]*)"/>
+<entity name="macro_name" value="(?:%macro_custom;|%macro_m4;)"/>
+
+<scheme name="autoconf">
+    <inherit scheme="def:unixCommentFirstline">
+        <virtual scheme="def:def" subst-scheme="script"/>
+    </inherit>
+</scheme>
+
+<scheme name="dnl">
+    <!-- Discard to Next Line -->
+    <regexp match="/\s*\bdnl\b.*$/" region="Comment"/>
+</scheme>
+
+<scheme name="script">
+    <regexp match="/\s+/"/>
+    <inherit scheme="dnl"/>
+    <inherit scheme="macro"/>
+    <block start="/(\])?!/" end="//" scheme="shell-script"/>
+</scheme>
+
+<scheme name="shell-script">
+    <inherit scheme="shell-posix:script">
+        <virtual scheme="shell-posix:script" subst-scheme="script"/>
+        <virtual scheme="shell-posix:script_without_backquote" subst-scheme="shell-script_without_backquote"/>
+    </inherit>
+</scheme>
+
+<!--
+    check comments to 'script_without_backquote' scheme in 'shell-posix' about this hack
+-->
+<scheme name="shell-script_without_backquote">
+    <inherit scheme="script">
+        <virtual scheme="shell-posix:evaluation_backquote" subst-scheme="def:empty"/>
+    </inherit>
+</scheme>
+
+<scheme name="parameter_expansion">
+    <!--
+        Eat ` here, sometimes it is m4 string as `...', sometimes it is shell backtick ` `.
+        It would be safer to eat it.
+    -->
+    <regexp match="/&#96;/"/>
+    <inherit scheme="shell-posix:parameter_expansion">
+        <!-- ignore double/single quoted strings -->
+        <virtual scheme="shell-posix:strings" subst-scheme="def:empty"/>
+    </inherit>
+</scheme>
+
+<scheme name="const">
+    <regexp match="/(-)?~1--(with|without|enable|disable)-[\w\d_-]+/" region="Parameter"/>
+</scheme>
+
+<scheme name="text">
+    <inherit scheme="dnl"/>
+    <inherit scheme="const"/>
+    <block start="/([^\[(])?=/" end="//" scheme="parameter_expansion"/>
+    <!-- allow nested [ ... ] -->
+    <block start="/\[/" end="/\]/" scheme="text" region00="PairStart" region10="PairEnd"/>
+    <!-- allow nested ( ... ) -->
+    <block start="/\(/" end="/\)/" scheme="text" region00="PairStart" region10="PairEnd"/>
+    <!--
+        Eat ` here, sometimes it is m4 string as `...', sometimes it is shell backtick ` `.
+        It would be safer to eat it.
+    -->
+    <regexp match="/&#96;/"/>
+</scheme>
+
+<scheme name="string">
+    <inherit scheme="dnl"/>
+    <inherit scheme="const"/>
+    <block start="/([^\[(])?=/" end="//" scheme="parameter_expansion" region="String"/>
+    <!-- allow nested [ ... ] -->
+    <block start="/\[/" end="/\]/" scheme="string" region00="PairStart" region10="PairEnd" region="String"/>
+    <!-- allow nested ( ... ) -->
+    <block start="/\(/" end="/\)/" scheme="string" region00="PairStart" region10="PairEnd" region="String"/>
+    <!--
+        Eat ` here, sometimes it is m4 string as `...', sometimes it is shell backtick ` `.
+        It would be safer to eat it.
+    -->
+    <regexp match="/&#96;/"/>
+</scheme>
+
+<scheme name="macro_ac_source">
+    <inherit scheme="macro_parameters">
+        <virtual scheme="script" subst-scheme="cpp:cpp"/>
+    </inherit>
+</scheme>
+
+<scheme name="macro_ac_string">
+    <inherit scheme="macro_parameters">
+        <virtual scheme="script" subst-scheme="string"/>
+        <virtual scheme="text" subst-scheme="string"/>
+    </inherit>
+</scheme>
+
+<scheme name="macro_ac_if">
+    <!-- 1st arg in [[...]] -->
+    <block start="/\(?#1\s*((\[\[))\s*(?{shell-posix:CommandBuiltin}test\b)\s*/"
+        end="/((\]\]))/" scheme="shell-posix:test"
+        region01="Symbol"    region11="Symbol"
+        region02="PairStart" region12="PairEnd"/>
+    <!-- 1st arg in [...] -->
+    <block start="/\(?#1\s*((\[))\s*(?{shell-posix:CommandBuiltin}test\b)\s*/"
+        end="/((\]))/" scheme="shell-posix:test"
+        region01="Symbol"    region11="Symbol"
+        region02="PairStart" region12="PairEnd"/>
+    <!-- 1st arg as ... -->
+    <block start="/\(?#1\s*(?{shell-posix:CommandBuiltin}test\b)\s*/"
+        end="/\M[),]/" scheme="shell-posix:test"/>
+    <inherit scheme="macro_parameters"/>
+</scheme>
+
+<scheme name="macro_first_parameter">
+    <!-- 1st arg in [[...]] -->
+    <block start="/\(?#1\s*(\[\[)/" end="/((\]\]))/" scheme="text" region="Parameter"
+        region00="Symbol"    region11="Symbol"
+        region01="PairStart" region12="PairEnd"/>
+    <!-- 1st arg in [...] -->
+    <block start="/\(?#1\s*(\[)/" end="/((\]))/" scheme="text" region="Parameter"
+        region00="Symbol"    region11="Symbol"
+        region01="PairStart" region12="PairEnd"/>
+    <!-- 1st arg as ... -->
+    <block start="/\(?#1\s*([\d\w_])?=/" end="/\M[),]/" scheme="text" region="Parameter"/>
+    <inherit scheme="macro_parameters"/>
+</scheme>
+
+<scheme name="macro_first_variable">
+    <!-- 1st arg in [[...]] -->
+    <block start="/\(?#1\s*(\[\[)/" end="/((\]\]))/" scheme="text" region="Variable"
+        region00="Symbol"    region11="Symbol"
+        region01="PairStart" region12="PairEnd"/>
+    <!-- 1st arg in [...] -->
+    <block start="/\(?#1\s*(\[)/" end="/((\]))/" scheme="text" region="Variable"
+        region00="Symbol"    region11="Symbol"
+        region01="PairStart" region12="PairEnd"/>
+    <!-- 1st arg as ... -->
+    <block start="/\(?#1\s*([\d\w_])?=/" end="/\M[),]/" scheme="text" region="Variable"/>
+    <inherit scheme="macro_parameters"/>
+</scheme>
+
+<scheme name="macro_first_string">
+    <!-- 1st arg in [[...]] -->
+    <block start="/\(?#1\s*(\[\[)/" end="/((\]\]))/" scheme="text" region="String"
+        region00="Symbol"    region11="Symbol"
+        region01="PairStart" region12="PairEnd"/>
+    <!-- 1st arg in [...] -->
+    <block start="/\(?#1\s*(\[)/" end="/((\]))/" scheme="text" region="String"
+        region00="Symbol"    region11="Symbol"
+        region01="PairStart" region12="PairEnd"/>
+    <!-- 1st arg as ... -->
+    <block start="/\(?#1\s*([\d\w_])?=/" end="/\M[),]/" scheme="text" region="String"/>
+    <inherit scheme="macro_parameters"/>
+</scheme>
+
+<scheme name="macro">
+    <!-- eat whitespace -->
+    <regexp match="/\s+/"/>
+    <inherit scheme="dnl"/>
+
+    <!-- AC_LANG_PROGRAM(arg1, arg2) -->
+    <!-- AC_LANG_CONFTEST(arg1) -->
+    <!-- AC_LANG_SOURCE(arg1) -->
+    <block start="/\b(?{FunctionName}(?:AC_LANG_PROGRAM|AC_LANG_CONFTEST|AC_LANG_SOURCE))\M((\())/"
+        end="/(\))/"
+        scheme="macro_ac_source"
+        region01="Symbol"       region10="Symbol"
+        region02="PairStart"    region11="PairEnd"/>
+
+    <!-- AS_HELP_STRING / AC_HELP_STRING -->
+    <!-- AC_MSG_NOTICE / AC_MSG_WARN / AC_MSG_RESULT / AC_MSG_CHECKING and other AC_MSG_* -->
+    <!-- AC_COPYRIGHT -->
+    <!-- m4_fatal -->
+    <block start="/\b(?:
+        (?{FunctionName}(?:
+            A[SC]_HELP_STRING|AC_MSG_[A-Z]+|AC_COPYRIGHT
+        ))|(?{Keyword}(?:
+            m4_fatal
+        ))
+    )\M((\())/x"
+        end="/(\))/"
+        scheme="macro_ac_string" region="String"
+        region01="Symbol"       region10="Symbol"
+        region02="PairStart"    region11="PairEnd"/>
+
+    <!-- AC_ARG_WITH -->
+    <!-- AC_ARG_ENABLE -->
+    <block start="/\b(?{FunctionName}(?:AC_ARG_WITH|AC_ARG_ENABLE))\M((\())/"
+        end="/(\))/"
+        scheme="macro_first_parameter"
+        region01="Symbol"       region10="Symbol"
+        region02="PairStart"    region11="PairEnd"/>
+
+    <!-- AC_DEFINE -->
+    <!-- AC_DEFINE_UNQUOTED -->
+    <!-- AC_SUBST -->
+    <!-- AS_VAR_SET -->
+    <!-- AS_VAR_GET -->
+    <!-- AS_VAR_IF -->
+    <!-- AS_VAR_PUSHDEF -->
+    <!-- AS_VAR_POPDEF -->
+    <!-- AC_CACHE_VAL -->
+    <!-- AC_PATH_PROG -->
+    <!-- AC_PATH_TOOL -->
+    <!-- AC_CHECK_PROGS -->
+    <!-- AC_CHECK_PROG -->
+    <!-- AC_CHECK_TOOL -->
+    <!-- AC_ARG_VAR -->
+    <!-- AM_CONDITIONAL -->
+    <!-- m4_define -->
+    <!-- m4_popdef / m4_pushdef -->
+    <block start="/\b(?:
+        (?{FunctionName}(?:
+            AC_DEFINE|AC_DEFINE_UNQUOTED|AC_SUBST|AS_VAR_SET|
+            AS_VAR_GET|AS_VAR_IF|AS_VAR_PUSHDEF|AS_VAR_POPDEF|
+            AC_CACHE_VAL|AC_PATH_PROG|AC_PATH_TOOL|AC_CHECK_PROGS|
+            AC_CHECK_PROG|AC_CHECK_TOOL|AC_ARG_VAR|AM_CONDITIONAL
+        ))|(?{Keyword}(?:
+            m4_define|m4_pushdef|m4_popdef
+        ))
+    )\M((\())/x"
+        end="/(\))/"
+        scheme="macro_first_variable"
+        region01="Symbol"       region10="Symbol"
+        region02="PairStart"    region11="PairEnd"/>
+
+    <!-- AC_CACHE_CHECK -->
+    <block start="/\b(?{FunctionName}(?:AC_CACHE_CHECK))\M((\())/"
+        end="/(\))/"
+        scheme="macro_first_string"
+        region01="Symbol"       region10="Symbol"
+        region02="PairStart"    region11="PairEnd"/>
+
+    <!-- AS_IF -->
+    <block start="/\b(?{FunctionName}(?:AS_IF))\M((\())/"
+        end="/(\))/"
+        scheme="macro_ac_if"
+        region01="Symbol"       region10="Symbol"
+        region02="PairStart"    region11="PairEnd"/>
+
+    <!-- MACRO_CALL( ... ) -->
+    <block start="/\b(?:(?{FunctionName}%macro_custom;)|(?{Keyword}%macro_m4;))\M((\())/x"
+        end="/(\))/" scheme="macro_parameters"
+        region01="Symbol"       region10="Symbol"
+        region02="PairStart"    region11="PairEnd"/>
+
+    <!-- MACRO without parameters -->
+    <regexp match="/\b([_A-Z][_A-Z0-9]*)(\s+|$)?=/" region="FunctionName"/>
+</scheme>
+
+<scheme name="macro_maybe_text_0_braces">
+    <inherit scheme="macro"/>
+    <block start="/([^,)])?=/" end="/\M[,)]/" scheme="text"/>
+</scheme>
+
+<scheme name="macro_maybe_text_1_brace">
+    <inherit scheme="macro"/>
+    <!-- regexp match="/./" region="Error"/ -->
+    <block start="/([^\])])?=/" end="/\M\]/" scheme="text"/>
+</scheme>
+
+<scheme name="macro_maybe_text_2_braces">
+    <inherit scheme="macro"/>
+    <block start="/([^\]\])])?=/" end="/\M\]\]/" scheme="text"/>
+</scheme>
+
+<scheme name="macro_parameters">
+
+    <inherit scheme="dnl"/>
+
+    <!-- macro parameter: [[<newline>...]] -->
+    <block start="/(?:[\(,]?#1|^)\s*(\[\[)$/" end="/((\]\]))/" scheme="script"
+        region00="Symbol"    region11="Symbol"
+        region01="PairStart" region12="PairEnd"/>
+
+    <!-- macro parameter: [<newline>...] -->
+    <block start="/(?:[\(,]?#1|^)\s*(\[)$/" end="/((\]))/" scheme="script"
+        region00="Symbol"    region11="Symbol"
+        region01="PairStart" region12="PairEnd"/>
+
+    <!-- macro parameter: [[MACRO()]] -->
+    <block start="/(?:[\(,]?#1|^)\s*(\[\[)(\s*%macro_name;\()?=/x" end="/((\]\]))/"
+        scheme="macro_maybe_text_2_braces"
+        region00="Symbol"    region11="Symbol"
+        region01="PairStart" region12="PairEnd"/>
+
+    <!-- macro parameter: [MACRO()] -->
+    <block start="/(?:[\(,]?#1|^)\s*(\[)(\s*%macro_name;\()?=/x" end="/((\]))/"
+        scheme="macro_maybe_text_1_brace"
+        region00="Symbol"    region11="Symbol"
+        region01="PairStart" region12="PairEnd"/>
+
+    <!-- variable assignment: [[...=...]] -->
+    <block start="/(?:[\(,]?#1|^)\s*((\[\[))\s*([a-zA-Z_][\w_]*)(=)/" end="/((\]\]))/"
+        scheme="string" region="String"
+        region03="Variable"
+        region04="Symbol"
+        region01="Symbol"    region11="Symbol"
+        region02="PairStart" region12="PairEnd"/>
+
+    <!-- variable assignment: [...=...] -->
+    <block start="/(?:[\(,]?#1|^)\s*((\[))\s*([a-zA-Z_][\w_]*)(=)/" end="/((\]))/"
+        scheme="string" region="String"
+        region03="Variable"
+        region04="Symbol"
+        region01="Symbol"    region11="Symbol"
+        region02="PairStart" region12="PairEnd"/>
+
+    <!-- well-known string parameter: [[...]] -->
+    <block start="/(?:[\(,]?#1|^)\s*(\[\[)(\s*(yes|no|none)\s*\]\])?=/" end="/((\]\]))/"
+        scheme="string" region="String"
+        region00="Symbol"    region11="Symbol"
+        region01="PairStart" region12="PairEnd"/>
+
+    <!-- macro parameter: [[...]] -->
+    <!-- except: [[$]...] -->
+    <block start="/(?:[\(,]?#1|^)\s*(\[\[)(\$\])?!/" end="/((\]\]))/"
+        scheme="text"
+        region00="Symbol"    region11="Symbol"
+        region01="PairStart" region12="PairEnd"/>
+
+    <!-- well-known string parameter: [...] -->
+    <block start="/(?:[\(,]?#1|^)\s*(\[)(\s*(yes|no|none)\s*\])?=/" end="/((\]))/"
+        scheme="string" region="String"
+        region00="Symbol"    region11="Symbol"
+        region01="PairStart" region12="PairEnd"/>
+
+    <!-- macro parameter: [...] -->
+    <block start="/(?:[\(,]?#1|^)\s*(\[)/" end="/((\]))/"
+        scheme="text"
+        region00="Symbol"    region11="Symbol"
+        region01="PairStart" region12="PairEnd"/>
+
+    <!-- variable assignment: ...=... -->
+    <block start="/(?:[\(,]?#1|^)\s*([a-zA-Z_][\w_]*)(=)/" end="/\M[),]/"
+        scheme="string" region="String"
+        region01="Variable"
+        region02="Symbol"/>
+
+    <!-- macro parameter: MACRO() -->
+    <block start="/(?:[\(,]?#1|^)\s*(%macro_name;\()?=/x" end="//"
+        scheme="macro_maybe_text_0_braces"/>
+
+    <!-- well-known string parameter: ... -->
+    <block start="/(?:[\(,]?#1|^)(\s*(yes|no|none)\s*[),])?=/" end="/\M[),]/"
+        scheme="string" region="String"/>
+
+    <!-- plain string untill ')' or ',' -->
+    <block start="/(?:[\(,]?#1|^)\s*\M[^,\[]/" end="/\M[),]/"
+        scheme="text"/>
+
+</scheme>
+
+</type>
+</hrc>
+
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1/GPL 2.0/LGPL 2.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is the Colorer Library.
+   -
+   - The Initial Developer of the Original Code is
+   - Cail Lomecb <cail@nm.ru>.
+   - Portions created by the Initial Developer are Copyright (C) 1999-2008
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   - Konstantin Kushnir <chpock@gmail.com>.
+   -
+   - Alternatively, the contents of this file may be used under the terms of
+   - either the GNU General Public License Version 2 or later (the "GPL"), or
+   - the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+   - in which case the provisions of the GPL or the LGPL are applicable instead
+   - of those above. If you wish to allow use of your version of this file only
+   - under the terms of either the GPL or the LGPL, and not to allow others to
+   - use your version of this file under the terms of the MPL, indicate your
+   - decision by deleting the provisions above and replace them with the notice
+   - and other provisions required by the LGPL or the GPL. If you do not delete
+   - the provisions above, a recipient may use your version of this file under
+   - the terms of any one of the MPL, the GPL or the LGPL.
+   -
+   - ***** END LICENSE BLOCK ***** -->
