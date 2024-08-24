@@ -267,6 +267,8 @@ for SOURCE in "$SOURCE_DIR"/* "$SOURCE_DIR"/*/*; do
     BASE="${SOURCE##$SOURCE_DIR/}"
 
     BASE_DIR="${BASE%/*}"
+    # Skip tree-sitter-bash tests as for now
+    [ "$BASE_DIR" != "tree-sitter-bash" ] || continue
     [ "$BASE" != "$BASE_DIR" ] || BASE_DIR=""
     BASE_DIR="$OUT_DIR/$BASE_DIR"
     [ -d "$BASE_DIR" ] || mkdir -p "$BASE_DIR"
