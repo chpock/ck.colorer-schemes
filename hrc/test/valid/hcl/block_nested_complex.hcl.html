@@ -1,0 +1,22 @@
+﻿ 0: <span class='hcl-BlockType def-TypeKeyword def-Keyword'>resource</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>aws_instance</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>web</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 1:   <span class='hcl-Comment def-Comment def-Syntax'>// The trailing { can confuse the regex into thinking it's a block</span>
+ 2:   <span class='hcl-Variable def-Var'>type</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Types def-InterfaceKeyword def-Keyword'>list</span><span class='hcl-Symbol def-Symbol'>(</span><span class='hcl-Types def-InterfaceKeyword def-Keyword'>object</span><span class='hcl-Symbol def-Symbol'>(</span><span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 3:     <span class='hcl-Variable def-Var'>internal</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Types def-InterfaceKeyword def-Keyword'>number</span>
+ 4:     <span class='hcl-Variable def-Var'>external</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Types def-InterfaceKeyword def-Keyword'>number</span>
+ 5:     <span class='hcl-Variable def-Var'>protocol</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Types def-InterfaceKeyword def-Keyword'>string</span>
+ 6:   <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span><span class='hcl-Symbol def-Symbol'>)</span><span class='hcl-Symbol def-Symbol'>)</span>
+ 7: 
+ 8: <span class='hcl-Comment def-Comment def-Syntax'>// The trailing { can confuse the regex into thinking it's a block</span>
+ 9:   <span class='hcl-Variable def-Var'>default</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Symbol def-Symbol'>[</span><span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+10:       <span class='hcl-Variable def-Var'>internal</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='def-NumberDec def-Number'>8300</span>
+11:       <span class='hcl-Variable def-Var'>external</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='def-NumberDec def-Number'>8300</span>
+12:       <span class='hcl-Variable def-Var'>protocol</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>tcp</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+13:     <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+14:   <span class='hcl-Symbol def-Symbol'>]</span>
+15: 
+16:   <span class='hcl-Comment def-Comment def-Syntax'># This is a nested block and should highlight correctly</span>
+17:   <span class='hcl-BlockType def-TypeKeyword def-Keyword'>nested-resource</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>aws_instance</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>foo</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+18:     <span class='hcl-Variable def-Var'>type</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>nested</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+19:   <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+20: <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+21: 

@@ -1,0 +1,12 @@
+﻿ 0: <span class='terraform-BlockTypeKnown hcl-Keyword def-Keyword'>module</span> <span class='terraform-BlockVariableEdge hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='terraform-BlockVariable hcl-BlockVariable def-Parameter'>servers</span><span class='terraform-BlockVariableEdge hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='terraform-SymbolStrong hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 1:   <span class='hcl-Variable def-Var'>source</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>./app-cluster</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+ 2: 
+ 3:   <span class='hcl-Variable def-Var'>servers</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='def-NumberDec def-Number'>5</span>
+ 4: <span class='terraform-SymbolStrong hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+ 5: 
+ 6: <span class='terraform-BlockTypeKnown hcl-Keyword def-Keyword'>resource</span> <span class='terraform-BlockVariableEdge hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='terraform-BlockVariable hcl-BlockVariable def-Parameter'>aws_elb</span><span class='terraform-BlockVariableEdge hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='terraform-BlockVariableEdge hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='terraform-BlockVariable hcl-BlockVariable def-Parameter'>example</span><span class='terraform-BlockVariableEdge hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='terraform-SymbolStrong hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 7:   <span class='hcl-Comment def-Comment def-Syntax'># ...</span>
+ 8: 
+ 9:   <span class='hcl-Variable def-Var'>instances</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='terraform-Variable def-Var'>module</span><span class='hcl-VariableStrong def-VarStrong def-Var'>.</span><span class='hcl-Variable def-Var'>servers</span><span class='hcl-VariableStrong def-VarStrong def-Var'>.</span><span class='hcl-Variable def-Var'>instance_ids</span>
+10: <span class='terraform-SymbolStrong hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+11: 

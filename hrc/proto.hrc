@@ -39,6 +39,17 @@
         <firstline>/autoconf/i</firstline>
     </prototype>
 
+    <prototype name="hcl" group="scripts" description="HashiCorp HCL">
+        <location link="hrc/scripts/hcl/hcl.hrc"/>
+        <filename>/\.hcl$/i</filename>
+    </prototype>
+
+    <prototype name="terraform" group="scripts" description="HashiCorp Terraform">
+        <location link="hrc/scripts/hcl/terraform.hrc"/>
+        <filename>/\.tf$/i</filename>
+        <filename>/\.tfvars$/i</filename>
+    </prototype>
+
 </hrc>
 <!-- ***** BEGIN LICENSE BLOCK *****
    - Version: MPL 1.1/GPL 2.0/LGPL 2.1

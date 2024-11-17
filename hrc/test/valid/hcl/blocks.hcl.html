@@ -1,0 +1,22 @@
+﻿ 0: <span class='hcl-Comment def-Comment def-Syntax'>// terraform type block</span>
+ 1: <span class='hcl-BlockType def-TypeKeyword def-Keyword'>resource</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>aws_instance</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>web</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 2:   <span class='hcl-Variable def-Var'>ami</span>           <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>ami-a1b2c3d4</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+ 3:   <span class='hcl-Variable def-Var'>instance_type</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>t2.micro</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+ 4:   <span class='hcl-BlockType def-TypeKeyword def-Keyword'>timeouts</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 5:     <span class='hcl-Variable def-Var'>create</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>60m</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+ 6:     <span class='hcl-Variable def-Var'>delete</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>2h</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+ 7:   <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+ 8: <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+ 9: 
+10: <span class='hcl-Comment def-Comment def-Syntax'>// packer type block</span>
+11: <span class='hcl-Comment def-Comment def-Syntax'>// As per </span><span class='def-URL def-URI'>https://github.com/hashicorp/hcl/blob/main/hclsyntax/spec.md#identifiers</span>
+12: <span class='hcl-Comment def-Comment def-Syntax'>// a `-` is allowed in the identifier.</span>
+13: <span class='hcl-BlockType def-TypeKeyword def-Keyword'>post-processor</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>foo</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span><span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+14: 
+15: <span class='hcl-Comment def-Comment def-Syntax'>// dash is not expected at the beginning</span>
+16: <span class='hcl-Operator def-Operator def-Symbol'>-</span><span class='hcl-BlockType def-TypeKeyword def-Keyword'>test</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>foo</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span><span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+17: 
+18: <span class='hcl-Comment def-Comment def-Syntax'>// all Unicode word characters are accepted</span>
+19: <span class='hcl-BlockType def-TypeKeyword def-Keyword'>žblock</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>foo</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span><span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+20: <span class='hcl-BlockType def-TypeKeyword def-Keyword'>bžlock</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>foo</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span><span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+21: 

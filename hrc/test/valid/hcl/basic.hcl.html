@@ -1,0 +1,28 @@
+﻿ 0: <span class='hcl-Comment def-Comment def-Syntax'># line comment</span>
+ 1: 
+ 2: <span class='hcl-Comment def-Comment def-Syntax'>// line comment</span>
+ 3: 
+ 4: <span class='hcl-Comment def-Comment def-Syntax'>/*</span>
+ 5: <span class='hcl-Comment def-Comment def-Syntax'>  Block comment</span>
+ 6: <span class='hcl-Comment def-Comment def-Syntax'>*/</span>
+ 7: 
+ 8: <span class='hcl-Variable def-Var'>io_mode</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>async</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+ 9: 
+10: <span class='hcl-BlockType def-TypeKeyword def-Keyword'>service</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>http</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>web_proxy</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+11:   <span class='hcl-Variable def-Var'>listen_addr</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>127.0.0.1:8080</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+12: 
+13:   <span class='hcl-BlockType def-TypeKeyword def-Keyword'>process</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>main</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+14:     <span class='hcl-Variable def-Var'>command</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Symbol def-Symbol'>[</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>/usr/local/bin/awesome-app</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-Symbol def-Symbol'>,</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>server</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-Symbol def-Symbol'>]</span>
+15:   <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+16: 
+17:   <span class='hcl-BlockType def-TypeKeyword def-Keyword'>process</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>mgmt</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+18:     <span class='hcl-Variable def-Var'>command</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Symbol def-Symbol'>[</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>/usr/local/bin/awesome-app</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-Symbol def-Symbol'>,</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>mgmt</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-Symbol def-Symbol'>]</span>
+19:   <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+20: <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+21: 
+22: <span class='hcl-Variable def-Var'>sum</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='def-NumberDec def-Number'>1</span> <span class='hcl-Operator def-Operator def-Symbol'>+</span> addend
+23: 
+24: <span class='hcl-Variable def-Var'>message</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>Hello, </span><span class='hcl-Symbol def-Symbol'>${</span><span class='hcl-Variable def-Var'>name</span><span class='hcl-Symbol def-Symbol'>}</span><span class='hcl-String def-String'>!</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+25: 
+26: <span class='hcl-Variable def-Var'>shouty_message</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Function def-ClassKeyword def-Keyword'>upper</span><span class='hcl-Symbol def-Symbol'>(</span>message<span class='hcl-Symbol def-Symbol'>)</span>
+27: 

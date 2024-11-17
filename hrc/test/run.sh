@@ -43,6 +43,11 @@ HRD_FILE="$BIN_DIR"/gruvbox_dark_hard.hrd
 
 rm -fr "$OUT_DIR"/*
 
+if ! command -v cygpath >/dev/null 2>&1 && [ -d /c/DriveD/Projects/ck.colorer-schemes/hrc/hrc ]; then
+    cp -rf "$SELF_DIR/../hrc"/* "/c/DriveD/Projects/ck.colorer-schemes/hrc/hrc"
+    cp -f "$SELF_DIR/../proto.hrc" "/c/DriveD/Projects/ck.colorer-schemes/hrc"
+fi
+
 print_color() {
     local NAME="$1" COL
     if [ "$NAME" = "fg" -o "$NAME" = "bg" ]; then

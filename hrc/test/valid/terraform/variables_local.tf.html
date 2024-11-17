@@ -1,0 +1,24 @@
+﻿ 0: <span class='terraform-BlockTypeKnown hcl-Keyword def-Keyword'>locals</span> <span class='terraform-SymbolStrong hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 1:   <span class='hcl-Variable def-Var'>service_name</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>forum</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+ 2:   <span class='hcl-Variable def-Var'>owner</span>        <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>Community Team</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+ 3: <span class='terraform-SymbolStrong hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+ 4: 
+ 5: <span class='terraform-BlockTypeKnown hcl-Keyword def-Keyword'>locals</span> <span class='terraform-SymbolStrong hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 6:   <span class='hcl-Comment def-Comment def-Syntax'># Ids for multiple sets of EC2 instances, merged together</span>
+ 7:   <span class='hcl-Variable def-Var'>instance_ids</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='terraform-Function hcl-Function def-ClassKeyword def-Keyword'>concat</span><span class='terraform-Symbol hcl-Symbol def-Symbol'>(</span>aws_instance<span class='hcl-VariableStrong def-VarStrong def-Var'>.</span><span class='hcl-Variable def-Var'>blue</span><span class='hcl-VariableStrong def-VarStrong def-Var'>.</span><span class='hcl-Keyword def-Keyword'>*</span><span class='hcl-VariableStrong def-VarStrong def-Var'>.</span><span class='hcl-Variable def-Var'>id</span><span class='hcl-Symbol def-Symbol'>,</span> aws_instance<span class='hcl-VariableStrong def-VarStrong def-Var'>.</span><span class='hcl-Variable def-Var'>green</span><span class='hcl-VariableStrong def-VarStrong def-Var'>.</span><span class='hcl-Keyword def-Keyword'>*</span><span class='hcl-VariableStrong def-VarStrong def-Var'>.</span><span class='hcl-Variable def-Var'>id</span><span class='terraform-Symbol hcl-Symbol def-Symbol'>)</span>
+ 8: <span class='terraform-SymbolStrong hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+ 9: 
+10: <span class='terraform-BlockTypeKnown hcl-Keyword def-Keyword'>locals</span> <span class='terraform-SymbolStrong hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+11:   <span class='hcl-Comment def-Comment def-Syntax'># Common tags to be assigned to all resources</span>
+12:   <span class='hcl-Variable def-Var'>common_tags</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+13:     <span class='terraform-Variable def-Var'>Service</span> <span class='terraform-Symbol hcl-Symbol def-Symbol'>=</span> local.service_name
+14:     <span class='terraform-Variable def-Var'>Owner</span>   <span class='terraform-Symbol hcl-Symbol def-Symbol'>=</span> local.owner
+15:   <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+16: <span class='terraform-SymbolStrong hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+17: 
+18: <span class='terraform-BlockTypeKnown hcl-Keyword def-Keyword'>resource</span> <span class='terraform-BlockVariableEdge hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='terraform-BlockVariable hcl-BlockVariable def-Parameter'>aws_instance</span><span class='terraform-BlockVariableEdge hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='terraform-BlockVariableEdge hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='terraform-BlockVariable hcl-BlockVariable def-Parameter'>example</span><span class='terraform-BlockVariableEdge hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='terraform-SymbolStrong hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+19:   <span class='hcl-Comment def-Comment def-Syntax'># ...</span>
+20: 
+21:   <span class='hcl-Variable def-Var'>tags</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='terraform-Variable def-Var'>local</span><span class='hcl-VariableStrong def-VarStrong def-Var'>.</span><span class='hcl-Variable def-Var'>common_tags</span>
+22: <span class='terraform-SymbolStrong hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+23: 

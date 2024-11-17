@@ -1,0 +1,28 @@
+﻿ 0: <span class='hcl-Variable def-Var'>ipam_configuration</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 1:   <span class='terraform-Variable def-Var'>us-east-1</span> <span class='terraform-Symbol hcl-Symbol def-Symbol'>=</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 2:     <span class='terraform-Variable def-Var'>cidr</span>   <span class='terraform-Symbol hcl-Symbol def-Symbol'>=</span> [<span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>10.0.0.0/16</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>]
+ 3:     <span class='terraform-Variable def-Var'>locale</span> <span class='terraform-Symbol hcl-Symbol def-Symbol'>=</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>us-east-1</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+ 4: 
+ 5:     <span class='terraform-Variable def-Var'>sub_pools</span> <span class='terraform-Symbol hcl-Symbol def-Symbol'>=</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 6:       <span class='terraform-Variable def-Var'>dev</span> <span class='terraform-Symbol hcl-Symbol def-Symbol'>=</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 7:         <span class='terraform-Variable def-Var'>cidr</span>                              <span class='terraform-Symbol hcl-Symbol def-Symbol'>=</span> [<span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>10.0.0.0/20</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>]
+ 8:         <span class='terraform-Variable def-Var'>allocation_default_netmask_length</span> <span class='terraform-Symbol hcl-Symbol def-Symbol'>=</span> <span class='def-NumberDec def-Number'>28</span>
+ 9: 
+10:         <span class='terraform-Variable def-Var'>sub_pools</span> <span class='terraform-Symbol hcl-Symbol def-Symbol'>=</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+11:           <span class='terraform-Variable def-Var'>app_team_b</span> <span class='terraform-Symbol hcl-Symbol def-Symbol'>=</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+12:             <span class='terraform-Variable def-Var'>cidr</span>        <span class='terraform-Symbol hcl-Symbol def-Symbol'>=</span> [<span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>10.0.0.0/24</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>]
+13:             <span class='terraform-Variable def-Var'>description</span> <span class='terraform-Symbol hcl-Symbol def-Symbol'>=</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>app team b's space in us-east-1</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+14:           <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+15:           <span class='terraform-Variable def-Var'>app_team_a</span> <span class='terraform-Symbol hcl-Symbol def-Symbol'>=</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+16:             <span class='terraform-Variable def-Var'>cidr</span> <span class='terraform-Symbol hcl-Symbol def-Symbol'>=</span> [<span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>10.0.1.0/24</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>]
+17:           <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+18:         <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+19:       <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+20: 
+21:       <span class='terraform-Variable def-Var'>stage</span> <span class='terraform-Symbol hcl-Symbol def-Symbol'>=</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+22:         <span class='terraform-Variable def-Var'>cidr</span> <span class='terraform-Symbol hcl-Symbol def-Symbol'>=</span> [<span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>10.0.16.0/20</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>]
+23:       <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+24:     <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+25:   <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+26: <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+27: 
