@@ -1,0 +1,36 @@
+﻿ 0: <span class='hcl-Comment def-Comment def-Syntax'># input variables</span>
+ 1: 
+ 2: <span class='hcl-BlockType def-TypeKeyword def-Keyword'>variable</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>image_id</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 3:   <span class='hcl-Variable def-Var'>type</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Types def-InterfaceKeyword def-Keyword'>string</span>
+ 4: <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+ 5: 
+ 6: <span class='hcl-BlockType def-TypeKeyword def-Keyword'>variable</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>availability_zone_names</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 7:   <span class='hcl-Variable def-Var'>type</span>    <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Types def-InterfaceKeyword def-Keyword'>list</span><span class='hcl-Symbol def-Symbol'>(</span><span class='hcl-Types def-InterfaceKeyword def-Keyword'>string</span><span class='hcl-Symbol def-Symbol'>)</span>
+ 8:   <span class='hcl-Variable def-Var'>default</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Symbol def-Symbol'>[</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>us-west-1a</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-Symbol def-Symbol'>]</span>
+ 9: <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+10: 
+11: <span class='hcl-BlockType def-TypeKeyword def-Keyword'>variable</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>docker_ports</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+12:   <span class='hcl-Variable def-Var'>type</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Types def-InterfaceKeyword def-Keyword'>list</span><span class='hcl-Symbol def-Symbol'>(</span><span class='hcl-Types def-InterfaceKeyword def-Keyword'>object</span><span class='hcl-Symbol def-Symbol'>(</span><span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+13:     <span class='hcl-Variable def-Var'>internal</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Types def-InterfaceKeyword def-Keyword'>number</span>
+14:     <span class='hcl-Variable def-Var'>external</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Types def-InterfaceKeyword def-Keyword'>number</span>
+15:     <span class='hcl-Variable def-Var'>protocol</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Types def-InterfaceKeyword def-Keyword'>string</span>
+16:   <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span><span class='hcl-Symbol def-Symbol'>)</span><span class='hcl-Symbol def-Symbol'>)</span>
+17:   <span class='hcl-Variable def-Var'>default</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Symbol def-Symbol'>[</span>
+18:     <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+19:       <span class='hcl-Variable def-Var'>internal</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='def-NumberDec def-Number'>8300</span>
+20:       <span class='hcl-Variable def-Var'>external</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='def-NumberDec def-Number'>8300</span>
+21:       <span class='hcl-Variable def-Var'>protocol</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>tcp</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+22:     <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+23:   <span class='hcl-Symbol def-Symbol'>]</span>
+24: <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+25: 
+26: <span class='hcl-BlockType def-TypeKeyword def-Keyword'>variable</span> <span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span><span class='hcl-BlockVariable def-Parameter'>image_id</span><span class='hcl-BlockVariableEdge def-ParameterStrong def-Parameter'>"</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+27:   <span class='hcl-Variable def-Var'>type</span>        <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Types def-InterfaceKeyword def-Keyword'>string</span>
+28:   <span class='hcl-Variable def-Var'>description</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>The id of the machine image (AMI) to use for the server.</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+29: 
+30:   <span class='hcl-BlockType def-TypeKeyword def-Keyword'>validation</span> <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+31:     <span class='hcl-Variable def-Var'>condition</span>     <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-Function def-ClassKeyword def-Keyword'>length</span><span class='hcl-Symbol def-Symbol'>(</span>var<span class='hcl-VariableStrong def-VarStrong def-Var'>.</span><span class='hcl-Variable def-Var'>image_id</span><span class='hcl-Symbol def-Symbol'>)</span> <span class='hcl-Operator def-Operator def-Symbol'>></span> <span class='def-NumberDec def-Number'>4</span> <span class='hcl-Operator def-Operator def-Symbol'>&amp;&amp;</span> <span class='hcl-Function def-ClassKeyword def-Keyword'>substr</span><span class='hcl-Symbol def-Symbol'>(</span>var<span class='hcl-VariableStrong def-VarStrong def-Var'>.</span><span class='hcl-Variable def-Var'>image_id</span><span class='hcl-Symbol def-Symbol'>,</span> <span class='def-NumberDec def-Number'>0</span><span class='hcl-Symbol def-Symbol'>,</span> <span class='def-NumberDec def-Number'>4</span><span class='hcl-Symbol def-Symbol'>)</span> <span class='hcl-Operator def-Operator def-Symbol'>==</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>ami-</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+32:     <span class='hcl-Variable def-Var'>error_message</span> <span class='hcl-Symbol def-Symbol'>=</span> <span class='hcl-StringEdge def-StringEdge def-String'>"</span><span class='hcl-String def-String'>The image_id value must be a valid AMI id, starting with </span><span class='hcl-StringContent def-StringContent def-String'>\"</span><span class='hcl-String def-String'>ami-</span><span class='hcl-StringContent def-StringContent def-String'>\"</span><span class='hcl-String def-String'>.</span><span class='hcl-StringEdge def-StringEdge def-String'>"</span>
+33:   <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+34: <span class='hcl-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+35: 
