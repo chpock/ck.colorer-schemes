@@ -50,6 +50,13 @@
         <filename>/\.tfvars$/i</filename>
     </prototype>
 
+    <prototype name="dockerfile" group="scripts" description="Dockerfile">
+        <location link="hrc/scripts/dockerfile.hrc"/>
+        <filename>/^[Dd]ockerfile\./</filename>
+        <filename>/^[Dd]ockerfile$/</filename>
+        <firstline>/^\s*FROM\b/</firstline>
+    </prototype>
+
 </hrc>
 <!-- ***** BEGIN LICENSE BLOCK *****
    - Version: MPL 1.1/GPL 2.0/LGPL 2.1
