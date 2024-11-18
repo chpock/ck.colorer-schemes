@@ -145,4 +145,9 @@ case x in # comment here
       ;; # comment here
 esac
 
+TEST=FOR VARIABLE=ASSIGNMENT \
+    AND=LINE CONTINUATION=TRUE \
+    ONE=MORE LINE="TRUE" echo 1 2 3
+
+
 

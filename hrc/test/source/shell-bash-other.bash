@@ -14,3 +14,7 @@ VAR[1]=foo<command       # <- here is 'VAR=foo' with redirected stdin
 VAR[1]=foo2>command      # <- here is 'VAR=foo2' redirected to 'command'
 VAR[1]=foo1<command      # <- here is 'VAR=foo1' with redirected stdin
 VAR[1]=foo1>&2           # <- here is 'VAR=foo1' with redirected stdout
+
+TEST=FOR VARIABLE=ASSIGNMENT \
+    AND=LINE CONTINUATION=TRUE \
+    ONE=MORE LINE="TRUE" echo 1 2 3
