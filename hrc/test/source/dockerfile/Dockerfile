@@ -524,5 +524,19 @@ SHELL ["echo", echo
 foo
 foo bar baz
 
+# Test dockerfile comments within shell commands
 
+RUN VAR1=1 \
+# comment
+    VAR2=2 \
+    # comment
+    echo 123 && \
+    #comment
+    echo 321 \
+    # comment
+         435 | foo; \
+    #comment
+    echo 123 | \
+    # comment
+    echo 321
 

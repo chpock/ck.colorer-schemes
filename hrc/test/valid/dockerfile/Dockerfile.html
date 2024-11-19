@@ -524,6 +524,20 @@
 523: <span class='dockerfile-Error def-Error'>foo</span>
 524: <span class='dockerfile-Error def-Error'>foo bar baz</span>
 525: 
-526: 
+526: <span class='dockerfile-Comment def-Comment def-Syntax'># Test dockerfile comments within shell commands</span>
 527: 
-528: 
+528: <span class='dockerfile-Instruction def-Keyword'>RUN</span> <span class='shell-posix-Variable def-Var'>VAR1</span><span class='shell-posix-Symbol def-Symbol'>=</span><span class='shell-posix-Number def-Number'>1</span> \
+529: <span class='dockerfile-Comment def-Comment def-Syntax'># comment</span>
+530:     <span class='shell-posix-Variable def-Var'>VAR2</span><span class='shell-posix-Symbol def-Symbol'>=</span><span class='shell-posix-Number def-Number'>2</span> \
+531: <span class='dockerfile-Comment def-Comment def-Syntax'>    # comment</span>
+532:     <span class='shell-posix-CommandBuiltin def-FunctionKeyword def-Keyword'>echo</span> <span class='shell-posix-Number def-Number'>123</span> <span class='shell-posix-Operator def-Operator def-Symbol'>&amp;&amp;</span> \
+533: <span class='dockerfile-Comment def-Comment def-Syntax'>    #comment</span>
+534:     <span class='shell-posix-CommandBuiltin def-FunctionKeyword def-Keyword'>echo</span> <span class='shell-posix-Number def-Number'>321</span> \
+535: <span class='dockerfile-Comment def-Comment def-Syntax'>    # comment</span>
+536:          <span class='shell-posix-Number def-Number'>435</span> <span class='shell-posix-Operator def-Operator def-Symbol'>|</span> foo<span class='shell-posix-SymbolStrong def-SymbolStrong def-Symbol'>;</span> \
+537: <span class='dockerfile-Comment def-Comment def-Syntax'>    #comment</span>
+538:     <span class='shell-posix-CommandBuiltin def-FunctionKeyword def-Keyword'>echo</span> <span class='shell-posix-Number def-Number'>123</span> <span class='shell-posix-Operator def-Operator def-Symbol'>|</span> \
+539: <span class='dockerfile-Comment def-Comment def-Syntax'>    # comment</span>
+540:     <span class='shell-posix-CommandBuiltin def-FunctionKeyword def-Keyword'>echo</span> <span class='shell-posix-Number def-Number'>321</span>
+541: 
+542: 
