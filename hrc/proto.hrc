@@ -13,6 +13,12 @@
         <firstline weight='3'>/^\#(!\s*.+(tcl|wi)sh\b)/</firstline>
     </prototype>
 
+    <prototype name="json" group="rare" description="JSON (Chpock)">
+        <location link="hrc/rare/json.hrc" />
+        <filename weight='5'>/\.json$/i</filename>
+        <firstline weight="5">/^\s*\{\s*"\w+":/i</firstline>
+    </prototype>
+
     <prototype name="shell-posix" group="scripts" description="Shell Scripts (POSIX)">
         <location link="hrc/scripts/shell-posix.hrc" />
         <filename weight='3'>/\.(sh|spec)$/i</filename>
