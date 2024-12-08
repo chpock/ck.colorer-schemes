@@ -87,7 +87,10 @@
 
     <block start="/^\s*(node)\M\(/" end="//" scheme="node" region01="MainMethod"/>
 
-    <inherit scheme="groovy"/>
+    <inherit scheme="groovy">
+        <virtual scheme="keywords" subst-scheme="pipeline-keywords"/>
+        <virtual scheme="groovy" subst-scheme="pipeline"/>
+    </inherit>
 
 </scheme>
 
@@ -103,8 +106,8 @@
         <virtual scheme="groovy:groovy" subst-scheme="groovy"/>
     </inherit>
 
-    <block start="/\b\M\w+(\s+\{|\(|\s+\w|\s+\$|\s+&quot;|\s+&apos;)?=/"
-        end="/~\w+\m(\s+\{|\(|\s+\w|\s+\$|\s+&quot;|\s+&apos;)?=/"
+    <block start="/\b\M\w+(\s*\{|\(|\s+\w|\s+\$|\s+&quot;|\s+&apos;)?=/"
+        end="/~\w+\m(\s*\{|\(|\s+\w|\s+\$|\s+&quot;|\s+&apos;)?=/"
         scheme="keywords"/>
 
 </scheme>

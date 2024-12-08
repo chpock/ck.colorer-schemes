@@ -1,7 +1,7 @@
 ﻿  0: properties <span class='def-Symbol'>=</span> <span class='def-Keyword'>null</span>
   1: <span class='def-Keyword'>def</span> loadProperties<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
-  2:     node <span class='def-SymbolStrong def-Symbol'>{</span>
-  3:         properties <span class='def-Symbol'>=</span> readProperties file<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${TESTGRID_HOME}</span><span class='def-String'>/config.properties</span><span class='def-StringEdge def-String'>"</span>
+  2:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>node</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+  3:         properties <span class='def-Symbol'>=</span> <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>readProperties</span> file<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${TESTGRID_HOME}</span><span class='def-String'>/config.properties</span><span class='def-StringEdge def-String'>"</span>
   4:     <span class='def-SymbolStrong def-Symbol'>}</span>
   5: <span class='def-SymbolStrong def-Symbol'>}</span>
   6: <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>pipeline</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>

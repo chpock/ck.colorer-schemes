@@ -2,13 +2,13 @@
   1: bucket <span class='def-Symbol'>=</span> <span class='def-Keyword'>null</span>
   2: 
   3: <span class='def-Keyword'>def</span> loadProperties<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
-  4:   node <span class='def-SymbolStrong def-Symbol'>{</span>
-  5:     properties <span class='def-Symbol'>=</span> readProperties file<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${TESTGRID_HOME}</span><span class='def-String'>/config.properties</span><span class='def-StringEdge def-String'>"</span>
+  4:   <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>node</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+  5:     properties <span class='def-Symbol'>=</span> <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>readProperties</span> file<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${TESTGRID_HOME}</span><span class='def-String'>/config.properties</span><span class='def-StringEdge def-String'>"</span>
   6:   <span class='def-SymbolStrong def-Symbol'>}</span>
   7: <span class='def-SymbolStrong def-Symbol'>}</span>
   8: 
   9: <span class='def-Keyword'>def</span> setS3BucketName<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
- 10:       script <span class='def-SymbolStrong def-Symbol'>{</span>
+ 10:       <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
  11:         loadProperties<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
  12:       <span class='def-SymbolStrong def-Symbol'>}</span>
  13:       bucket <span class='def-Symbol'>=</span> properties<span class='def-SymbolStrong def-Symbol'>[</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>AWS_S3_BUCKET_NAME</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>]</span>
@@ -18,13 +18,13 @@
  17: <span class='def-SymbolStrong def-Symbol'>}</span>
  18: 
  19: <span class='def-Keyword'>def</span> uploadToS3<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
- 20:   sh <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+ 20:   <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
  21: <span class='def-String'>      aws s3 sync </span><span class='def-VarStrong def-Var'>${TESTGRID_HOME}</span><span class='def-String'>/jobs/</span><span class='def-VarStrong def-Var'>${PRODUCT}</span><span class='def-String'>/builds/ s3://</span><span class='def-VarStrong def-Var'>${bucket}</span><span class='def-String'>/artifacts/jobs/</span><span class='def-VarStrong def-Var'>${PRODUCT}</span><span class='def-String'>/builds --include "*"</span>
  22: <span class='def-String'>      </span><span class='def-StringEdge def-String'>"""</span>
  23: <span class='def-SymbolStrong def-Symbol'>}</span>
  24: 
  25: <span class='def-Keyword'>def</span> truncateTestRunLog<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
- 26:   sh <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+ 26:   <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
  27: <span class='def-String'>    if [ -d "</span><span class='def-VarStrong def-Var'>${TESTGRID_HOME}</span><span class='def-String'>/jobs/</span><span class='def-VarStrong def-Var'>${PRODUCT}</span><span class='def-String'>/builds" ]; then</span>
  28: <span class='def-String'>        cd </span><span class='def-VarStrong def-Var'>${TESTGRID_HOME}</span><span class='def-String'>/jobs/</span><span class='def-VarStrong def-Var'>${PRODUCT}</span><span class='def-String'></span>
  29: <span class='def-String'>      for file in builds/*/test-run.log ; do</span>
@@ -44,15 +44,15 @@
  43: <span class='def-Keyword'>def</span> runPlan<span class='def-SymbolStrong def-Symbol'>(</span>tPlan<span class='def-Symbol'>,</span> node<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
  44:   name <span class='def-Symbol'>=</span> getParameters<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>/testgrid/testgrid-home/jobs/</span><span class='def-VarStrong def-Var'>${PRODUCT}</span><span class='def-String'>/</span><span class='def-VarStrong def-Var'>${tPlan}</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
  45:   notifyBuild<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>STARTED</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>parallel </span><span class='def-Comment def-Syntax'>\n</span><span class='def-String'> Infra : </span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span> name<span class='def-Symbol'>,</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>#build_status_verbose</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
- 46:   echo <span class='def-StringEdge def-String'>"</span><span class='def-String'>Executing Test Plan : </span><span class='def-VarStrong def-Var'>${tPlan}</span><span class='def-String'> On node : </span><span class='def-VarStrong def-Var'>${node}</span><span class='def-StringEdge def-String'>"</span>
+ 46:   <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>Executing Test Plan : </span><span class='def-VarStrong def-Var'>${tPlan}</span><span class='def-String'> On node : </span><span class='def-VarStrong def-Var'>${node}</span><span class='def-StringEdge def-String'>"</span>
  47:   <span class='def-Keyword'>try</span> <span class='def-SymbolStrong def-Symbol'>{</span>
- 48:     echo <span class='def-StringEdge def-String'>"</span><span class='def-String'>Running Test-Plan: </span><span class='def-VarStrong def-Var'>${tPlan}</span><span class='def-StringEdge def-String'>"</span>
- 49:     sh <span class='def-StringEdge def-String'>"</span><span class='def-String'>java -version</span><span class='def-StringEdge def-String'>"</span>
- 50:     unstash name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${JOB_CONFIG_YAML}</span><span class='def-StringEdge def-String'>"</span>
- 51:     dir<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${PWD}</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
- 52:       unstash name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>test-plans</span><span class='def-StringEdge def-String'>"</span>
+ 48:     <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>Running Test-Plan: </span><span class='def-VarStrong def-Var'>${tPlan}</span><span class='def-StringEdge def-String'>"</span>
+ 49:     <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>java -version</span><span class='def-StringEdge def-String'>"</span>
+ 50:     <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>unstash</span> name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${JOB_CONFIG_YAML}</span><span class='def-StringEdge def-String'>"</span>
+ 51:     <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>dir</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${PWD}</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 52:       <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>unstash</span> name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>test-plans</span><span class='def-StringEdge def-String'>"</span>
  53:     <span class='def-SymbolStrong def-Symbol'>}</span>
- 54:     sh <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+ 54:     <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
  55: <span class='def-String'>      echo "Before PWD"</span>
  56: <span class='def-String'>      pwd</span>
  57: <span class='def-String'>      cd </span><span class='def-VarStrong def-Var'>${PWD}</span><span class='def-String'>/</span><span class='def-VarStrong def-Var'>${SCENARIOS_LOCATION}</span><span class='def-String'></span>
@@ -61,25 +61,25 @@
  60: <span class='def-String'>      ./testgrid run-testplan --product </span><span class='def-VarStrong def-Var'>${PRODUCT}</span><span class='def-String'> \</span>
  61: <span class='def-String'>      --file "</span><span class='def-VarStrong def-Var'>${PWD}</span><span class='def-String'>/</span><span class='def-VarStrong def-Var'>${tPlan}</span><span class='def-String'>"</span>
  62: <span class='def-String'>      </span><span class='def-StringEdge def-String'>"""</span>
- 63:     script <span class='def-SymbolStrong def-Symbol'>{</span>
+ 63:     <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
  64:       truncateTestRunLog<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
  65:     <span class='def-SymbolStrong def-Symbol'>}</span>
  66:   <span class='def-SymbolStrong def-Symbol'>}</span> <span class='def-Keyword'>catch</span> <span class='def-SymbolStrong def-Symbol'>(</span>Exception err<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
- 67:     echo <span class='def-StringEdge def-String'>"</span><span class='def-String'>Error : </span><span class='def-VarStrong def-Var'>${err}</span><span class='def-StringEdge def-String'>"</span>
+ 67:     <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>Error : </span><span class='def-VarStrong def-Var'>${err}</span><span class='def-StringEdge def-String'>"</span>
  68:     currentBuild<span class='def-Symbol'>.</span>result <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>UNSTABLE</span><span class='def-StringEdge def-String'>'</span>
  69:   <span class='def-SymbolStrong def-Symbol'>}</span> <span class='def-Keyword'>finally</span> <span class='def-SymbolStrong def-Symbol'>{</span>
  70:     notifyBuild<span class='def-SymbolStrong def-Symbol'>(</span>currentBuild<span class='def-Symbol'>.</span>result<span class='def-Symbol'>,</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>Parallel </span><span class='def-Comment def-Syntax'>\n</span><span class='def-String'> Infra : </span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span> name<span class='def-Symbol'>,</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>#build_status_verbose</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
  71:   <span class='def-SymbolStrong def-Symbol'>}</span>
- 72:   echo <span class='def-StringEdge def-String'>"</span><span class='def-String'>RESULT: </span><span class='def-VarStrong def-Var'>${currentBuild.result}</span><span class='def-StringEdge def-String'>"</span>
+ 72:   <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>RESULT: </span><span class='def-VarStrong def-Var'>${currentBuild.result}</span><span class='def-StringEdge def-String'>"</span>
  73: 
- 74:   script <span class='def-SymbolStrong def-Symbol'>{</span>
+ 74:   <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
  75:     uploadToS3<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
  76:   <span class='def-SymbolStrong def-Symbol'>}</span>
  77: <span class='def-SymbolStrong def-Symbol'>}</span>
  78: 
  79: 
  80: <span class='def-Keyword'>def</span> getParameters<span class='def-SymbolStrong def-Symbol'>(</span>file<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
- 81:   <span class='def-Keyword'>def</span> tpyaml <span class='def-Symbol'>=</span> readFile<span class='def-SymbolStrong def-Symbol'>(</span>file<span class='def-SymbolStrong def-Symbol'>)</span>
+ 81:   <span class='def-Keyword'>def</span> tpyaml <span class='def-Symbol'>=</span> <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>readFile</span><span class='def-SymbolStrong def-Symbol'>(</span>file<span class='def-SymbolStrong def-Symbol'>)</span>
  82:   <span class='def-Keyword'>def</span> m <span class='def-Symbol'>=</span> tpyaml <span class='def-Symbol'>=</span><span class='def-Symbol'>~</span> <span class='def-StringEdge def-String'>/</span><span class='def-String'>(parameters:)([A-z \n:'0-9\.-]*)(provisioners)</span><span class='def-StringEdge def-String'>/</span>
  83:   <span class='def-LineComment def-Comment def-Syntax'>// echo tpyaml</span>
  84:   <span class='def-Keyword'>def</span> params <span class='def-Symbol'>=</span> m<span class='def-SymbolStrong def-Symbol'>[</span><span class='def-NumberDec def-Number'>0</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>[</span><span class='def-NumberDec def-Number'>2</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-Symbol'>.</span>trim<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span><span class='def-Symbol'>.</span>split<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-Comment def-Syntax'>\n</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
@@ -89,7 +89,7 @@
  88:   <span class='def-Keyword'>for</span> <span class='def-SymbolStrong def-Symbol'>(</span><span class='def-FunctionKeyword def-Keyword'>String</span> s <span class='def-Symbol'>:</span> params<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
  89:     name <span class='def-Symbol'>+</span><span class='def-Symbol'>=</span> s<span class='def-Symbol'>.</span>split<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>:</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span><span class='def-SymbolStrong def-Symbol'>[</span><span class='def-NumberDec def-Number'>1</span><span class='def-SymbolStrong def-Symbol'>]</span>
  90:   <span class='def-SymbolStrong def-Symbol'>}</span>
- 91:   echo <span class='def-StringEdge def-String'>"</span><span class='def-String'>This is the name</span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span> name
+ 91:   <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>This is the name</span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span> name
  92:   <span class='def-Keyword'>return</span> name
  93: <span class='def-SymbolStrong def-Symbol'>}</span>
  94: 
