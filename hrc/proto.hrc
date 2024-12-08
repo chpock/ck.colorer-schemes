@@ -63,6 +63,19 @@
         <firstline>/^\s*FROM\b/</firstline>
     </prototype>
 
+    <prototype name="jenkinsfile" group="scripts" description="Jenkinsfile">
+        <location link="hrc/scripts/jenkinsfile.hrc"/>
+        <filename>/^Jenkins[Ff]ile\..+$/</filename>
+        <filename>/^.+\.Jenkins[Ff]ile/</filename>
+        <filename>/^Jenkins[Ff]ile$/</filename>
+        <filename>/\.gdsl$/i</filename>
+        <firstline weight='3'>/(^|\n)\s*pipeline\s+\{\s*$/</firstline>
+        <firstline weight='3'>/(^|\n)\s*node\s+\{\s*$/</firstline>
+        <firstline weight='3'>/(^|\n)\s*node\([^\)]\)\s+\{\s*$/</firstline>
+        <firstline weight='3'>/(^|\n)\s*import\s+org\.jenkinsci\./</firstline>
+    </prototype>
+
+
 </hrc>
 <!-- ***** BEGIN LICENSE BLOCK *****
    - Version: MPL 1.1/GPL 2.0/LGPL 2.1

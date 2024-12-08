@@ -1,0 +1,185 @@
+﻿  0: ALERT_VIA_EMAIL <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>anthonyl22@gamil.com</span><span class='def-StringEdge def-String'>'</span>
+  1: ALERT_VIA_SLACK <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>#sample-channel</span><span class='def-StringEdge def-String'>'</span>
+  2: SLACK_TOKEN <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>ADD_HERE_FOR_YOU</span><span class='def-StringEdge def-String'>'</span>
+  3: <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>node</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+  4: 
+  5:     <span class='def-Keyword'>def</span> APP_KEY <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>1234</span><span class='def-StringEdge def-String'>'</span>
+  6: 
+  7:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Prepare</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+  8:         <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>properties</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span>
+  9:                 buildDiscarder<span class='def-SymbolStrong def-Symbol'>(</span>
+ 10:                         logRotator<span class='def-SymbolStrong def-Symbol'>(</span>
+ 11:                                 artifactDaysToKeepStr<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>1</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 12:                                 artifactNumToKeepStr<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>3</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 13:                                 daysToKeepStr<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>3</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 14:                                 numToKeepStr<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>3</span><span class='def-StringEdge def-String'>'</span>
+ 15:                         <span class='def-SymbolStrong def-Symbol'>)</span>
+ 16:                 <span class='def-SymbolStrong def-Symbol'>)</span><span class='def-Symbol'>,</span>
+ 17:                 disableConcurrentBuilds<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 18:         <span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 19: 
+ 20:     <span class='def-SymbolStrong def-Symbol'>}</span>
+ 21: 
+ 22:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Sample</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 23: 
+ 24:         <span class='def-Keyword'>def</span> headers <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>'-H' 'Skip-Validation: true' '-H' 'AppKey: </span><span class='def-VarStrong def-Var'>${TST_APP_KEY}</span><span class='def-String'>'</span><span class='def-StringEdge def-String'>"</span>
+ 25:         <span class='def-Keyword'>def</span> serviceUrl <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>sample/webservice</span><span class='def-StringEdge def-String'>'</span>
+ 26:         <span class='def-Keyword'>def</span> environment <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>test</span><span class='def-StringEdge def-String'>'</span>
+ 27:         <span class='def-Keyword'>def</span> expectedResultSnippet <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Hello</span><span class='def-StringEdge def-String'>'</span>
+ 28:         <span class='def-Keyword'>def</span> serviceDescription <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Hello World Service</span><span class='def-StringEdge def-String'>'</span>
+ 29:         executeCurlWithHeaders<span class='def-SymbolStrong def-Symbol'>(</span>environment<span class='def-Symbol'>,</span> headers<span class='def-Symbol'>,</span> serviceUrl<span class='def-Symbol'>,</span> expectedResultSnippet<span class='def-Symbol'>,</span> serviceDescription<span class='def-SymbolStrong def-Symbol'>)</span>
+ 30: 
+ 31:     <span class='def-SymbolStrong def-Symbol'>}</span>
+ 32: 
+ 33: <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+ 34: 
+ 35: <span class='def-Comment def-Syntax'>/**</span>
+ 36: <span class='def-Comment def-Syntax'> * Run the desired CURL request that requires Headers to endpoints.</span>
+ 37: <span class='def-Comment def-Syntax'> *</span>
+ 38: <span class='def-Comment def-Syntax'> * @param testEnvironment environment to executeCurlWithHeaders in</span>
+ 39: <span class='def-Comment def-Syntax'> * @param headers curl HEADERS to include</span>
+ 40: <span class='def-Comment def-Syntax'> * @param serviceUrl API endpoint</span>
+ 41: <span class='def-Comment def-Syntax'> * @param serviceDescription API service description to include in email alert</span>
+ 42: <span class='def-Comment def-Syntax'> */</span>
+ 43: <span class='def-Keyword'>private</span> <span class='def-FunctionKeyword def-Keyword'>String</span> executeCurlWithHeaders<span class='def-SymbolStrong def-Symbol'>(</span>testEnvironment<span class='def-Symbol'>,</span> headers<span class='def-Symbol'>,</span> serviceUrl<span class='def-Symbol'>,</span> expectedResultSnippet<span class='def-Symbol'>,</span> serviceDescription<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 44: 
+ 45:     currentBuild<span class='def-Symbol'>.</span>result <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>SUCCESS</span><span class='def-StringEdge def-String'>'</span>
+ 46:     <span class='def-FunctionKeyword def-Keyword'>String</span> httpStatus <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Unknown</span><span class='def-StringEdge def-String'>'</span>
+ 47:     <span class='def-Keyword'>def</span> urlToTest <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>https://</span><span class='def-VarStrong def-Var'>${testEnvironment}</span><span class='def-String'>.api.sample.com/sample-api/</span><span class='def-VarStrong def-Var'>${serviceUrl}</span><span class='def-StringEdge def-String'>"</span>
+ 48: 
+ 49:     <span class='def-Keyword'>try</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 50: 
+ 51:         timeout<span class='def-SymbolStrong def-Symbol'>(</span>time<span class='def-Symbol'>:</span> <span class='def-NumberDec def-Number'>10</span><span class='def-Symbol'>,</span> unit<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>SECONDS</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 52: 
+ 53:             httpStatus <span class='def-Symbol'>=</span> sh<span class='def-SymbolStrong def-Symbol'>(</span>script<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>curl -LI  </span><span class='def-VarStrong def-Var'>${headers}</span><span class='def-String'> </span><span class='def-Comment def-Syntax'>\"</span><span class='def-VarStrong def-Var'>${urlToTest}</span><span class='def-Comment def-Syntax'>\"</span><span class='def-String'> -o /dev/null -w '%{http_code}' -s</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span> returnStdout<span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 54:             <span class='def-Keyword'>def</span> response <span class='def-Symbol'>=</span> sh<span class='def-SymbolStrong def-Symbol'>(</span>script<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>curl </span><span class='def-VarStrong def-Var'>${headers}</span><span class='def-String'> </span><span class='def-Comment def-Syntax'>\"</span><span class='def-VarStrong def-Var'>${urlToTest}</span><span class='def-Comment def-Syntax'>\"</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span> returnStdout<span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 55: 
+ 56:             <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span><span class='def-Symbol'>!</span>response<span class='def-Symbol'>.</span>contains<span class='def-SymbolStrong def-Symbol'>(</span>expectedResultSnippet<span class='def-SymbolStrong def-Symbol'>)</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 57:                 <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>Integer<span class='def-Symbol'>.</span>parseInt<span class='def-SymbolStrong def-Symbol'>(</span>httpStatus<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-Symbol'>&lt;</span> <span class='def-NumberDec def-Number'>399</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 58:                     httpStatus <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Data Unavailable</span><span class='def-StringEdge def-String'>'</span>
+ 59:                 <span class='def-SymbolStrong def-Symbol'>}</span>
+ 60:                 currentBuild<span class='def-Symbol'>.</span>result <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>FAILURE</span><span class='def-StringEdge def-String'>'</span>
+ 61:                 sendEmailNotification<span class='def-SymbolStrong def-Symbol'>(</span>currentBuild<span class='def-Symbol'>.</span>result<span class='def-Symbol'>,</span> urlToTest<span class='def-Symbol'>,</span> testEnvironment<span class='def-Symbol'>,</span> serviceDescription<span class='def-Symbol'>,</span> httpStatus<span class='def-SymbolStrong def-Symbol'>)</span>
+ 62:                 echo <span class='def-StringEdge def-String'>"</span><span class='def-String'>Service DOWN :: </span><span class='def-VarStrong def-Var'>${serviceDescription}</span><span class='def-String'>'</span><span class='def-StringEdge def-String'>"</span>
+ 63:                 showResponse<span class='def-SymbolStrong def-Symbol'>(</span>response<span class='def-SymbolStrong def-Symbol'>)</span>
+ 64: 
+ 65:             <span class='def-SymbolStrong def-Symbol'>}</span> <span class='def-Keyword'>else</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 66:                 echo <span class='def-StringEdge def-String'>"</span><span class='def-String'>Service UP :: </span><span class='def-VarStrong def-Var'>${serviceDescription}</span><span class='def-String'>'</span><span class='def-StringEdge def-String'>"</span>
+ 67:                 showResponse<span class='def-SymbolStrong def-Symbol'>(</span>response<span class='def-SymbolStrong def-Symbol'>)</span>
+ 68:             <span class='def-SymbolStrong def-Symbol'>}</span>
+ 69: 
+ 70:         <span class='def-SymbolStrong def-Symbol'>}</span>
+ 71: 
+ 72:     <span class='def-SymbolStrong def-Symbol'>}</span> <span class='def-Keyword'>catch</span> <span class='def-SymbolStrong def-Symbol'>(</span>err<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 73:         currentBuild<span class='def-Symbol'>.</span>result <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>UNSTABLE</span><span class='def-StringEdge def-String'>'</span>
+ 74:     <span class='def-SymbolStrong def-Symbol'>}</span>
+ 75: 
+ 76:     <span class='def-LineComment def-Comment def-Syntax'>//sendSlackNotification(currentBuild.result, urlToTest, serviceDescription, httpStatus)</span>
+ 77: <span class='def-SymbolStrong def-Symbol'>}</span>
+ 78: 
+ 79: <span class='def-Comment def-Syntax'>/**</span>
+ 80: <span class='def-Comment def-Syntax'> * Print the response</span>
+ 81: <span class='def-Comment def-Syntax'> * @param response api response</span>
+ 82: <span class='def-Comment def-Syntax'> */</span>
+ 83: <span class='def-Keyword'>private</span> <span class='def-Keyword'>void</span> showResponse<span class='def-SymbolStrong def-Symbol'>(</span>response<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 84: 
+ 85:     echo <span class='def-StringEdge def-String'>'</span><span class='def-String'>------------------------RESPONSE----------------------------------</span><span class='def-StringEdge def-String'>'</span>
+ 86:     echo response
+ 87:     echo <span class='def-StringEdge def-String'>'</span><span class='def-String'>------------------------------------------------------------------</span><span class='def-StringEdge def-String'>'</span>
+ 88: <span class='def-SymbolStrong def-Symbol'>}</span>
+ 89: 
+ 90: <span class='def-Comment def-Syntax'>/**</span>
+ 91: <span class='def-Comment def-Syntax'> * Send an email based on runtime settings.</span>
+ 92: <span class='def-Comment def-Syntax'> *</span>
+ 93: <span class='def-Comment def-Syntax'> * @param currentResult current test build result</span>
+ 94: <span class='def-Comment def-Syntax'> * @param url URL endpoint to test</span>
+ 95: <span class='def-Comment def-Syntax'> * @param environment environment to executeCurlWithHeaders in</span>
+ 96: <span class='def-Comment def-Syntax'> * @param description service endpoint identifier</span>
+ 97: <span class='def-Comment def-Syntax'> * @param httpStatus response code</span>
+ 98: <span class='def-Comment def-Syntax'> */</span>
+ 99: <span class='def-Keyword'>private</span> <span class='def-Keyword'>void</span> sendEmailNotification<span class='def-SymbolStrong def-Symbol'>(</span>currentResult<span class='def-Symbol'>,</span> urlToTest<span class='def-Symbol'>,</span> environment<span class='def-Symbol'>,</span> description<span class='def-Symbol'>,</span> httpStatus<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+100: 
+101:     <span class='def-Keyword'>def</span> DEFAULT_EMAIL <span class='def-Symbol'>=</span> ALERT_VIA_EMAIL
+102:     <span class='def-Keyword'>def</span> subject <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>HealthCheck :: </span><span class='def-VarStrong def-Var'>${description}</span><span class='def-String'> :: </span><span class='def-VarStrong def-Var'>${currentResult}</span><span class='def-String'>!</span><span class='def-StringEdge def-String'>"</span>
+103:     <span class='def-Keyword'>def</span> body <span class='def-Symbol'>=</span> getBody<span class='def-SymbolStrong def-Symbol'>(</span>currentResult<span class='def-Symbol'>,</span> environment<span class='def-Symbol'>,</span> urlToTest<span class='def-Symbol'>,</span> description<span class='def-Symbol'>,</span> httpStatus<span class='def-Symbol'>,</span> BUILD_NUMBER<span class='def-Symbol'>,</span> BUILD_TIMESTAMP<span class='def-Symbol'>,</span> env<span class='def-Symbol'>.</span>BUILD_URL<span class='def-SymbolStrong def-Symbol'>)</span>
+104:     emailext<span class='def-SymbolStrong def-Symbol'>(</span>
+105:             recipientProviders<span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span>
+106:                     <span class='def-SymbolStrong def-Symbol'>[</span><span class='jenkinsfile-Constant def-Constant def-Keyword'>$class</span><span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>DevelopersRecipientProvider</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-Symbol'>,</span>
+107:                     <span class='def-SymbolStrong def-Symbol'>[</span><span class='jenkinsfile-Constant def-Constant def-Keyword'>$class</span><span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>CulpritsRecipientProvider</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-Symbol'>,</span>
+108:                     <span class='def-SymbolStrong def-Symbol'>[</span><span class='jenkinsfile-Constant def-Constant def-Keyword'>$class</span><span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>RequesterRecipientProvider</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-Symbol'>,</span>
+109:                     <span class='def-SymbolStrong def-Symbol'>[</span><span class='jenkinsfile-Constant def-Constant def-Keyword'>$class</span><span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>FailingTestSuspectsRecipientProvider</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-Symbol'>,</span>
+110:                     <span class='def-SymbolStrong def-Symbol'>[</span><span class='jenkinsfile-Constant def-Constant def-Keyword'>$class</span><span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>FirstFailingBuildSuspectsRecipientProvider</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-Symbol'>,</span>
+111:                     <span class='def-SymbolStrong def-Symbol'>[</span><span class='jenkinsfile-Constant def-Constant def-Keyword'>$class</span><span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>UpstreamComitterRecipientProvider</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>]</span>
+112:             <span class='def-SymbolStrong def-Symbol'>]</span><span class='def-Symbol'>,</span>
+113:             attachLog<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span>
+114:             subject<span class='def-Symbol'>:</span> subject<span class='def-Symbol'>,</span>
+115:             body<span class='def-Symbol'>:</span> body<span class='def-Symbol'>,</span>
+116:             to<span class='def-Symbol'>:</span> DEFAULT_EMAIL<span class='def-Symbol'>,</span>
+117:             mimeType<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>text/html</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+118:             replyTo<span class='def-Symbol'>:</span> env<span class='def-Symbol'>.</span>DEFAULT_REPLYTO
+119:     <span class='def-SymbolStrong def-Symbol'>)</span>
+120: <span class='def-SymbolStrong def-Symbol'>}</span>
+121: 
+122: <span class='def-Comment def-Syntax'>/**</span>
+123: <span class='def-Comment def-Syntax'> *</span>
+124: <span class='def-Comment def-Syntax'> *  Create beautified HTML based report</span>
+125: <span class='def-Comment def-Syntax'> *</span>
+126: <span class='def-Comment def-Syntax'> * @param result current build result</span>
+127: <span class='def-Comment def-Syntax'> * @param environment environment being checked</span>
+128: <span class='def-Comment def-Syntax'> * @param urlToTest URL endpoint to test</span>
+129: <span class='def-Comment def-Syntax'> * @param description service name being checked</span>
+130: <span class='def-Comment def-Syntax'> * @param httpStatus response code</span>
+131: <span class='def-Comment def-Syntax'> * @param buildNumber jenkins build number</span>
+132: <span class='def-Comment def-Syntax'> * @param buildTime build timestamp</span>
+133: <span class='def-Comment def-Syntax'> * @param buildUrl build url</span>
+134: <span class='def-Comment def-Syntax'> * @return HTML report</span>
+135: <span class='def-Comment def-Syntax'> */</span>
+136: <span class='def-Keyword'>static</span> <span class='def-FunctionKeyword def-Keyword'>String</span> getBody<span class='def-SymbolStrong def-Symbol'>(</span>result<span class='def-Symbol'>,</span> environment<span class='def-Symbol'>,</span> urlToTest<span class='def-Symbol'>,</span> description<span class='def-Symbol'>,</span> httpStatus<span class='def-Symbol'>,</span> buildNumber<span class='def-Symbol'>,</span> buildTime<span class='def-Symbol'>,</span> buildUrl<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+137: 
+138:     <span class='def-FunctionKeyword def-Keyword'>String</span> emailBody <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>&lt;!DOCTYPE html>&lt;html lang='en'></span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+139:             <span class='def-StringEdge def-String'>"</span><span class='def-String'>&lt;head>&lt;meta charset='UTF-8'>&lt;style>table {margin-bottom: 40px;}table thead th {padding-right:60px; white-space: nowrap;} table tbody td.content {vertical-align:top;}&lt;/style>&lt;/head></span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+140:             <span class='def-StringEdge def-String'>"</span><span class='def-String'>&lt;body>&lt;table>&lt;thead></span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+141:             <span class='def-StringEdge def-String'>"</span><span class='def-String'>&lt;th>Result&lt;/th>&lt;th>Environment&lt;/th>&lt;th>Service&lt;/th>&lt;th>Response&lt;/th>&lt;th>Build #&lt;/th>&lt;th>Build Time&lt;/th>&lt;th>URL&lt;/th></span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+142:             <span class='def-StringEdge def-String'>"</span><span class='def-String'>&lt;/thead>&lt;tbody>&lt;tr></span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+143:             <span class='def-StringEdge def-String'>"</span><span class='def-String'>&lt;td class='content'>&lt;a href='</span><span class='def-VarStrong def-Var'>${buildUrl}</span><span class='def-String'>console' target='_blank'></span><span class='def-VarStrong def-Var'>${result}</span><span class='def-String'>&lt;/a>&lt;/td></span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+144:             <span class='def-StringEdge def-String'>"</span><span class='def-String'>&lt;td class='content'></span><span class='def-VarStrong def-Var'>${environment}</span><span class='def-String'>&lt;/td></span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+145:             <span class='def-StringEdge def-String'>"</span><span class='def-String'>&lt;td class='content'></span><span class='def-VarStrong def-Var'>${description}</span><span class='def-String'>&lt;/td></span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+146:             <span class='def-StringEdge def-String'>"</span><span class='def-String'>&lt;td class='content'></span><span class='def-VarStrong def-Var'>${httpStatus}</span><span class='def-String'>&lt;/td></span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+147:             <span class='def-StringEdge def-String'>"</span><span class='def-String'>&lt;td class='content'>&lt;a href='</span><span class='def-VarStrong def-Var'>${buildUrl}</span><span class='def-String'>console' target='_blank'></span><span class='def-VarStrong def-Var'>${buildNumber}</span><span class='def-String'>&lt;/a>&lt;/td></span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+148:             <span class='def-StringEdge def-String'>"</span><span class='def-String'>&lt;td class='content'></span><span class='def-VarStrong def-Var'>${buildTime}</span><span class='def-String'>&lt;/td></span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+149:             <span class='def-StringEdge def-String'>"</span><span class='def-String'>&lt;td class='content'></span><span class='def-VarStrong def-Var'>${urlToTest}</span><span class='def-String'>&lt;/td></span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+150:             <span class='def-StringEdge def-String'>"</span><span class='def-String'>&lt;/tr>&lt;/tbody>&lt;/table>&lt;/body>&lt;/html></span><span class='def-StringEdge def-String'>"</span>
+151:     <span class='def-Keyword'>return</span> emailBody
+152: <span class='def-SymbolStrong def-Symbol'>}</span>
+153: 
+154: <span class='def-Comment def-Syntax'>/**</span>
+155: <span class='def-Comment def-Syntax'> * Send a SLACK notification based on runtime settings.</span>
+156: <span class='def-Comment def-Syntax'> *</span>
+157: <span class='def-Comment def-Syntax'> * @param currentResult current build result</span>
+158: <span class='def-Comment def-Syntax'> * @param urlToTest URL endpoint to test</span>
+159: <span class='def-Comment def-Syntax'> * @param description service endpoint identifier</span>
+160: <span class='def-Comment def-Syntax'> * @param httpStatus response code</span>
+161: <span class='def-Comment def-Syntax'> */</span>
+162: <span class='def-Keyword'>private</span> <span class='def-Keyword'>void</span> sendSlackNotification<span class='def-SymbolStrong def-Symbol'>(</span>currentResult<span class='def-Symbol'>,</span> urlToTest<span class='def-Symbol'>,</span> description<span class='def-Symbol'>,</span> httpStatus<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+163: 
+164:     <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>currentBuild<span class='def-Symbol'>.</span>result <span class='def-Symbol'>!</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>SUCCESS</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+165: 
+166:         <span class='def-FunctionKeyword def-Keyword'>String</span> slackColor <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>#00FF00</span><span class='def-StringEdge def-String'>'</span>
+167:         <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>currentResult <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>FAILURE</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+168:             slackColor <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>#FF0000</span><span class='def-StringEdge def-String'>'</span>
+169:         <span class='def-SymbolStrong def-Symbol'>}</span> <span class='def-Keyword'>else</span> <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>currentResult <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>UNSTABLE</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+170:             slackColor <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>#FFFF00</span><span class='def-StringEdge def-String'>'</span>
+171:         <span class='def-SymbolStrong def-Symbol'>}</span> <span class='def-Keyword'>else</span> <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>currentResult <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>ABORTED</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+172:             slackColor <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>#FFA500</span><span class='def-StringEdge def-String'>'</span>
+173:         <span class='def-SymbolStrong def-Symbol'>}</span>
+174: 
+175:         <span class='def-Keyword'>def</span> SLACK_CHANNEL <span class='def-Symbol'>=</span> ALERT_VIA_SLACK
+176:         <span class='def-Keyword'>def</span> message <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${description}</span><span class='def-String'> :: Status=</span><span class='def-VarStrong def-Var'>${httpStatus}</span><span class='def-String'> </span><span class='def-Comment def-Syntax'>\n</span><span class='def-String'> </span><span class='def-VarStrong def-Var'>${urlToTest}</span><span class='def-StringEdge def-String'>"</span>
+177:         slackSend channel<span class='def-Symbol'>:</span> SLACK_CHANNEL<span class='def-Symbol'>,</span>
+178:                 color<span class='def-Symbol'>:</span> slackColor<span class='def-Symbol'>,</span>
+179:                 message<span class='def-Symbol'>:</span> message<span class='def-Symbol'>,</span>
+180:                 token<span class='def-Symbol'>:</span> SLACK_TOKEN
+181: 
+182:     <span class='def-SymbolStrong def-Symbol'>}</span>
+183: 
+184: <span class='def-SymbolStrong def-Symbol'>}</span>

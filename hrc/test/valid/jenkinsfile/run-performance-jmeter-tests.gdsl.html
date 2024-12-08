@@ -1,0 +1,243 @@
+﻿  0: <span class='def-Comment def-Syntax'>#!</span><span class='def-VarStrong def-Var'>groovy</span>
+  1: <span class='def-Keyword'>import</span> org<span class='def-Symbol'>.</span>jenkinsci<span class='def-Symbol'>.</span>plugins<span class='def-Symbol'>.</span>workflow<span class='def-Symbol'>.</span>steps<span class='def-Symbol'>.</span>FlowInterruptedException
+  2: 
+  3: SLACK_TOKEN <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>ADD_HERE_FOR_YOU</span><span class='def-StringEdge def-String'>'</span>
+  4: SLACK_CHANNEL <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>ADD_HERE_FOR_YOU</span><span class='def-StringEdge def-String'>'</span>
+  5: jenkinsUser <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>JenkinsSystem</span><span class='def-StringEdge def-String'>'</span>
+  6: 
+  7: <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>node</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+  8: 
+  9:     <span class='def-Keyword'>def</span> BITBUCKET_CREDENTIALS_ID <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>ADD_HERE</span><span class='def-StringEdge def-String'>'</span>
+ 10:     <span class='def-Keyword'>def</span> BITBUCKET_SOURCE_PROJECT <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>ADD_HERE</span><span class='def-StringEdge def-String'>'</span>
+ 11:     <span class='def-Keyword'>def</span> JMETER_PATH <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>src/test/resources/jmeter</span><span class='def-StringEdge def-String'>'</span>
+ 12:     <span class='def-Keyword'>def</span> testPlan <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>my-jmeter-test-plan.jmx</span><span class='def-StringEdge def-String'>'</span>
+ 13:     <span class='def-Keyword'>def</span> branchName
+ 14:     <span class='def-Keyword'>def</span> numberOfThreads
+ 15:     <span class='def-Keyword'>def</span> rampUpPeriod
+ 16:     <span class='def-Keyword'>def</span> loopCount
+ 17: 
+ 18:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Configuration?</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 19: 
+ 20:         <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>properties</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span>
+ 21:                 buildDiscarder<span class='def-SymbolStrong def-Symbol'>(</span>
+ 22:                         logRotator<span class='def-SymbolStrong def-Symbol'>(</span>
+ 23:                                 artifactDaysToKeepStr<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>3</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 24:                                 artifactNumToKeepStr<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>5</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 25:                                 daysToKeepStr<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>3</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 26:                                 numToKeepStr<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>5</span><span class='def-StringEdge def-String'>'</span>
+ 27:                         <span class='def-SymbolStrong def-Symbol'>)</span>
+ 28:                 <span class='def-SymbolStrong def-Symbol'>)</span><span class='def-Symbol'>,</span>
+ 29:                 disableConcurrentBuilds<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 30:         <span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 31: 
+ 32:         <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Selections</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 33: 
+ 34:             testPlan <span class='def-Symbol'>=</span> <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>input</span><span class='def-SymbolStrong def-Symbol'>(</span>
+ 35:                     <span class='def-SymbolStrong def-Symbol'>[</span>
+ 36:                             message   <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Test Plan Selection</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 37:                             ok        <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>OK</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 38:                             parameters<span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span>
+ 39:                                     choice<span class='def-SymbolStrong def-Symbol'>(</span>
+ 40:                                             name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>testPlan</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 41:                                             choices<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${testPlan}</span><span class='def-Comment def-Syntax'>\n</span><span class='def-String'>another-test-plan.jmx</span><span class='def-Comment def-Syntax'>\n</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span>
+ 42:                                             description<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Please select a performance test plan</span><span class='def-StringEdge def-String'>'</span>
+ 43:                                     <span class='def-SymbolStrong def-Symbol'>)</span>
+ 44:                             <span class='def-SymbolStrong def-Symbol'>]</span>
+ 45:                     <span class='def-SymbolStrong def-Symbol'>]</span>
+ 46:             <span class='def-SymbolStrong def-Symbol'>)</span>
+ 47: 
+ 48:             numberOfThreads <span class='def-Symbol'>=</span>
+ 49:                     <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>input</span> id<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>numberOfThreads</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 50:                             message<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Number of Threads (users)</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 51:                             ok<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>RUN</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 52:                             parameters<span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span>
+ 53:                                     string<span class='def-SymbolStrong def-Symbol'>(</span>description<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'># of Users</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 54:                                             name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>numberOfThreads</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 55:                                             defaultValue<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>1</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span>
+ 56:                                             trim<span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 57:                             <span class='def-SymbolStrong def-Symbol'>]</span>
+ 58: 
+ 59:             rampUpPeriod <span class='def-Symbol'>=</span>
+ 60:                     <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>input</span> id<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>rampUpPeriod</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 61:                             message<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Ramp-up period (seconds)</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 62:                             ok<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>RUN</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 63:                             parameters<span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span>
+ 64:                                     string<span class='def-SymbolStrong def-Symbol'>(</span>description<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Ramp Up in seconds</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 65:                                             name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>rampUpPeriod</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 66:                                             defaultValue<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>60</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span>
+ 67:                                             trim<span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 68:                             <span class='def-SymbolStrong def-Symbol'>]</span>
+ 69: 
+ 70:             loopCount <span class='def-Symbol'>=</span>
+ 71:                     <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>input</span> id<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>loopCount</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 72:                             message<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Loop Count</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 73:                             ok<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>RUN</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 74:                             parameters<span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span>
+ 75:                                     string<span class='def-SymbolStrong def-Symbol'>(</span>description<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Test iteration count</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 76:                                             name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>loopCount</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 77:                                             defaultValue<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>1</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span>
+ 78:                                             trim<span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 79:                             <span class='def-SymbolStrong def-Symbol'>]</span>
+ 80: 
+ 81:         <span class='def-SymbolStrong def-Symbol'>}</span>
+ 82: 
+ 83:         <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Checkout</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 84:             <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>checkout</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span><span class='jenkinsfile-Constant def-Constant def-Keyword'>$class</span>                           <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>GitSCM</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 85:                       branches                         <span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span><span class='def-SymbolStrong def-Symbol'>[</span>name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>*/master</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-Symbol'>,</span>
+ 86:                       doGenerateSubmoduleConfigurations<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span>
+ 87:                       extensions                       <span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span><span class='def-SymbolStrong def-Symbol'>[</span><span class='jenkinsfile-Constant def-Constant def-Keyword'>$class</span><span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>CleanCheckout</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-Symbol'>,</span>
+ 88:                       submoduleCfg                     <span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-Symbol'>,</span>
+ 89:                       userRemoteConfigs                <span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span><span class='def-SymbolStrong def-Symbol'>[</span>credentialsId<span class='def-Symbol'>:</span> BITBUCKET_CREDENTIALS_ID<span class='def-Symbol'>,</span> url<span class='def-Symbol'>:</span> BITBUCKET_SOURCE_PROJECT<span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>]</span>
+ 90:             <span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 91:         <span class='def-SymbolStrong def-Symbol'>}</span>
+ 92: 
+ 93:         <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Branch?</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 94: 
+ 95:             <span class='def-Keyword'>try</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 96: 
+ 97:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>timeout</span><span class='def-SymbolStrong def-Symbol'>(</span>time<span class='def-Symbol'>:</span> <span class='def-NumberDec def-Number'>1</span><span class='def-Symbol'>,</span> unit<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>MINUTES</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 98: 
+ 99:                     <span class='def-Keyword'>def</span> branchNames <span class='def-Symbol'>=</span> <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span><span class='def-SymbolStrong def-Symbol'>(</span>
+100:                             script<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>git branch -r</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+101:                             returnStdout<span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span>
+102:                     <span class='def-SymbolStrong def-Symbol'>)</span><span class='def-Symbol'>.</span>trim<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+103: 
+104:                     branchName <span class='def-Symbol'>=</span> <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>input</span><span class='def-SymbolStrong def-Symbol'>(</span>
+105:                             <span class='def-SymbolStrong def-Symbol'>[</span>
+106:                                     message   <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Branch</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+107:                                     ok        <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>OK</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+108:                                     parameters<span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span>
+109:                                             choice<span class='def-SymbolStrong def-Symbol'>(</span>
+110:                                                     name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>branchName</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+111:                                                     choices<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${branchNames}</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span>
+112:                                                     description<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Please select a branch</span><span class='def-StringEdge def-String'>'</span>
+113:                                             <span class='def-SymbolStrong def-Symbol'>)</span>
+114:                                     <span class='def-SymbolStrong def-Symbol'>]</span>
+115:                             <span class='def-SymbolStrong def-Symbol'>]</span>
+116:                     <span class='def-SymbolStrong def-Symbol'>)</span>
+117:                     branchName<span class='def-Symbol'>.</span>trim<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+118:                 <span class='def-SymbolStrong def-Symbol'>}</span>
+119: 
+120:                 <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>branchName <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>none</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+121:                     <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>error</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>Invalid selection(s)</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
+122:                 <span class='def-SymbolStrong def-Symbol'>}</span>
+123: 
+124:             <span class='def-SymbolStrong def-Symbol'>}</span> <span class='def-Keyword'>catch</span> <span class='def-SymbolStrong def-Symbol'>(</span>err<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+125:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>------------------------------------------------------</span><span class='def-StringEdge def-String'>"</span>
+126:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>No User response, switching to default branch '</span><span class='def-VarStrong def-Var'>${branchName}</span><span class='def-String'>'</span><span class='def-StringEdge def-String'>"</span>
+127:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>------------------------------------------------------</span><span class='def-StringEdge def-String'>"</span>
+128:             <span class='def-SymbolStrong def-Symbol'>}</span>
+129: 
+130:         <span class='def-SymbolStrong def-Symbol'>}</span>
+131: 
+132:     <span class='def-SymbolStrong def-Symbol'>}</span>
+133: 
+134:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Checkout</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+135:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>checkout</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span><span class='jenkinsfile-Constant def-Constant def-Keyword'>$class</span>                           <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>GitSCM</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+136:                   branches                         <span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span><span class='def-SymbolStrong def-Symbol'>[</span>name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>*/master</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-Symbol'>,</span>
+137:                   doGenerateSubmoduleConfigurations<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span>
+138:                   extensions                       <span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span><span class='def-SymbolStrong def-Symbol'>[</span><span class='jenkinsfile-Constant def-Constant def-Keyword'>$class</span><span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>CleanCheckout</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-Symbol'>,</span>
+139:                   submoduleCfg                     <span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-Symbol'>,</span>
+140:                   userRemoteConfigs                <span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span><span class='def-SymbolStrong def-Symbol'>[</span>credentialsId<span class='def-Symbol'>:</span> BITBUCKET_CREDENTIALS_ID<span class='def-Symbol'>,</span> url<span class='def-Symbol'>:</span> BITBUCKET_SOURCE_PROJECT<span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>]</span>
+141:         <span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span>
+142:     <span class='def-SymbolStrong def-Symbol'>}</span>
+143: 
+144:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Verify</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+145:         <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>parallel</span><span class='def-SymbolStrong def-Symbol'>(</span>
+146:                 <span class='def-StringEdge def-String'>"</span><span class='def-String'>Branch Name</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+147:                     <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>Selected Branch Name '</span><span class='def-VarStrong def-Var'>${branchName}</span><span class='def-String'>'</span><span class='def-StringEdge def-String'>"</span>
+148:                 <span class='def-SymbolStrong def-Symbol'>}</span><span class='def-Symbol'>,</span>
+149:                 <span class='def-StringEdge def-String'>"</span><span class='def-String'>Test Plan?</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+150:                     <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>Running test plan '</span><span class='def-VarStrong def-Var'>${testPlan}</span><span class='def-String'>'</span><span class='def-StringEdge def-String'>"</span>
+151:                 <span class='def-SymbolStrong def-Symbol'>}</span><span class='def-Symbol'>,</span>
+152:                 <span class='def-StringEdge def-String'>"</span><span class='def-String'>Test Parameters</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+153:                     <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>Running '</span><span class='def-VarStrong def-Var'>${numberOfThreads}</span><span class='def-String'>' users, '</span><span class='def-VarStrong def-Var'>${loopCount}</span><span class='def-String'>' test iterations, with ramp up time of '</span><span class='def-VarStrong def-Var'>${rampUpPeriod}</span><span class='def-String'>' between users</span><span class='def-StringEdge def-String'>"</span>
+154:                 <span class='def-SymbolStrong def-Symbol'>}</span><span class='def-Symbol'>,</span>
+155:                 <span class='def-StringEdge def-String'>"</span><span class='def-String'>Gather Tester Info</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+156:                     <span class='def-Keyword'>try</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+157:                         jenkinsUser <span class='def-Symbol'>=</span> currentBuild<span class='def-Symbol'>.</span>rawBuild<span class='def-Symbol'>.</span>getCause<span class='def-SymbolStrong def-Symbol'>(</span>Cause<span class='def-Symbol'>.</span>UserIdCause<span class='def-SymbolStrong def-Symbol'>)</span><span class='def-Symbol'>.</span>getUserId<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+158:                     <span class='def-SymbolStrong def-Symbol'>}</span> <span class='def-Keyword'>catch</span> <span class='def-SymbolStrong def-Symbol'>(</span>err<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+159:                         jenkinsUser <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>JenkinsSystem</span><span class='def-StringEdge def-String'>'</span>
+160:                     <span class='def-SymbolStrong def-Symbol'>}</span>
+161:                     <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>Running as Tester '</span><span class='def-VarStrong def-Var'>${jenkinsUser}</span><span class='def-String'>'</span><span class='def-StringEdge def-String'>"</span>
+162:                 <span class='def-SymbolStrong def-Symbol'>}</span>
+163:         <span class='def-SymbolStrong def-Symbol'>)</span>
+164:     <span class='def-SymbolStrong def-Symbol'>}</span>
+165: 
+166:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Setup JMeter</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+167:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> script<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>wget -c http://ftp.ps.pl/pub/apache//jmeter/binaries/apache-jmeter-5.2.1.tgz</span><span class='def-StringEdge def-String'>"</span>
+168:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> script<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>tar -xf apache-jmeter-5.2.1.tgz</span><span class='def-StringEdge def-String'>"</span>
+169:     <span class='def-SymbolStrong def-Symbol'>}</span>
+170: 
+171:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Run Tests</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+172:         currentBuild<span class='def-Symbol'>.</span>result <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>SUCCESS</span><span class='def-StringEdge def-String'>'</span>
+173:         <span class='def-Keyword'>try</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+174:             <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>timeout</span><span class='def-SymbolStrong def-Symbol'>(</span>time<span class='def-Symbol'>:</span> <span class='def-NumberDec def-Number'>60</span><span class='def-Symbol'>,</span> unit<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>MINUTES</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+175:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>dir</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>apache-jmeter-5.2.1/bin</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+176:                     <span class='def-Keyword'>int</span> currentResult <span class='def-Symbol'>=</span> <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> script<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>`./jmeter -n -t '</span><span class='def-VarStrong def-Var'>${env.WORKSPACE}</span><span class='def-String'>/</span><span class='def-VarStrong def-Var'>${JMETER_PATH}</span><span class='def-String'>/</span><span class='def-VarStrong def-Var'>${testPlan}</span><span class='def-String'>' -l </span><span class='def-VarStrong def-Var'>${env.WORKSPACE}</span><span class='def-String'>/</span><span class='def-VarStrong def-Var'>${JMETER_PATH}</span><span class='def-String'>/results/results.csv -e -o </span><span class='def-VarStrong def-Var'>${env.WORKSPACE}</span><span class='def-String'>/</span><span class='def-VarStrong def-Var'>${JMETER_PATH}</span><span class='def-String'>/results -Jthreads=</span><span class='def-VarStrong def-Var'>${numberOfThreads}</span><span class='def-String'> -Jloops=</span><span class='def-VarStrong def-Var'>${loopCount}</span><span class='def-String'> -Jrampup=</span><span class='def-VarStrong def-Var'>${rampUpPeriod}</span><span class='def-String'>`</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span> returnStatus<span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span>
+177:                     <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>currentResult <span class='def-Symbol'>></span> <span class='def-NumberDec def-Number'>0</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+178:                         currentBuild<span class='def-Symbol'>.</span>result <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>UNSTABLE</span><span class='def-StringEdge def-String'>'</span>
+179:                     <span class='def-SymbolStrong def-Symbol'>}</span>
+180:                 <span class='def-SymbolStrong def-Symbol'>}</span>
+181:             <span class='def-SymbolStrong def-Symbol'>}</span>
+182:         <span class='def-SymbolStrong def-Symbol'>}</span> <span class='def-Keyword'>catch</span> <span class='def-SymbolStrong def-Symbol'>(</span>FlowInterruptedException interruptEx<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+183:             currentBuild<span class='def-Symbol'>.</span>result <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>ABORTED</span><span class='def-StringEdge def-String'>'</span>
+184:         <span class='def-SymbolStrong def-Symbol'>}</span> <span class='def-Keyword'>catch</span> <span class='def-SymbolStrong def-Symbol'>(</span>err<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+185:             currentBuild<span class='def-Symbol'>.</span>result <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>UNSTABLE</span><span class='def-StringEdge def-String'>'</span>
+186:             <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Test Execution Timed Out</span><span class='def-StringEdge def-String'>'</span>
+187:         <span class='def-SymbolStrong def-Symbol'>}</span>
+188:     <span class='def-SymbolStrong def-Symbol'>}</span>
+189: 
+190:     <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>currentBuild<span class='def-Symbol'>.</span>result <span class='def-Symbol'>!</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>ABORTED</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+191: 
+192:         <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>Publish Reports</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+193:             <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>parallel</span><span class='def-SymbolStrong def-Symbol'>(</span>
+194:                     <span class='def-StringEdge def-String'>"</span><span class='def-String'>Generate Performance Report</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+195:                         perfReport compareBuildPrevious<span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span><span class='def-Symbol'>,</span>
+196:                                 errorFailedThreshold<span class='def-Symbol'>:</span> <span class='def-NumberDec def-Number'>50</span><span class='def-Symbol'>,</span>
+197:                                 errorUnstableThreshold<span class='def-Symbol'>:</span> <span class='def-NumberDec def-Number'>20</span><span class='def-Symbol'>,</span>
+198:                                 relativeFailedThresholdNegative<span class='def-Symbol'>:</span> <span class='def-NumberFloat def-Number'>1.0</span><span class='def-Symbol'>,</span>
+199:                                 relativeFailedThresholdPositive<span class='def-Symbol'>:</span> <span class='def-NumberFloat def-Number'>2.0</span><span class='def-Symbol'>,</span>
+200:                                 relativeUnstableThresholdNegative<span class='def-Symbol'>:</span> <span class='def-NumberFloat def-Number'>1.0</span><span class='def-Symbol'>,</span>
+201:                                 relativeUnstableThresholdPositive<span class='def-Symbol'>:</span> <span class='def-NumberFloat def-Number'>10.0</span><span class='def-Symbol'>,</span>
+202:                                 sourceDataFiles<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>**/results.csv</span><span class='def-StringEdge def-String'>'</span>
+203:                     <span class='def-SymbolStrong def-Symbol'>}</span><span class='def-Symbol'>,</span>
+204:                     <span class='def-StringEdge def-String'>"</span><span class='def-String'>Slack</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+205:                         sendSlackNotification<span class='def-SymbolStrong def-Symbol'>(</span>branchName<span class='def-Symbol'>,</span> testPlan<span class='def-Symbol'>,</span> currentBuild<span class='def-Symbol'>.</span>result<span class='def-Symbol'>,</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>APP Performance</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span> env<span class='def-Symbol'>.</span>BUILD_URL<span class='def-SymbolStrong def-Symbol'>)</span>
+206:                     <span class='def-SymbolStrong def-Symbol'>}</span>
+207:             <span class='def-SymbolStrong def-Symbol'>)</span>
+208:         <span class='def-SymbolStrong def-Symbol'>}</span>
+209: 
+210:     <span class='def-SymbolStrong def-Symbol'>}</span>
+211: 
+212: <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+213: 
+214: <span class='def-Comment def-Syntax'>/**</span>
+215: <span class='def-Comment def-Syntax'> * Send a SLACK notification based on runtime settings.</span>
+216: <span class='def-Comment def-Syntax'> *</span>
+217: <span class='def-Comment def-Syntax'> * @param branch branch selected</span>
+218: <span class='def-Comment def-Syntax'> * @param testPlan performance test plan</span>
+219: <span class='def-Comment def-Syntax'> * @param result current build result</span>
+220: <span class='def-Comment def-Syntax'> * @param currentResult current build result</span>
+221: <span class='def-Comment def-Syntax'> * @param description service endpoint identifier</span>
+222: <span class='def-Comment def-Syntax'> * @param buildUrl build url</span>
+223: <span class='def-Comment def-Syntax'> */</span>
+224: <span class='def-Keyword'>private</span> <span class='def-Keyword'>void</span> sendSlackNotification<span class='def-SymbolStrong def-Symbol'>(</span>branch<span class='def-Symbol'>,</span> testPlan<span class='def-Symbol'>,</span> currentResult<span class='def-Symbol'>,</span> description<span class='def-Symbol'>,</span> buildUrl<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+225: 
+226:     <span class='def-FunctionKeyword def-Keyword'>String</span> slackColor <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>#18de18</span><span class='def-StringEdge def-String'>'</span>
+227:     <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>currentResult <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>FAILURE</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+228:         slackColor <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>#FF0000</span><span class='def-StringEdge def-String'>'</span>
+229:     <span class='def-SymbolStrong def-Symbol'>}</span> <span class='def-Keyword'>else</span> <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>currentResult <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>UNSTABLE</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+230:         slackColor <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>#FFFF00</span><span class='def-StringEdge def-String'>'</span>
+231:     <span class='def-SymbolStrong def-Symbol'>}</span> <span class='def-Keyword'>else</span> <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>currentResult <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>ABORTED</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+232:         slackColor <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>#FFA500</span><span class='def-StringEdge def-String'>'</span>
+233:     <span class='def-SymbolStrong def-Symbol'>}</span>
+234: 
+235:     <span class='def-Keyword'>def</span> message <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${description}</span><span class='def-Comment def-Syntax'>\n</span><span class='def-String'>Test Plan: </span><span class='def-VarStrong def-Var'>${testPlan}</span><span class='def-Comment def-Syntax'>\n</span><span class='def-String'>Branch: '</span><span class='def-VarStrong def-Var'>${branch}</span><span class='def-String'>'</span><span class='def-Comment def-Syntax'>\n</span><span class='def-String'>User: </span><span class='def-VarStrong def-Var'>${jenkinsUser}</span><span class='def-Comment def-Syntax'>\n</span><span class='def-VarStrong def-Var'>${buildUrl}</span><span class='def-String'>console</span><span class='def-StringEdge def-String'>"</span>
+236:     slackSend channel<span class='def-Symbol'>:</span> SLACK_CHANNEL<span class='def-Symbol'>,</span>
+237:             color<span class='def-Symbol'>:</span> slackColor<span class='def-Symbol'>,</span>
+238:             message<span class='def-Symbol'>:</span> message<span class='def-Symbol'>,</span>
+239:             token<span class='def-Symbol'>:</span> SLACK_TOKEN
+240: 
+241: <span class='def-SymbolStrong def-Symbol'>}</span>
+242: 

@@ -1,0 +1,128 @@
+﻿  0: <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>pipeline</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+  1:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>agent</span> <span class='jenkinsfile-Constant def-Constant def-Keyword'>any</span>
+  2:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>environment</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+  3:         <span class='jenkinsfile-Variable def-Var'>TESTGRID_NAME</span> <span class='jenkinsfile-Symbol def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>WSO2-TestGrid</span><span class='def-StringEdge def-String'>'</span>
+  4:         <span class='jenkinsfile-Variable def-Var'>TESTGRID_DIST_LOCATION</span> <span class='jenkinsfile-Symbol def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>/testgrid/jenkins-home/workspace/</span><span class='def-StringEdge def-String'>'</span>
+  5:         <span class='jenkinsfile-Variable def-Var'>TESTGRID_HOME</span><span class='jenkinsfile-Symbol def-Symbol'>=</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>/testgrid/testgrid-home/</span><span class='def-StringEdge def-String'>'</span>
+  6: 
+  7:         <span class='jenkinsfile-Variable def-Var'>PRODUCT</span><span class='jenkinsfile-Symbol def-Symbol'>=</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>wso2is-5.4.1-LTS</span><span class='def-StringEdge def-String'>"</span>
+  8: 
+  9:         <span class='jenkinsfile-Variable def-Var'>INFRASTRUCTURE_REPOSITORY</span><span class='jenkinsfile-Symbol def-Symbol'>=</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>https://github.com/azinneera/cloudformation-is</span><span class='def-StringEdge def-String'>'</span>
+ 10:         <span class='jenkinsfile-Variable def-Var'>DEPLOYMENT_REPOSITORY</span><span class='jenkinsfile-Symbol def-Symbol'>=</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>https://github.com/harshanL/cloudformation-is</span><span class='def-StringEdge def-String'>'</span>
+ 11:         <span class='jenkinsfile-Variable def-Var'>SCENARIOS_REPOSITORY</span><span class='jenkinsfile-Symbol def-Symbol'>=</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>https://github.com/wso2-incubator/identity-test-integration.git</span><span class='def-StringEdge def-String'>'</span>
+ 12: 
+ 13:         <span class='jenkinsfile-Variable def-Var'>INFRA_LOCATION</span><span class='jenkinsfile-Symbol def-Symbol'>=</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>aws-cloudformation-templates</span><span class='def-StringEdge def-String'>"</span>
+ 14:         <span class='jenkinsfile-Variable def-Var'>DEPLOYMENT_LOCATION</span><span class='jenkinsfile-Symbol def-Symbol'>=</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>aws-cloudformation-templates</span><span class='def-StringEdge def-String'>"</span>
+ 15:         <span class='jenkinsfile-Variable def-Var'>SCENARIOS_LOCATION</span><span class='jenkinsfile-Symbol def-Symbol'>=</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>identity-test-integration</span><span class='def-StringEdge def-String'>"</span>
+ 16:         <span class='jenkinsfile-Variable def-Var'>INFRA_CONFIGS_LOCATION</span><span class='jenkinsfile-Symbol def-Symbol'>=</span><span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${INFRA_LOCATION}</span><span class='def-String'>/infrastructure-build-plans</span><span class='def-StringEdge def-String'>"</span>
+ 17: 
+ 18:         <span class='jenkinsfile-Variable def-Var'>AWS_ACCESS_KEY_ID</span><span class='jenkinsfile-Symbol def-Symbol'>=</span><span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>credentials</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>AWS_ACCESS_KEY_ID</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 19:         <span class='jenkinsfile-Variable def-Var'>AWS_SECRET_ACCESS_KEY</span><span class='jenkinsfile-Symbol def-Symbol'>=</span><span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>credentials</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>AWS_SECRET_ACCESS_KEY</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 20:         <span class='jenkinsfile-Variable def-Var'>PWD</span><span class='jenkinsfile-Symbol def-Symbol'>=</span><span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>pwd</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 21:         <span class='jenkinsfile-Variable def-Var'>JOB_CONFIG_YAML</span> <span class='jenkinsfile-Symbol def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>job-config.yaml</span><span class='def-StringEdge def-String'>"</span>
+ 22:         <span class='jenkinsfile-Variable def-Var'>JOB_CONFIG_YAML_PATH</span> <span class='jenkinsfile-Symbol def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${PWD}</span><span class='def-String'>/</span><span class='def-VarStrong def-Var'>${JOB_CONFIG_YAML}</span><span class='def-StringEdge def-String'>"</span>
+ 23: 
+ 24:         <span class='def-LineComment def-Comment def-Syntax'>// Jmeter dependencies</span>
+ 25:         <span class='jenkinsfile-Variable def-Var'>SELENIUM_JAR</span><span class='jenkinsfile-Symbol def-Symbol'>=</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>https://search.maven.org/remotecontent?filepath=org/seleniumhq/selenium/selenium-java/3.8.1/selenium-java-3.8.1.jar</span><span class='def-StringEdge def-String'>'</span>
+ 26:         <span class='jenkinsfile-Variable def-Var'>HTML_UNIT_DRIVER</span><span class='jenkinsfile-Symbol def-Symbol'>=</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>https://search.maven.org/remotecontent?filepath=org/seleniumhq/selenium/htmlunit-driver/2.29.0/htmlunit-driver-2.29.0-jar-with-dependencies.jar</span><span class='def-StringEdge def-String'>'</span>
+ 27:     <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+ 28: 
+ 29:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>tools</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 30:         <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>jdk</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>jdk8</span><span class='def-StringEdge def-String'>'</span>
+ 31:     <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+ 32: 
+ 33:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stages</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 34:         <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Preparation</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 35:             <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>steps</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 36: 
+ 37:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>pwd</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 38:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>deleteDir</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 39: 
+ 40:                 <span class='def-LineComment def-Comment def-Syntax'>// Clone scenario repo</span>
+ 41:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>mkdir </span><span class='def-VarStrong def-Var'>${SCENARIOS_LOCATION}</span><span class='def-StringEdge def-String'>"</span>
+ 42:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>dir</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${SCENARIOS_LOCATION}</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span><span class='def-SymbolStrong def-Symbol'>{</span>
+ 43:                     <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>git</span> url<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${SCENARIOS_REPOSITORY}</span><span class='def-StringEdge def-String'>"</span>
+ 44:                 <span class='def-SymbolStrong def-Symbol'>}</span>
+ 45: 
+ 46:                 <span class='def-LineComment def-Comment def-Syntax'>// Clone infra repo</span>
+ 47:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>mkdir </span><span class='def-VarStrong def-Var'>${INFRA_LOCATION}</span><span class='def-StringEdge def-String'>"</span>
+ 48:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>dir</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${INFRA_LOCATION}</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span><span class='def-SymbolStrong def-Symbol'>{</span>
+ 49:                     <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>git</span> url<span class='def-Symbol'>:</span><span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${INFRASTRUCTURE_REPOSITORY}</span><span class='def-StringEdge def-String'>"</span>
+ 50:                 <span class='def-SymbolStrong def-Symbol'>}</span>
+ 51: 
+ 52:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+ 53: <span class='def-String'>                echo </span><span class='def-VarStrong def-Var'>${TESTGRID_NAME}</span><span class='def-String'></span>
+ 54: <span class='def-String'>                cd </span><span class='def-VarStrong def-Var'>${TESTGRID_NAME}</span><span class='def-String'></span>
+ 55: <span class='def-String'>                curl -o ./lib/selenium-java.jar </span><span class='def-VarStrong def-Var'>$SELENIUM_JAR</span><span class='def-String'></span>
+ 56: <span class='def-String'>                curl -o ./lib/html-unit-driver.jar </span><span class='def-VarStrong def-Var'>$HTML_UNIT_DRIVER</span><span class='def-String'></span>
+ 57: <span class='def-String'>                </span><span class='def-StringEdge def-String'>"""</span>
+ 58: 
+ 59:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+ 60: <span class='def-String'>                echo 'infrastructureRepository: </span><span class='def-VarStrong def-Var'>${INFRA_LOCATION}</span><span class='def-String'>/cloudformation-templates/pattern-1/' > </span><span class='def-VarStrong def-Var'>${JOB_CONFIG_YAML_PATH}</span><span class='def-String'></span>
+ 61: <span class='def-String'>                echo 'deploymentRepository: </span><span class='def-VarStrong def-Var'>${INFRA_LOCATION}</span><span class='def-String'>/cloudformation-templates/pattern-1/' >> </span><span class='def-VarStrong def-Var'>${JOB_CONFIG_YAML_PATH}</span><span class='def-String'></span>
+ 62: <span class='def-String'>                echo 'scenarioTestsRepository: </span><span class='def-VarStrong def-Var'>${SCENARIOS_LOCATION}</span><span class='def-String'>' >> </span><span class='def-VarStrong def-Var'>${JOB_CONFIG_YAML_PATH}</span><span class='def-String'></span>
+ 63: <span class='def-String'>                echo 'testgridYamlLocation: </span><span class='def-VarStrong def-Var'>${INFRA_CONFIGS_LOCATION}</span><span class='def-String'>/single-node-infra.yaml' >> </span><span class='def-VarStrong def-Var'>${JOB_CONFIG_YAML_PATH}</span><span class='def-String'></span>
+ 64: <span class='def-String'></span>
+ 65: <span class='def-String'>                echo The job-config.yaml:</span>
+ 66: <span class='def-String'>                cat </span><span class='def-VarStrong def-Var'>${JOB_CONFIG_YAML_PATH}</span><span class='def-String'></span>
+ 67: <span class='def-String'>                </span><span class='def-StringEdge def-String'>"""</span>
+ 68: 
+ 69:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>stash</span> name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${JOB_CONFIG_YAML}</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span> includes <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${JOB_CONFIG_YAML}</span><span class='def-StringEdge def-String'>"</span>
+ 70: 
+ 71:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+ 72: <span class='def-String'>                cd </span><span class='def-VarStrong def-Var'>${TESTGRID_NAME}</span><span class='def-String'></span>
+ 73: <span class='def-String'>                ./testgrid generate-test-plan \</span>
+ 74: <span class='def-String'>                    --product </span><span class='def-VarStrong def-Var'>${PRODUCT}</span><span class='def-String'> \</span>
+ 75: <span class='def-String'>                    --file </span><span class='def-VarStrong def-Var'>${JOB_CONFIG_YAML_PATH}</span><span class='def-String'></span>
+ 76: <span class='def-String'>                </span><span class='def-StringEdge def-String'>"""</span>
+ 77:             <span class='def-SymbolStrong def-Symbol'>}</span>
+ 78:         <span class='def-SymbolStrong def-Symbol'>}</span>
+ 79: 
+ 80:         <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>TestPlan-01-Infra-1</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 81:             <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>steps</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 82:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 83:                     <span class='def-Keyword'>try</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 84:                         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Running Test Plan 01</span><span class='def-StringEdge def-String'>'</span>
+ 85:                         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>java -version</span><span class='def-StringEdge def-String'>"</span>
+ 86: 
+ 87:                         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>unstash</span> name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${JOB_CONFIG_YAML}</span><span class='def-StringEdge def-String'>"</span>
+ 88: 
+ 89:                         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+ 90: <span class='def-String'>                        cd </span><span class='def-VarStrong def-Var'>${TESTGRID_NAME}</span><span class='def-String'></span>
+ 91: <span class='def-String'>                        ./testgrid run-testplan \</span>
+ 92: <span class='def-String'>                            --product </span><span class='def-VarStrong def-Var'>${PRODUCT}</span><span class='def-String'> \</span>
+ 93: <span class='def-String'>                            --file "</span><span class='def-VarStrong def-Var'>${PWD}</span><span class='def-String'>/test-plans/test-plan-01.yaml"</span>
+ 94: <span class='def-String'>                        </span><span class='def-StringEdge def-String'>"""</span>
+ 95:                     <span class='def-SymbolStrong def-Symbol'>}</span> <span class='def-Keyword'>catch</span> <span class='def-SymbolStrong def-Symbol'>(</span>Exception err<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+ 96:                         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>Error : </span><span class='def-VarStrong def-Var'>${err}</span><span class='def-StringEdge def-String'>"</span>
+ 97:                         currentBuild<span class='def-Symbol'>.</span>result <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>FAILURE</span><span class='def-StringEdge def-String'>'</span>
+ 98:                     <span class='def-SymbolStrong def-Symbol'>}</span>
+ 99:                 <span class='def-SymbolStrong def-Symbol'>}</span>
+100:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>RESULT: </span><span class='def-VarStrong def-Var'>${currentBuild.result}</span><span class='def-StringEdge def-String'>"</span>
+101:             <span class='def-SymbolStrong def-Symbol'>}</span>
+102:         <span class='def-SymbolStrong def-Symbol'>}</span>
+103:     <span class='def-SymbolStrong def-Symbol'>}</span>
+104: 
+105:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>post</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+106:         <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>always</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+107:            <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+108: <span class='def-String'>            cd </span><span class='def-VarStrong def-Var'>${TESTGRID_NAME}</span><span class='def-String'></span>
+109: <span class='def-String'>            ./testgrid generate-report \</span>
+110: <span class='def-String'>            --product </span><span class='def-VarStrong def-Var'>${PRODUCT}</span><span class='def-String'> \</span>
+111: <span class='def-String'>            --groupBy scenario</span>
+112: <span class='def-String'>            </span><span class='def-StringEdge def-String'>"""</span>
+113: 
+114:             <span class='def-LineComment def-Comment def-Syntax'>// Archive artifacts</span>
+115:             <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>withAWS</span><span class='def-SymbolStrong def-Symbol'>(</span>credentials<span class='def-Symbol'>:</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>TESTGRID_BOT_CREDENTIALS</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+116:               <span class='def-LineComment def-Comment def-Syntax'>// Upload artifacts to S3</span>
+117:               <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>s3Upload</span><span class='def-SymbolStrong def-Symbol'>(</span>workingDir<span class='def-Symbol'>:</span><span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${TESTGRID_HOME}</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span> includePathPattern<span class='def-Symbol'>:</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>**/*.log, **/*.html</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span> bucket<span class='def-Symbol'>:</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>jenkins-testrun-artifacts</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span> path<span class='def-Symbol'>:</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>artifacts/</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
+118:             <span class='def-SymbolStrong def-Symbol'>}</span>
+119: 
+120:             <span class='def-LineComment def-Comment def-Syntax'>// Delete logs and reports after upload</span>
+121:             <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>dir</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${TESTGRID_HOME}</span><span class='def-String'>/</span><span class='def-VarStrong def-Var'>${PRODUCT}</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+122:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>deleteDir</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+123:             <span class='def-SymbolStrong def-Symbol'>}</span>
+124:        <span class='def-SymbolStrong def-Symbol'>}</span>
+125:   <span class='def-SymbolStrong def-Symbol'>}</span>
+126: <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+127: 

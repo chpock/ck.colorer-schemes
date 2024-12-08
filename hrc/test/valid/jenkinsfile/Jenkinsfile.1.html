@@ -1,0 +1,835 @@
+﻿  0: <span class='def-Comment def-Syntax'>/**</span>
+  1: <span class='def-Comment def-Syntax'> * Copyright (C) 2006-2024 Talend Inc. - </span><span class='def-URL def-URI'>www.talend.com</span><span class='def-Comment def-Syntax'></span>
+  2: <span class='def-Comment def-Syntax'> *</span>
+  3: <span class='def-Comment def-Syntax'> * Licensed under the Apache License, Version 2.0 (the "License");</span>
+  4: <span class='def-Comment def-Syntax'> * you may not use this file except in compliance with the License.</span>
+  5: <span class='def-Comment def-Syntax'> * You may obtain a copy of the License at</span>
+  6: <span class='def-Comment def-Syntax'> *</span>
+  7: <span class='def-Comment def-Syntax'> * </span><span class='def-URL def-URI'>http://www.apache.org/licenses/LICENSE-2.0</span><span class='def-Comment def-Syntax'></span>
+  8: <span class='def-Comment def-Syntax'> *</span>
+  9: <span class='def-Comment def-Syntax'> * Unless required by applicable law or agreed to in writing, software</span>
+ 10: <span class='def-Comment def-Syntax'> * distributed under the License is distributed on an "AS IS" BASIS,</span>
+ 11: <span class='def-Comment def-Syntax'> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+ 12: <span class='def-Comment def-Syntax'> * See the License for the specific language governing permissions and</span>
+ 13: <span class='def-Comment def-Syntax'> * limitations under the License.</span>
+ 14: <span class='def-Comment def-Syntax'> */</span>
+ 15: <span class='def-LineComment def-Comment def-Syntax'>// Imports</span>
+ 16: <span class='def-Keyword'>import</span> java<span class='def-Symbol'>.</span>time<span class='def-Symbol'>.</span>LocalDateTime
+ 17: <span class='def-Keyword'>import</span> java<span class='def-Symbol'>.</span>util<span class='def-Symbol'>.</span>regex<span class='def-Symbol'>.</span>Matcher
+ 18: 
+ 19: <span class='def-LineComment def-Comment def-Syntax'>// Credentials</span>
+ 20: <span class='def-Keyword'>final</span> <span class='def-Keyword'>def</span> ossrhCredentials <span class='def-Symbol'>=</span> usernamePassword<span class='def-SymbolStrong def-Symbol'>(</span>
+ 21:     credentialsId<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>ossrh-credentials</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 22:     usernameVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>OSSRH_USER</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 23:     passwordVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>OSSRH_PASS</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 24: <span class='def-Keyword'>final</span> <span class='def-Keyword'>def</span> nexusCredentials <span class='def-Symbol'>=</span> usernamePassword<span class='def-SymbolStrong def-Symbol'>(</span>
+ 25:     credentialsId<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>nexus-artifact-zl-credentials</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 26:     usernameVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>NEXUS_USER</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span> passwordVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>NEXUS_PASS</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 27: <span class='def-Keyword'>final</span> <span class='def-Keyword'>def</span> jetbrainsCredentials <span class='def-Symbol'>=</span> usernamePassword<span class='def-SymbolStrong def-Symbol'>(</span>
+ 28:     credentialsId<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>jetbrains-credentials</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 29:     usernameVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>JETBRAINS_USER</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 30:     passwordVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>JETBRAINS_PASS</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 31: <span class='def-Keyword'>final</span> <span class='def-Keyword'>def</span> jiraCredentials <span class='def-Symbol'>=</span> usernamePassword<span class='def-SymbolStrong def-Symbol'>(</span>
+ 32:     credentialsId<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>jira-credentials</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 33:     usernameVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>JIRA_USER</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 34:     passwordVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>JIRA_PASS</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 35: <span class='def-Keyword'>final</span> <span class='def-Keyword'>def</span> gitCredentials <span class='def-Symbol'>=</span> usernamePassword<span class='def-SymbolStrong def-Symbol'>(</span>
+ 36:     credentialsId<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>github-credentials</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 37:     usernameVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>GITHUB_USER</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 38:     passwordVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>GITHUB_PASS</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 39: <span class='def-Keyword'>final</span> <span class='def-Keyword'>def</span> dockerCredentials <span class='def-Symbol'>=</span> usernamePassword<span class='def-SymbolStrong def-Symbol'>(</span>
+ 40:     credentialsId<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>artifactory-datapwn-credentials</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 41:     usernameVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>DOCKER_USER</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 42:     passwordVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>DOCKER_PASS</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 43: <span class='def-Keyword'>final</span> <span class='def-Keyword'>def</span> sonarCredentials <span class='def-Symbol'>=</span> usernamePassword<span class='def-SymbolStrong def-Symbol'>(</span>
+ 44:     credentialsId<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>sonar-credentials</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 45:     usernameVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>SONAR_LOGIN</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 46:     passwordVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>SONAR_PASSWORD</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 47: <span class='def-Keyword'>final</span> <span class='def-Keyword'>def</span> keyImportCredentials <span class='def-Symbol'>=</span> usernamePassword<span class='def-SymbolStrong def-Symbol'>(</span>
+ 48:     credentialsId<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>component-runtime-import-key-credentials</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 49:     usernameVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>KEY_USER</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 50:     passwordVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>KEY_PASS</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 51: <span class='def-Keyword'>final</span> <span class='def-Keyword'>def</span> gpgCredentials <span class='def-Symbol'>=</span> usernamePassword<span class='def-SymbolStrong def-Symbol'>(</span>
+ 52:     credentialsId<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>component-runtime-gpg-credentials</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 53:     usernameVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>GPG_KEYNAME</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+ 54:     passwordVariable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>GPG_PASSPHRASE</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 55: 
+ 56: <span class='def-LineComment def-Comment def-Syntax'>// In PR environment, the branch name is not valid and should be swap with pr name.</span>
+ 57: <span class='def-Keyword'>final</span> <span class='def-FunctionKeyword def-Keyword'>String</span> pull_request_id <span class='def-Symbol'>=</span> env<span class='def-Symbol'>.</span>CHANGE_ID
+ 58: <span class='def-Keyword'>final</span> <span class='def-FunctionKeyword def-Keyword'>String</span> branch_name <span class='def-Symbol'>=</span> pull_request_id <span class='def-Symbol'>!</span><span class='def-Symbol'>=</span> <span class='def-Keyword'>null</span> <span class='def-Symbol'>?</span> env<span class='def-Symbol'>.</span>CHANGE_BRANCH <span class='def-Symbol'>:</span> env<span class='def-Symbol'>.</span>BRANCH_NAME
+ 59: 
+ 60: <span class='def-LineComment def-Comment def-Syntax'>// Job config</span>
+ 61: <span class='def-Keyword'>final</span> Boolean isMasterBranch <span class='def-Symbol'>=</span> branch_name <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>master</span><span class='def-StringEdge def-String'>"</span>
+ 62: <span class='def-Keyword'>final</span> Boolean isStdBranch <span class='def-Symbol'>=</span> <span class='def-SymbolStrong def-Symbol'>(</span>branch_name <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>master</span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>|</span><span class='def-Symbol'>|</span> branch_name<span class='def-Symbol'>.</span>startsWith<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>maintenance/</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 63: <span class='def-Keyword'>final</span> Boolean hasPostLoginScript <span class='def-Symbol'>=</span> params<span class='def-Symbol'>.</span>POST_LOGIN_SCRIPT <span class='def-Symbol'>!</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-StringEdge def-String'>"</span>
+ 64: <span class='def-Keyword'>final</span> <span class='def-FunctionKeyword def-Keyword'>String</span> extraBuildParams <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-StringEdge def-String'>"</span>
+ 65: <span class='def-Keyword'>final</span> <span class='def-FunctionKeyword def-Keyword'>String</span> buildTimestamp <span class='def-Symbol'>=</span> <span class='def-FunctionKeyword def-Keyword'>String</span><span class='def-Symbol'>.</span>format<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>-%tY%&lt;tm%&lt;td%&lt;tH%&lt;tM%&lt;tS</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span> LocalDateTime<span class='def-Symbol'>.</span>now<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span><span class='def-SymbolStrong def-Symbol'>)</span>
+ 66: <span class='def-Keyword'>final</span> <span class='def-FunctionKeyword def-Keyword'>String</span> artifactoryAddr <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>https://artifactory.datapwn.com</span><span class='def-StringEdge def-String'>"</span>
+ 67: <span class='def-Keyword'>final</span> <span class='def-FunctionKeyword def-Keyword'>String</span> artifactoryPath <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>tlnd-docker-dev/talend/common/tacokit</span><span class='def-StringEdge def-String'>"</span>
+ 68: 
+ 69: <span class='def-LineComment def-Comment def-Syntax'>// Job variables declaration</span>
+ 70: <span class='def-FunctionKeyword def-Keyword'>String</span> branch_user
+ 71: <span class='def-FunctionKeyword def-Keyword'>String</span> branch_ticket
+ 72: <span class='def-FunctionKeyword def-Keyword'>String</span> branch_description
+ 73: <span class='def-FunctionKeyword def-Keyword'>String</span> pomVersion
+ 74: <span class='def-FunctionKeyword def-Keyword'>String</span> finalVersion
+ 75: Boolean needQualify
+ 76: Boolean stdBranch_buildOnly <span class='def-Symbol'>=</span> <span class='def-Keyword'>false</span>
+ 77: Boolean devBranch_mavenDeploy <span class='def-Symbol'>=</span> <span class='def-Keyword'>false</span>
+ 78: Boolean devBranch_dockerPush <span class='def-Symbol'>=</span> <span class='def-Keyword'>false</span>
+ 79: 
+ 80: 
+ 81: <span class='def-FunctionKeyword def-Keyword'>String</span> skipOptions <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>-Dspotless.apply.skip=true -Dcheckstyle.skip=true -Drat.skip=true -DskipTests -Dinvoker.skip=true</span><span class='def-StringEdge def-String'>"</span>
+ 82: <span class='def-FunctionKeyword def-Keyword'>String</span> deployOptions <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>$skipOptions</span><span class='def-String'> -Possrh -Prelease -Pgpg2 -Denforcer.skip=true</span><span class='def-StringEdge def-String'>"</span>
+ 83: 
+ 84: 
+ 85: <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>pipeline</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 86:   <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>agent</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 87:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>kubernetes</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 88:       <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>yamlFile</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>.jenkins/jenkins_pod.yml</span><span class='def-StringEdge def-String'>'</span>
+ 89:       <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>defaultContainer</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>main</span><span class='def-StringEdge def-String'>'</span>
+ 90:     <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+ 91:   <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+ 92: 
+ 93:   <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>environment</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+ 94:     <span class='jenkinsfile-Variable def-Var'>MAVEN_OPTS</span> <span class='jenkinsfile-Symbol def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>-Dformatter.skip=true -Dmaven.artifact.threads=256</span><span class='def-StringEdge def-String'>"</span>
+ 95:     <span class='jenkinsfile-Variable def-Var'>BUILD_ARGS</span> <span class='jenkinsfile-Symbol def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>-Dgpg.skip=true -Denforcer.skip=true</span><span class='def-StringEdge def-String'>"</span>
+ 96:     <span class='jenkinsfile-Variable def-Var'>ARTIFACTORY_REGISTRY</span> <span class='jenkinsfile-Symbol def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>artifactory.datapwn.com</span><span class='def-StringEdge def-String'>"</span>
+ 97:     <span class='jenkinsfile-Variable def-Var'>VERACODE_APP_NAME</span> <span class='jenkinsfile-Symbol def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Talend Component Kit</span><span class='def-StringEdge def-String'>'</span>
+ 98:     <span class='jenkinsfile-Variable def-Var'>VERACODE_SANDBOX</span> <span class='jenkinsfile-Symbol def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>component-runtime</span><span class='def-StringEdge def-String'>'</span>
+ 99:     <span class='jenkinsfile-Variable def-Var'>APP_ID</span> <span class='jenkinsfile-Symbol def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>579232</span><span class='def-StringEdge def-String'>'</span>
+100:   <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+101: 
+102:   <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>options</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+103:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>buildDiscarder</span><span class='def-SymbolStrong def-Symbol'>(</span>logRotator<span class='def-SymbolStrong def-Symbol'>(</span>artifactNumToKeepStr<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>10</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span> numToKeepStr<span class='def-Symbol'>:</span> branch_name <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>master</span><span class='def-StringEdge def-String'>'</span> <span class='def-Symbol'>?</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>15</span><span class='def-StringEdge def-String'>'</span> <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>10</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span><span class='def-SymbolStrong def-Symbol'>)</span>
+104:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>timeout</span><span class='def-SymbolStrong def-Symbol'>(</span>time<span class='def-Symbol'>:</span> <span class='def-NumberDec def-Number'>180</span><span class='def-Symbol'>,</span> unit<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>MINUTES</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+105:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>skipStagesAfterUnstable</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+106:   <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+107: 
+108:   <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>triggers</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+109:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>cron</span><span class='def-SymbolStrong def-Symbol'>(</span>branch_name <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>master</span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>?</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>0 0 * * *</span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
+110:   <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+111: 
+112:   <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>parameters</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+113:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>choice</span><span class='def-SymbolStrong def-Symbol'>(</span>
+114:         name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Action</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+115:         choices<span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>STANDARD</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>RELEASE</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-Symbol'>,</span>
+116:         description<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Kind of running:</span><span class='def-Comment def-Syntax'>\n</span><span class='def-String'>STANDARD: (default) classical CI</span><span class='def-Comment def-Syntax'>\n</span><span class='def-String'>RELEASE: Build release</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+117:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>booleanParam</span><span class='def-SymbolStrong def-Symbol'>(</span>
+118:         name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>MAVEN_DEPLOY</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+119:         defaultValue<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span>
+120:         description<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'''</span><span class='def-String'></span>
+121: <span class='def-String'>            Force MAVEN deploy stage for development branches. No effect on master and maintenance.</span>
+122: <span class='def-String'>            INFO: master/maintenance branch are deploying on &lt;oss.sonatype.org></span>
+123: <span class='def-String'>                  dev branches are deploying on &lt;artifacts-zl.talend.com></span><span class='def-StringEdge def-String'>'''</span><span class='def-SymbolStrong def-Symbol'>)</span>
+124:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>booleanParam</span><span class='def-SymbolStrong def-Symbol'>(</span>
+125:         name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>DOCKER_PUSH</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+126:         defaultValue<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span>
+127:         description<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'''</span><span class='def-String'></span>
+128: <span class='def-String'>            Force DOCKER push stage for development branches. No effect on master and maintenance.</span>
+129: <span class='def-String'>            INFO: master/maintenance and dev branches are deploying on &lt;artifactory.datapwn.com></span><span class='def-StringEdge def-String'>'''</span><span class='def-SymbolStrong def-Symbol'>)</span>
+130:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>choice</span><span class='def-SymbolStrong def-Symbol'>(</span>
+131:         name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>DOCKER_CHOICE</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+132:         choices<span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>component-server</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+133:                   <span class='def-StringEdge def-String'>'</span><span class='def-String'>component-starter-server</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+134:                   <span class='def-StringEdge def-String'>'</span><span class='def-String'>remote-engine-customizer</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+135:                   <span class='def-StringEdge def-String'>'</span><span class='def-String'>All</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-Symbol'>,</span>
+136:         description<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Choose which docker image you want to build and push. Only available if DOCKER_PUSH == True.</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+137:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>string</span><span class='def-SymbolStrong def-Symbol'>(</span>
+138:         name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>VERSION_QUALIFIER</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+139:         defaultValue<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>DEFAULT</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+140:         description<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'''</span><span class='def-String'></span>
+141: <span class='def-String'>            Deploy jars with the given version qualifier. No effect on master and maintenance.</span>
+142: <span class='def-String'>             - DEFAULT means the qualifier will be the Jira id extracted from the branch name.</span>
+143: <span class='def-String'>            From "user/JIRA-12345_some_information" the qualifier will be JIRA-12345.</span><span class='def-StringEdge def-String'>'''</span><span class='def-SymbolStrong def-Symbol'>)</span>
+144:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>string</span><span class='def-SymbolStrong def-Symbol'>(</span>
+145:         name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>EXTRA_BUILD_PARAMS</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+146:         defaultValue<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+147:         description<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Add some extra parameters to maven commands. Applies to all maven calls.</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+148:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>string</span><span class='def-SymbolStrong def-Symbol'>(</span>
+149:         name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>POST_LOGIN_SCRIPT</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+150:         defaultValue<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+151:         description<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Execute a shell command after login. Useful for maintenance.</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+152:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>booleanParam</span><span class='def-SymbolStrong def-Symbol'>(</span>
+153:         name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>DISABLE_SONAR</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+154:         defaultValue<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span>
+155:         description<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Cancel the Sonar analysis stage execution</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+156:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>booleanParam</span><span class='def-SymbolStrong def-Symbol'>(</span>
+157:         name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>FORCE_DOC</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+158:         defaultValue<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span>
+159:         description<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Force documentation stage for development branches. No effect on master and maintenance.</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+160:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>booleanParam</span><span class='def-SymbolStrong def-Symbol'>(</span>
+161:         name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>FORCE_SECURITY_ANALYSIS</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+162:         defaultValue<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span>
+163:         description<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Force OSS security analysis stage for branches.</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+164:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>booleanParam</span><span class='def-SymbolStrong def-Symbol'>(</span>
+165:         name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>FORCE_DEPS_REPORT</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+166:         defaultValue<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span>
+167:         description<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Force dependencies report stage for branches.</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+168:     <span class='jenkinsfile-ConfigurationMethod def-StructKeyword def-Keyword'>booleanParam</span><span class='def-SymbolStrong def-Symbol'>(</span>
+169:         name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>JENKINS_DEBUG</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+170:         defaultValue<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span>
+171:         description<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Add an extra step to the pipeline allowing to keep the pod alive for debug purposes.</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+172:   <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+173: 
+174:   <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stages</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+175:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Preliminary steps</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+176:       <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>steps</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+177: 
+178:         <span class='def-LineComment def-Comment def-Syntax'>///////////////////////////////////////////</span>
+179:         <span class='def-LineComment def-Comment def-Syntax'>// Login tasks</span>
+180:         <span class='def-LineComment def-Comment def-Syntax'>///////////////////////////////////////////</span>
+181:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+182:           <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>withCredentials</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span>gitCredentials<span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+183:             <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'> echo bash.jenkins/scripts/git_login.sh "</span><span class='def-Comment def-Syntax'>\$</span><span class='def-String'>{GITHUB_USER}" "</span><span class='def-Comment def-Syntax'>\$</span><span class='def-String'>{GITHUB_PASS}" </span><span class='def-StringEdge def-String'>"""</span>
+184:           <span class='def-SymbolStrong def-Symbol'>}</span>
+185:           <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>withCredentials</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span>dockerCredentials<span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+186:             <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'> bash .jenkins/scripts/docker_login.sh "</span><span class='def-VarStrong def-Var'>${ARTIFACTORY_REGISTRY}</span><span class='def-String'>" "</span><span class='def-Comment def-Syntax'>\$</span><span class='def-String'>{DOCKER_USER}" "</span><span class='def-Comment def-Syntax'>\$</span><span class='def-String'>{DOCKER_PASS}" </span><span class='def-StringEdge def-String'>"""</span>
+187:           <span class='def-SymbolStrong def-Symbol'>}</span>
+188:           <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>withCredentials</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span>keyImportCredentials<span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+189:             <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'> bash .jenkins/scripts/setup_gpg.sh </span><span class='def-StringEdge def-String'>"""</span>
+190:           <span class='def-SymbolStrong def-Symbol'>}</span>
+191:         <span class='def-SymbolStrong def-Symbol'>}</span>
+192:         <span class='def-LineComment def-Comment def-Syntax'>///////////////////////////////////////////</span>
+193:         <span class='def-LineComment def-Comment def-Syntax'>// asdf install</span>
+194:         <span class='def-LineComment def-Comment def-Syntax'>///////////////////////////////////////////</span>
+195:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+196:           <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>asdf install the content of repository .tool-versions'</span><span class='def-Comment def-Syntax'>\n</span><span class='def-StringEdge def-String'>"</span>
+197:           <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>bash .jenkins/scripts/asdf_install.sh</span><span class='def-StringEdge def-String'>'</span>
+198:         <span class='def-SymbolStrong def-Symbol'>}</span>
+199:         <span class='def-LineComment def-Comment def-Syntax'>///////////////////////////////////////////</span>
+200:         <span class='def-LineComment def-Comment def-Syntax'>// Variables init</span>
+201:         <span class='def-LineComment def-Comment def-Syntax'>///////////////////////////////////////////</span>
+202:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+203:           stdBranch_buildOnly <span class='def-Symbol'>=</span> isStdBranch <span class='def-Symbol'>&amp;</span><span class='def-Symbol'>&amp;</span> params<span class='def-Symbol'>.</span>Action <span class='def-Symbol'>!</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>RELEASE</span><span class='def-StringEdge def-String'>'</span>
+204:           devBranch_mavenDeploy <span class='def-Symbol'>=</span> <span class='def-Symbol'>!</span>isStdBranch <span class='def-Symbol'>&amp;</span><span class='def-Symbol'>&amp;</span> params<span class='def-Symbol'>.</span>MAVEN_DEPLOY
+205:           devBranch_dockerPush <span class='def-Symbol'>=</span> <span class='def-Symbol'>!</span>isStdBranch <span class='def-Symbol'>&amp;</span><span class='def-Symbol'>&amp;</span> params<span class='def-Symbol'>.</span>DOCKER_PUSH
+206: 
+207:           needQualify <span class='def-Symbol'>=</span> devBranch_mavenDeploy <span class='def-Symbol'>|</span><span class='def-Symbol'>|</span> devBranch_dockerPush
+208: 
+209:           <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>needQualify<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+210:             <span class='def-LineComment def-Comment def-Syntax'>// Qualified version have to be released on talend_repository</span>
+211:             <span class='def-LineComment def-Comment def-Syntax'>// Overwrite the deployOptions</span>
+212:             deployOptions <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>$skipOptions</span><span class='def-String'> --activate-profiles private_repository -Denforcer.skip=true</span><span class='def-StringEdge def-String'>"</span>
+213:           <span class='def-SymbolStrong def-Symbol'>}</span>
+214: 
+215:           <span class='def-LineComment def-Comment def-Syntax'>// By default the doc is skipped for standards branches</span>
+216:           Boolean skip_documentation <span class='def-Symbol'>=</span> <span class='def-Symbol'>!</span><span class='def-SymbolStrong def-Symbol'>(</span>params<span class='def-Symbol'>.</span>FORCE_DOC <span class='def-Symbol'>|</span><span class='def-Symbol'>|</span> isStdBranch<span class='def-SymbolStrong def-Symbol'>)</span>
+217:           extraBuildParams <span class='def-Symbol'>=</span> assemblyExtraBuildParams<span class='def-SymbolStrong def-Symbol'>(</span>skip_documentation<span class='def-SymbolStrong def-Symbol'>)</span>
+218: 
+219:         <span class='def-SymbolStrong def-Symbol'>}</span>
+220:         <span class='def-LineComment def-Comment def-Syntax'>///////////////////////////////////////////</span>
+221:         <span class='def-LineComment def-Comment def-Syntax'>// Pom version and Qualifier management</span>
+222:         <span class='def-LineComment def-Comment def-Syntax'>///////////////////////////////////////////</span>
+223:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+224:           <span class='def-Keyword'>final</span> <span class='def-Keyword'>def</span> pom <span class='def-Symbol'>=</span> <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>readMavenPom</span> file<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>pom.xml</span><span class='def-StringEdge def-String'>'</span>
+225:           pomVersion <span class='def-Symbol'>=</span> pom<span class='def-Symbol'>.</span>version
+226: 
+227:           <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Manage the version qualifier</span><span class='def-StringEdge def-String'>'</span>
+228:           <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span><span class='def-Symbol'>!</span>needQualify<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+229:             <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+230: <span class='def-String'>              No need to add qualifier in followings cases:</span>
+231: <span class='def-String'>              - We are on Master or Maintenance branch</span>
+232: <span class='def-String'>              - We do not want to deploy on dev branch</span>
+233: <span class='def-String'>              </span><span class='def-StringEdge def-String'>"""</span><span class='def-Symbol'>.</span>stripIndent<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+234:             finalVersion <span class='def-Symbol'>=</span> pomVersion
+235:           <span class='def-SymbolStrong def-Symbol'>}</span>
+236:           <span class='def-Keyword'>else</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+237:             branch_user <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-StringEdge def-String'>"</span>
+238:             branch_ticket <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-StringEdge def-String'>"</span>
+239:             branch_description <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-StringEdge def-String'>"</span>
+240:             <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>params<span class='def-Symbol'>.</span>VERSION_QUALIFIER <span class='def-Symbol'>!</span><span class='def-Symbol'>=</span> <span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>DEFAULT</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+241:               <span class='def-LineComment def-Comment def-Syntax'>// If the qualifier is given, use it</span>
+242:               <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'>No need to add qualifier, use the given one: "</span><span class='def-VarStrong def-Var'>$params</span><span class='def-String'>.VERSION_QUALIFIER" </span><span class='def-StringEdge def-String'>"""</span>
+243:             <span class='def-SymbolStrong def-Symbol'>}</span>
+244:             <span class='def-Keyword'>else</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+245:               <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>Validate the branch name</span><span class='def-StringEdge def-String'>"</span>
+246: 
+247:               <span class='def-SymbolStrong def-Symbol'>(</span>branch_user<span class='def-Symbol'>,</span>
+248:               branch_ticket<span class='def-Symbol'>,</span>
+249:               branch_description<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-Symbol'>=</span> extract_branch_info<span class='def-SymbolStrong def-Symbol'>(</span>branch_name<span class='def-SymbolStrong def-Symbol'>)</span>
+250: 
+251:               <span class='def-LineComment def-Comment def-Syntax'>// Check only branch_user, because if there is an error all three params are empty.</span>
+252:               <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>branch_user <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+253:                 <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+254: <span class='def-String'>                  ERROR: The branch name doesn't comply with the format: user/JIRA-1234-Description</span>
+255: <span class='def-String'>                  It is MANDATORY for artifact management.</span>
+256: <span class='def-String'>                  You have few options:</span>
+257: <span class='def-String'>                  - You do not need to deploy, uncheck MAVEN_DEPLOY checkbox</span>
+258: <span class='def-String'>                  - Change the VERSION_QUALIFIER text box to a personal qualifier, BUT you need to do it on ALL se/ee and cloud-components build</span>
+259: <span class='def-String'>                  - Rename your branch</span>
+260: <span class='def-String'>                  </span><span class='def-StringEdge def-String'>"""</span><span class='def-Symbol'>.</span>stripIndent<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+261:                 currentBuild<span class='def-Symbol'>.</span>description <span class='def-Symbol'>=</span> <span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>ERROR: The branch name is not correct</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
+262:                 <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'>exit 1</span><span class='def-StringEdge def-String'>"""</span>
+263:               <span class='def-SymbolStrong def-Symbol'>}</span>
+264:             <span class='def-SymbolStrong def-Symbol'>}</span>
+265: 
+266:             <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>Insert a qualifier in pom version...</span><span class='def-StringEdge def-String'>"</span>
+267:             finalVersion <span class='def-Symbol'>=</span> add_qualifier_to_version<span class='def-SymbolStrong def-Symbol'>(</span>
+268:                 pomVersion<span class='def-Symbol'>,</span>
+269:                 branch_ticket<span class='def-Symbol'>,</span>
+270:                 <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>$params</span><span class='def-String'>.VERSION_QUALIFIER</span><span class='def-StringEdge def-String'>"</span> <span class='def-Keyword'>as</span> <span class='def-FunctionKeyword def-Keyword'>String</span><span class='def-SymbolStrong def-Symbol'>)</span>
+271: 
+272:             <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+273: <span class='def-String'>                          Configure the version qualifier for the curent branche: </span><span class='def-VarStrong def-Var'>$branch_name</span><span class='def-String'></span>
+274: <span class='def-String'>                          requested qualifier: </span><span class='def-VarStrong def-Var'>$params</span><span class='def-String'>.VERSION_QUALIFIER</span>
+275: <span class='def-String'>                          with User = </span><span class='def-VarStrong def-Var'>$branch_user</span><span class='def-String'>, Ticket = </span><span class='def-VarStrong def-Var'>$branch_ticket</span><span class='def-String'>, Description = </span><span class='def-VarStrong def-Var'>$branch_description</span><span class='def-String'></span>
+276: <span class='def-String'>                          Qualified Version = </span><span class='def-VarStrong def-Var'>$finalVersion</span><span class='def-String'>  </span><span class='def-StringEdge def-String'>"""</span>
+277: 
+278:             <span class='def-LineComment def-Comment def-Syntax'>// On development branches the connectors version shall be edited for deployment</span>
+279:             <span class='def-LineComment def-Comment def-Syntax'>// Maven documentation about maven_version:</span>
+280:             <span class='def-LineComment def-Comment def-Syntax'>// </span><span class='def-URL def-URI'>https://docs.oracle.com/middleware/1212/core/MAVEN/maven_version.htm</span>
+281:             <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>Edit version on dev branches, new version is </span><span class='def-VarStrong def-Var'>${finalVersion}</span><span class='def-StringEdge def-String'>"</span>
+282:             <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'>\</span>
+283: <span class='def-String'>                        #!/usr/bin/env bash</span>
+284: <span class='def-String'>                        mvn versions:set --define newVersion=</span><span class='def-VarStrong def-Var'>${finalVersion}</span><span class='def-String'></span>
+285: <span class='def-String'>                        </span><span class='def-StringEdge def-String'>"""</span><span class='def-Symbol'>.</span>stripIndent<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+286:           <span class='def-SymbolStrong def-Symbol'>}</span>
+287: 
+288:         <span class='def-SymbolStrong def-Symbol'>}</span>
+289:         <span class='def-LineComment def-Comment def-Syntax'>///////////////////////////////////////////</span>
+290:         <span class='def-LineComment def-Comment def-Syntax'>// Updating build displayName and description</span>
+291:         <span class='def-LineComment def-Comment def-Syntax'>///////////////////////////////////////////</span>
+292:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+293:           <span class='def-FunctionKeyword def-Keyword'>String</span> user_name <span class='def-Symbol'>=</span> currentBuild<span class='def-Symbol'>.</span>getBuildCauses<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>hudson.model.Cause$UserIdCause</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span><span class='def-Symbol'>.</span>userId<span class='def-SymbolStrong def-Symbol'>[</span><span class='def-NumberDec def-Number'>0</span><span class='def-SymbolStrong def-Symbol'>]</span>
+294:           <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>user_name <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-Keyword'>null</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+295:             user_name <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>auto</span><span class='def-StringEdge def-String'>"</span>
+296:           <span class='def-SymbolStrong def-Symbol'>}</span>
+297: 
+298:           <span class='def-FunctionKeyword def-Keyword'>String</span> deploy_info <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-StringEdge def-String'>'</span>
+299:           <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>stdBranch_buildOnly <span class='def-Symbol'>|</span><span class='def-Symbol'>|</span> devBranch_mavenDeploy<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+300:             deploy_info <span class='def-Symbol'>=</span> deploy_info <span class='def-Symbol'>+</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>+DEPLOY</span><span class='def-StringEdge def-String'>'</span>
+301:           <span class='def-SymbolStrong def-Symbol'>}</span>
+302:           <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>devBranch_dockerPush<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+303:             deploy_info <span class='def-Symbol'>=</span> deploy_info <span class='def-Symbol'>+</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>+DOCKER</span><span class='def-StringEdge def-String'>'</span>
+304:           <span class='def-SymbolStrong def-Symbol'>}</span>
+305: 
+306:           currentBuild<span class='def-Symbol'>.</span>displayName <span class='def-Symbol'>=</span> <span class='def-SymbolStrong def-Symbol'>(</span>
+307:               <span class='def-StringEdge def-String'>"</span><span class='def-String'>#</span><span class='def-VarStrong def-Var'>$currentBuild</span><span class='def-String'>.number-</span><span class='def-VarStrong def-Var'>$params</span><span class='def-String'>.Action</span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span> deploy_info <span class='def-Symbol'>+</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>: </span><span class='def-VarStrong def-Var'>$user_name</span><span class='def-StringEdge def-String'>"</span>
+308:           <span class='def-SymbolStrong def-Symbol'>)</span>
+309: 
+310:           <span class='def-LineComment def-Comment def-Syntax'>// updating build description</span>
+311:           <span class='def-FunctionKeyword def-Keyword'>String</span> description <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+312: <span class='def-String'>                      Version = </span><span class='def-VarStrong def-Var'>$finalVersion</span><span class='def-String'> - </span><span class='def-VarStrong def-Var'>$params</span><span class='def-String'>.Action Build</span>
+313: <span class='def-String'>                      Disable Sonar: </span><span class='def-VarStrong def-Var'>$params</span><span class='def-String'>.DISABLE_SONAR - Script: </span><span class='def-VarStrong def-Var'>$hasPostLoginScript</span><span class='def-String'></span>
+314: <span class='def-String'>                      Debug: </span><span class='def-VarStrong def-Var'>$params</span><span class='def-String'>.JENKINS_DEBUG</span>
+315: <span class='def-String'>                      Extra build args: </span><span class='def-VarStrong def-Var'>$extraBuildParams</span><span class='def-String'>  </span><span class='def-StringEdge def-String'>"""</span><span class='def-Symbol'>.</span>stripIndent<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+316:           job_description_append<span class='def-SymbolStrong def-Symbol'>(</span>description<span class='def-SymbolStrong def-Symbol'>)</span>
+317:         <span class='def-SymbolStrong def-Symbol'>}</span>
+318:       <span class='def-SymbolStrong def-Symbol'>}</span>
+319:       <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>post</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+320:         <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>always</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+321:           <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>Artifact Poms files for analysis if needed</span><span class='def-StringEdge def-String'>"</span>
+322:           <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>archiveArtifacts</span> artifacts<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>**/*pom.*</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span> allowEmptyArchive<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span> onlyIfSuccessful<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span>
+323:         <span class='def-SymbolStrong def-Symbol'>}</span>
+324:       <span class='def-SymbolStrong def-Symbol'>}</span>
+325:     <span class='def-SymbolStrong def-Symbol'>}</span>
+326:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Post login</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+327:       <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>steps</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+328:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>withCredentials</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span>gitCredentials<span class='def-Symbol'>,</span>
+329:                          dockerCredentials<span class='def-Symbol'>,</span>
+330:                          ossrhCredentials<span class='def-Symbol'>,</span>
+331:                          jetbrainsCredentials<span class='def-Symbol'>,</span>
+332:                          jiraCredentials<span class='def-Symbol'>,</span>
+333:                          gpgCredentials<span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+334:           <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+335:             <span class='def-Keyword'>try</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+336:               <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'>\</span>
+337: <span class='def-String'>                            #!/usr/bin/env bash</span>
+338: <span class='def-String'>                            bash "</span><span class='def-VarStrong def-Var'>${params.POST_LOGIN_SCRIPT}</span><span class='def-String'>"</span>
+339: <span class='def-String'>                            bash .jenkins/scripts/npm_fix.sh</span>
+340: <span class='def-String'>                            </span><span class='def-StringEdge def-String'>"""</span><span class='def-Symbol'>.</span>stripIndent<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+341:             <span class='def-SymbolStrong def-Symbol'>}</span> <span class='def-Keyword'>catch</span> <span class='def-SymbolStrong def-Symbol'>(</span>ignored<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+342:               <span class='def-LineComment def-Comment def-Syntax'>//</span>
+343:             <span class='def-SymbolStrong def-Symbol'>}</span>
+344:           <span class='def-SymbolStrong def-Symbol'>}</span>
+345:         <span class='def-SymbolStrong def-Symbol'>}</span>
+346:       <span class='def-SymbolStrong def-Symbol'>}</span>
+347:     <span class='def-SymbolStrong def-Symbol'>}</span>
+348:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Maven validate to install</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+349:       <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>when</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span> <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>expression</span> <span class='def-SymbolStrong def-Symbol'>{</span> params<span class='def-Symbol'>.</span>Action <span class='def-Symbol'>!</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>RELEASE</span><span class='def-StringEdge def-String'>'</span> <span class='def-SymbolStrong def-Symbol'>}</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+350:       <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>steps</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+351:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>withCredentials</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span>ossrhCredentials<span class='def-Symbol'>,</span>
+352:                          nexusCredentials<span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+353:           <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'>\</span>
+354: <span class='def-String'>                    #!/usr/bin/env bash</span>
+355: <span class='def-String'>                    set -xe</span>
+356: <span class='def-String'>                    mvn clean install </span><span class='def-VarStrong def-Var'>$BUILD_ARGS</span><span class='def-String'> \</span>
+357: <span class='def-String'>                                      </span><span class='def-VarStrong def-Var'>$extraBuildParams</span><span class='def-String'> \</span>
+358: <span class='def-String'>                                      --settings .jenkins/settings.xml</span>
+359: <span class='def-String'>                    </span><span class='def-StringEdge def-String'>"""</span><span class='def-Symbol'>.</span>stripIndent<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+360:         <span class='def-SymbolStrong def-Symbol'>}</span>
+361:       <span class='def-SymbolStrong def-Symbol'>}</span>
+362:       <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>post</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+363:         <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>always</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+364:           recordIssues<span class='def-SymbolStrong def-Symbol'>(</span>
+365:               enabledForFailure<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span>
+366:               tools<span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span>
+367:                   junitParser<span class='def-SymbolStrong def-Symbol'>(</span>
+368:                       id<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>unit-test</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+369:                       name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Unit Test</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+370:                       pattern<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>**/target/surefire-reports/*.xml</span><span class='def-StringEdge def-String'>'</span>
+371:                   <span class='def-SymbolStrong def-Symbol'>)</span>
+372:               <span class='def-SymbolStrong def-Symbol'>]</span>
+373:           <span class='def-SymbolStrong def-Symbol'>)</span>
+374:         <span class='def-SymbolStrong def-Symbol'>}</span>
+375:       <span class='def-SymbolStrong def-Symbol'>}</span>
+376:     <span class='def-SymbolStrong def-Symbol'>}</span>
+377:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Maven deploy</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+378:       <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>when</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+379:         <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>anyOf</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+380:           <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>expression</span> <span class='def-SymbolStrong def-Symbol'>{</span> stdBranch_buildOnly <span class='def-SymbolStrong def-Symbol'>}</span>
+381:           <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>expression</span> <span class='def-SymbolStrong def-Symbol'>{</span> devBranch_mavenDeploy <span class='def-SymbolStrong def-Symbol'>}</span>
+382:         <span class='def-SymbolStrong def-Symbol'>}</span>
+383:       <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+384:       <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>steps</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+385:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+386:           <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>withCredentials</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span>ossrhCredentials<span class='def-Symbol'>,</span>
+387:                            gpgCredentials<span class='def-Symbol'>,</span>
+388:                            nexusCredentials<span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+389:             <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'>\</span>
+390: <span class='def-String'>                        #!/usr/bin/env bash</span>
+391: <span class='def-String'>                        set -xe</span>
+392: <span class='def-String'>                        bash mvn deploy </span><span class='def-VarStrong def-Var'>$deployOptions</span><span class='def-String'> \</span>
+393: <span class='def-String'>                                        </span><span class='def-VarStrong def-Var'>$extraBuildParams</span><span class='def-String'> \</span>
+394: <span class='def-String'>                                        --settings .jenkins/settings.xml</span>
+395: <span class='def-String'>                        </span><span class='def-StringEdge def-String'>"""</span><span class='def-Symbol'>.</span>stripIndent<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+396:           <span class='def-SymbolStrong def-Symbol'>}</span>
+397:         <span class='def-SymbolStrong def-Symbol'>}</span>
+398:         <span class='def-LineComment def-Comment def-Syntax'>// Add description to job</span>
+399:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+400:           <span class='def-Keyword'>def</span> repo
+401:           <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>devBranch_mavenDeploy<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+402:             repo <span class='def-Symbol'>=</span> <span class='def-SymbolStrong def-Symbol'>[</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>artifacts-zl.talend.com</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+403:                     <span class='def-StringEdge def-String'>'</span><span class='def-String'>https://artifacts-zl.talend.com/nexus/content/repositories/snapshots/org/talend/sdk/component</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>]</span>
+404:           <span class='def-SymbolStrong def-Symbol'>}</span>
+405:           <span class='def-Keyword'>else</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+406:             repo <span class='def-Symbol'>=</span> <span class='def-SymbolStrong def-Symbol'>[</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>oss.sonatype.org</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+407:                     <span class='def-StringEdge def-String'>'</span><span class='def-String'>https://oss.sonatype.org/content/repositories/snapshots/org/talend/sdk/component/</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>]</span>
+408:           <span class='def-SymbolStrong def-Symbol'>}</span>
+409: 
+410:           job_description_append<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>Maven artefact deployed as </span><span class='def-VarStrong def-Var'>${finalVersion}</span><span class='def-String'> on [</span><span class='def-VarStrong def-Var'>${repo[0]}</span><span class='def-String'>](</span><span class='def-VarStrong def-Var'>${repo[1]}</span><span class='def-String'>)  </span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
+411:         <span class='def-SymbolStrong def-Symbol'>}</span>
+412:       <span class='def-SymbolStrong def-Symbol'>}</span>
+413:     <span class='def-SymbolStrong def-Symbol'>}</span>
+414:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Docker build/push</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+415:       <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>when</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+416:         <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>anyOf</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+417:           <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>expression</span> <span class='def-SymbolStrong def-Symbol'>{</span> stdBranch_buildOnly <span class='def-SymbolStrong def-Symbol'>}</span>
+418:           <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>expression</span> <span class='def-SymbolStrong def-Symbol'>{</span> devBranch_dockerPush <span class='def-SymbolStrong def-Symbol'>}</span>
+419:         <span class='def-SymbolStrong def-Symbol'>}</span>
+420:       <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+421:       <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>steps</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+422:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+423:           configFileProvider<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span>configFile<span class='def-SymbolStrong def-Symbol'>(</span>fileId<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>maven-settings-nexus-zl</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span> variable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>MAVEN_SETTINGS</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+424: 
+425:             <span class='def-FunctionKeyword def-Keyword'>String</span> images_options <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-StringEdge def-String'>'</span>
+426:             <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>isStdBranch<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+427:               <span class='def-LineComment def-Comment def-Syntax'>// Build and push all images</span>
+428:               job_description_append<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>Docker images deployed: component-server, component-starter-server and remote-engine-customizer  </span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
+429:             <span class='def-SymbolStrong def-Symbol'>}</span>
+430:             <span class='def-Keyword'>else</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+431:               <span class='def-FunctionKeyword def-Keyword'>String</span> image_list
+432:               <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>params<span class='def-Symbol'>.</span>DOCKER_CHOICE <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>All</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+433:                 images_options <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>false</span><span class='def-StringEdge def-String'>'</span>
+434:               <span class='def-SymbolStrong def-Symbol'>}</span>
+435:               <span class='def-Keyword'>else</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+436:                 images_options <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>false </span><span class='def-StringEdge def-String'>'</span> <span class='def-Symbol'>+</span> params<span class='def-Symbol'>.</span>DOCKER_CHOICE
+437:               <span class='def-SymbolStrong def-Symbol'>}</span>
+438: 
+439:               <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>params<span class='def-Symbol'>.</span>DOCKER_CHOICE <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>All</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+440:                 job_description_append<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>All docker images deployed  </span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
+441: 
+442:                 job_description_append<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>As </span><span class='def-VarStrong def-Var'>${finalVersion}</span><span class='def-VarStrong def-Var'>${buildTimestamp}</span><span class='def-String'> on </span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+443:                                        <span class='def-StringEdge def-String'>"</span><span class='def-String'>[artifactory.datapwn.com]</span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+444:                                        <span class='def-StringEdge def-String'>"</span><span class='def-String'>(</span><span class='def-VarStrong def-Var'>$artifactoryAddr</span><span class='def-String'>/</span><span class='def-VarStrong def-Var'>$artifactoryPath</span><span class='def-String'>)  </span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
+445:                 job_description_append<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>docker pull </span><span class='def-VarStrong def-Var'>$artifactoryAddr</span><span class='def-String'>/</span><span class='def-VarStrong def-Var'>$artifactoryPath</span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+446:                                        <span class='def-StringEdge def-String'>"</span><span class='def-String'>/component-server:</span><span class='def-VarStrong def-Var'>${finalVersion}</span><span class='def-VarStrong def-Var'>${buildTimestamp}</span><span class='def-String'>  </span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
+447:                 job_description_append<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>docker pull </span><span class='def-VarStrong def-Var'>$artifactoryAddr</span><span class='def-String'>/</span><span class='def-VarStrong def-Var'>$artifactoryPath</span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+448:                                        <span class='def-StringEdge def-String'>"</span><span class='def-String'>/component-starter-server:</span><span class='def-VarStrong def-Var'>${finalVersion}</span><span class='def-VarStrong def-Var'>${buildTimestamp}</span><span class='def-String'>  </span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
+449:                 job_description_append<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>docker pull </span><span class='def-VarStrong def-Var'>$artifactoryAddr</span><span class='def-String'>/</span><span class='def-VarStrong def-Var'>$artifactoryPath</span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+450:                                        <span class='def-StringEdge def-String'>"</span><span class='def-String'>/remote-engine-customize:</span><span class='def-VarStrong def-Var'>${finalVersion}</span><span class='def-VarStrong def-Var'>${buildTimestamp}</span><span class='def-String'>  </span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
+451: 
+452:               <span class='def-SymbolStrong def-Symbol'>}</span>
+453:               <span class='def-Keyword'>else</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+454:                 job_description_append<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>Docker images deployed: </span><span class='def-VarStrong def-Var'>$params</span><span class='def-String'>.DOCKER_CHOICE  </span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
+455:                 job_description_append<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>As </span><span class='def-VarStrong def-Var'>${finalVersion}</span><span class='def-VarStrong def-Var'>${buildTimestamp}</span><span class='def-String'> on </span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+456:                                        <span class='def-StringEdge def-String'>"</span><span class='def-String'>[artifactory.datapwn.com](</span><span class='def-VarStrong def-Var'>$artifactoryAddr</span><span class='def-String'>/</span><span class='def-VarStrong def-Var'>$artifactoryPath</span><span class='def-String'>)  </span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
+457:                 job_description_append<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>docker pull </span><span class='def-VarStrong def-Var'>$artifactoryAddr</span><span class='def-String'>/</span><span class='def-VarStrong def-Var'>$artifactoryPath</span><span class='def-String'>/</span><span class='def-VarStrong def-Var'>$params</span><span class='def-String'>.DOCKER_CHOICE:</span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>+</span>
+458:                                        <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${finalVersion}</span><span class='def-VarStrong def-Var'>${buildTimestamp}</span><span class='def-String'>  </span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
+459: 
+460:               <span class='def-SymbolStrong def-Symbol'>}</span>
+461: 
+462:             <span class='def-SymbolStrong def-Symbol'>}</span>
+463: 
+464:             <span class='def-LineComment def-Comment def-Syntax'>// Build and push specific image</span>
+465:             <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+466: <span class='def-String'>                              bash .jenkins/scripts/docker_build.sh \</span>
+467: <span class='def-String'>                                </span><span class='def-VarStrong def-Var'>${finalVersion}</span><span class='def-VarStrong def-Var'>${buildTimestamp}</span><span class='def-String'> \</span>
+468: <span class='def-String'>                                </span><span class='def-VarStrong def-Var'>${images_options}</span><span class='def-String'></span>
+469: <span class='def-String'>                            </span><span class='def-StringEdge def-String'>"""</span>
+470:           <span class='def-SymbolStrong def-Symbol'>}</span>
+471: 
+472:         <span class='def-SymbolStrong def-Symbol'>}</span>
+473:       <span class='def-SymbolStrong def-Symbol'>}</span>
+474:     <span class='def-SymbolStrong def-Symbol'>}</span>
+475:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Documentation</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+476:       <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>when</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+477:         <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>expression</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+478:           params<span class='def-Symbol'>.</span>FORCE_DOC <span class='def-Symbol'>|</span><span class='def-Symbol'>|</span> <span class='def-SymbolStrong def-Symbol'>(</span>params<span class='def-Symbol'>.</span>Action <span class='def-Symbol'>!</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>RELEASE</span><span class='def-StringEdge def-String'>'</span> <span class='def-Symbol'>&amp;</span><span class='def-Symbol'>&amp;</span> isMasterBranch<span class='def-SymbolStrong def-Symbol'>)</span>
+479:         <span class='def-SymbolStrong def-Symbol'>}</span>
+480:       <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+481:       <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>steps</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+482:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>withCredentials</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span>ossrhCredentials<span class='def-Symbol'>,</span> gitCredentials<span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+483:           <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'>\</span>
+484: <span class='def-String'>                    #!/usr/bin/env bash</span>
+485: <span class='def-String'>                    set -xe</span>
+486: <span class='def-String'>                    mvn verify pre-site --file documentation/pom.xml \</span>
+487: <span class='def-String'>                                        --settings .jenkins/settings.xml \</span>
+488: <span class='def-String'>                                        --activate-profiles gh-pages \</span>
+489: <span class='def-String'>                                        --define gpg.skip=true \</span>
+490: <span class='def-String'>                                        </span><span class='def-VarStrong def-Var'>$skipOptions</span><span class='def-String'> \</span>
+491: <span class='def-String'>                                        </span><span class='def-VarStrong def-Var'>$extraBuildParams</span><span class='def-String'></span>
+492: <span class='def-String'>                    </span><span class='def-StringEdge def-String'>"""</span><span class='def-Symbol'>.</span>stripIndent<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+493:         <span class='def-SymbolStrong def-Symbol'>}</span>
+494:       <span class='def-SymbolStrong def-Symbol'>}</span>
+495:     <span class='def-SymbolStrong def-Symbol'>}</span>
+496:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>OSS security analysis</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+497:       <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>when</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+498:         <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>anyOf</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+499:           <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>expression</span> <span class='def-SymbolStrong def-Symbol'>{</span> params<span class='def-Symbol'>.</span>Action <span class='def-Symbol'>!</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>RELEASE</span><span class='def-StringEdge def-String'>'</span> <span class='def-Symbol'>&amp;</span><span class='def-Symbol'>&amp;</span> branch_name <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>master</span><span class='def-StringEdge def-String'>'</span> <span class='def-SymbolStrong def-Symbol'>}</span>
+500:           <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>expression</span> <span class='def-SymbolStrong def-Symbol'>{</span> params<span class='def-Symbol'>.</span>FORCE_SECURITY_ANALYSIS <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-Keyword'>true</span> <span class='def-SymbolStrong def-Symbol'>}</span>
+501:         <span class='def-SymbolStrong def-Symbol'>}</span>
+502:       <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+503:       <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>steps</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+504:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>withCredentials</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span>ossrhCredentials<span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+505:           <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>catchError</span><span class='def-SymbolStrong def-Symbol'>(</span>buildResult<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>SUCCESS</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span> stageResult<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>FAILURE</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+506:             <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+507: <span class='def-String'>                            bash .jenkins/scripts/mvn-ossindex-audit.sh</span>
+508: <span class='def-String'>                        </span><span class='def-StringEdge def-String'>"""</span>
+509:           <span class='def-SymbolStrong def-Symbol'>}</span>
+510:         <span class='def-SymbolStrong def-Symbol'>}</span>
+511:       <span class='def-SymbolStrong def-Symbol'>}</span>
+512:       <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>post</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+513:         <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>always</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+514:           <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>publishHTML</span><span class='def-SymbolStrong def-Symbol'>(</span>
+515:               target<span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span>
+516:                   allowMissing         <span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span><span class='def-Symbol'>,</span>
+517:                   alwaysLinkToLastBuild<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span>
+518:                   keepAll              <span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span><span class='def-Symbol'>,</span>
+519:                   reportDir            <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>target/</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+520:                   reportFiles          <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>audit.txt</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+521:                   reportName           <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>security::audit</span><span class='def-StringEdge def-String'>"</span>
+522:               <span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span>
+523:         <span class='def-SymbolStrong def-Symbol'>}</span>
+524:       <span class='def-SymbolStrong def-Symbol'>}</span>
+525:     <span class='def-SymbolStrong def-Symbol'>}</span>
+526:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Deps report</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+527:       <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>when</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+528:         <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>anyOf</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+529:           <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>expression</span> <span class='def-SymbolStrong def-Symbol'>{</span> params<span class='def-Symbol'>.</span>Action <span class='def-Symbol'>!</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>RELEASE</span><span class='def-StringEdge def-String'>'</span> <span class='def-Symbol'>&amp;</span><span class='def-Symbol'>&amp;</span> branch_name <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>master</span><span class='def-StringEdge def-String'>'</span> <span class='def-SymbolStrong def-Symbol'>}</span>
+530:           <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>expression</span> <span class='def-SymbolStrong def-Symbol'>{</span> params<span class='def-Symbol'>.</span>FORCE_DEPS_REPORT <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-Keyword'>true</span> <span class='def-SymbolStrong def-Symbol'>}</span>
+531:         <span class='def-SymbolStrong def-Symbol'>}</span>
+532:       <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+533:       <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>steps</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+534:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>withCredentials</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span>ossrhCredentials<span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+535:           <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>catchError</span><span class='def-SymbolStrong def-Symbol'>(</span>buildResult<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>SUCCESS</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span> stageResult<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>FAILURE</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+536:             <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+537: <span class='def-String'>                           bash .jenkins/scripts/mvn_dependency_updates_report.sh</span>
+538: <span class='def-String'>                        </span><span class='def-StringEdge def-String'>"""</span>
+539:           <span class='def-SymbolStrong def-Symbol'>}</span>
+540:         <span class='def-SymbolStrong def-Symbol'>}</span>
+541:       <span class='def-SymbolStrong def-Symbol'>}</span>
+542:       <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>post</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+543:         <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>always</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+544:           <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>publishHTML</span><span class='def-SymbolStrong def-Symbol'>(</span>
+545:               target<span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span>
+546:                   allowMissing         <span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span><span class='def-Symbol'>,</span>
+547:                   alwaysLinkToLastBuild<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span>
+548:                   keepAll              <span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span><span class='def-Symbol'>,</span>
+549:                   reportDir            <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>target/site/</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+550:                   reportFiles          <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>dependency-updates-report.html</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+551:                   reportName           <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>outdated::dependency</span><span class='def-StringEdge def-String'>"</span>
+552:               <span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span>
+553:           <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>publishHTML</span><span class='def-SymbolStrong def-Symbol'>(</span>
+554:               target<span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span>
+555:                   allowMissing         <span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span><span class='def-Symbol'>,</span>
+556:                   alwaysLinkToLastBuild<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span>
+557:                   keepAll              <span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span><span class='def-Symbol'>,</span>
+558:                   reportDir            <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>target/site/</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+559:                   reportFiles          <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>plugin-updates-report.html</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+560:                   reportName           <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>outdated::plugins</span><span class='def-StringEdge def-String'>"</span>
+561:               <span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span>
+562:         <span class='def-SymbolStrong def-Symbol'>}</span>
+563:       <span class='def-SymbolStrong def-Symbol'>}</span>
+564:     <span class='def-SymbolStrong def-Symbol'>}</span>
+565:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Sonar</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+566:       <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>when</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+567:         <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>expression</span> <span class='def-SymbolStrong def-Symbol'>{</span> <span class='def-SymbolStrong def-Symbol'>(</span>params<span class='def-Symbol'>.</span>Action <span class='def-Symbol'>!</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>RELEASE</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-Symbol'>&amp;</span><span class='def-Symbol'>&amp;</span> <span class='def-Symbol'>!</span>params<span class='def-Symbol'>.</span>DISABLE_SONAR <span class='def-SymbolStrong def-Symbol'>}</span>
+568:       <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+569:       <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>steps</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+570:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+571:           <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>withCredentials</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span>nexusCredentials<span class='def-Symbol'>,</span>
+572:                            sonarCredentials<span class='def-Symbol'>,</span>
+573:                            gitCredentials<span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+574: 
+575:             <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>pull_request_id <span class='def-Symbol'>!</span><span class='def-Symbol'>=</span> <span class='def-Keyword'>null</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+576: 
+577:               <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Run analysis for PR</span><span class='def-StringEdge def-String'>'</span>
+578:               <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+579: <span class='def-String'>                            bash .jenkins/scripts/mvn_sonar_pr.sh \</span>
+580: <span class='def-String'>                                '</span><span class='def-VarStrong def-Var'>${branch_name}</span><span class='def-String'>' \</span>
+581: <span class='def-String'>                                '</span><span class='def-VarStrong def-Var'>${env.CHANGE_TARGET}</span><span class='def-String'>' \</span>
+582: <span class='def-String'>                                '</span><span class='def-VarStrong def-Var'>${pull_request_id}</span><span class='def-String'>' \</span>
+583: <span class='def-String'>                                </span><span class='def-VarStrong def-Var'>${extraBuildParams}</span><span class='def-String'></span>
+584: <span class='def-String'>                            </span><span class='def-StringEdge def-String'>"""</span>
+585:             <span class='def-SymbolStrong def-Symbol'>}</span>
+586:             <span class='def-Keyword'>else</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+587:               <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>echo</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Run analysis for branch</span><span class='def-StringEdge def-String'>'</span>
+588:               <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+589: <span class='def-String'>                            bash .jenkins/scripts/mvn_sonar_branch.sh \</span>
+590: <span class='def-String'>                                '</span><span class='def-VarStrong def-Var'>${branch_name}</span><span class='def-String'>' \</span>
+591: <span class='def-String'>                                </span><span class='def-VarStrong def-Var'>${extraBuildParams}</span><span class='def-String'></span>
+592: <span class='def-String'>                            </span><span class='def-StringEdge def-String'>"""</span>
+593:             <span class='def-SymbolStrong def-Symbol'>}</span>
+594:           <span class='def-SymbolStrong def-Symbol'>}</span>
+595:         <span class='def-SymbolStrong def-Symbol'>}</span>
+596:       <span class='def-SymbolStrong def-Symbol'>}</span>
+597:     <span class='def-SymbolStrong def-Symbol'>}</span>
+598:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>stage</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>Release</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+599:       <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>when</span> <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>{</span>
+600:         <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>allOf</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+601:           <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>expression</span> <span class='def-SymbolStrong def-Symbol'>{</span> params<span class='def-Symbol'>.</span>Action <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>RELEASE</span><span class='def-StringEdge def-String'>'</span> <span class='def-SymbolStrong def-Symbol'>}</span>
+602:           <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>expression</span> <span class='def-SymbolStrong def-Symbol'>{</span> isStdBranch <span class='def-SymbolStrong def-Symbol'>}</span>
+603:         <span class='def-SymbolStrong def-Symbol'>}</span>
+604:       <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+605:       <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>steps</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+606:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+607:           <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>withCredentials</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span>gitCredentials<span class='def-Symbol'>,</span> dockerCredentials<span class='def-Symbol'>,</span> ossrhCredentials<span class='def-Symbol'>,</span> jetbrainsCredentials<span class='def-Symbol'>,</span> jiraCredentials<span class='def-Symbol'>,</span> gpgCredentials<span class='def-Symbol'>,</span> nexusCredentials<span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+608:             configFileProvider<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span>configFile<span class='def-SymbolStrong def-Symbol'>(</span>fileId<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>maven-settings-nexus-zl</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span> variable<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>MAVEN_SETTINGS</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span><span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+609:               <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>sh</span> <span class='def-StringEdge def-String'>"""</span><span class='def-String'></span>
+610: <span class='def-String'>                            bash .jenkins/scripts/release_legacy.sh </span><span class='def-VarStrong def-Var'>$branch_name</span><span class='def-String'> </span><span class='def-VarStrong def-Var'>$finalVersion</span><span class='def-String'> </span><span class='def-VarStrong def-Var'>$extraBuildParams</span><span class='def-String'></span>
+611: <span class='def-String'>                            </span><span class='def-StringEdge def-String'>"""</span>
+612:             <span class='def-SymbolStrong def-Symbol'>}</span>
+613:           <span class='def-SymbolStrong def-Symbol'>}</span>
+614:         <span class='def-SymbolStrong def-Symbol'>}</span>
+615:       <span class='def-SymbolStrong def-Symbol'>}</span>
+616:     <span class='def-SymbolStrong def-Symbol'>}</span>
+617:   <span class='def-SymbolStrong def-Symbol'>}</span>
+618:   <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>post</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+619:     <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>success</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+620:       <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+621:         <span class='def-LineComment def-Comment def-Syntax'>//Only post results to Slack for Master and Maintenance branches</span>
+622:         <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>isStdBranch<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+623:           slackSend<span class='def-SymbolStrong def-Symbol'>(</span>
+624:               color<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>#00FF00</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+625:               message<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>SUCCESSFUL: Job '</span><span class='def-VarStrong def-Var'>${env.JOB_NAME}</span><span class='def-String'> [</span><span class='def-VarStrong def-Var'>${env.BUILD_NUMBER}</span><span class='def-String'>]' (</span><span class='def-VarStrong def-Var'>${env.BUILD_URL}</span><span class='def-String'>)</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span>
+626:               channel<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${env.SLACK_CI_CHANNEL}</span><span class='def-StringEdge def-String'>"</span>
+627:           <span class='def-SymbolStrong def-Symbol'>)</span>
+628:         <span class='def-SymbolStrong def-Symbol'>}</span>
+629:       <span class='def-SymbolStrong def-Symbol'>}</span>
+630:       <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+631:         <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>====== Publish Coverage</span><span class='def-StringEdge def-String'>"</span>
+632:         publishCoverage adapters<span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span>jacocoAdapter<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>**/jacoco-aggregate/*.xml</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span><span class='def-SymbolStrong def-Symbol'>]</span>
+633:         publishCoverage adapters<span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span>jacocoAdapter<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>**/jacoco-it/*.xml</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span><span class='def-SymbolStrong def-Symbol'>]</span>
+634:         publishCoverage adapters<span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span>jacocoAdapter<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>**/jacoco-ut/*.xml</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span><span class='def-SymbolStrong def-Symbol'>]</span>
+635:         <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>====== Publish HTML API Coverage</span><span class='def-StringEdge def-String'>"</span>
+636:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>publishHTML</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>[</span>
+637:             allowMissing         <span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span>
+638:             alwaysLinkToLastBuild<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span>
+639:             keepAll              <span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span><span class='def-Symbol'>,</span>
+640:             reportDir            <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>reporting/target/site/jacoco-aggregate</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+641:             reportFiles          <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>index.html</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+642:             reportName           <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Coverage</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+643:             reportTitles         <span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Coverage</span><span class='def-StringEdge def-String'>'</span>
+644:         <span class='def-SymbolStrong def-Symbol'>]</span><span class='def-SymbolStrong def-Symbol'>)</span>
+645:       <span class='def-SymbolStrong def-Symbol'>}</span>
+646:     <span class='def-SymbolStrong def-Symbol'>}</span>
+647:     <span class='jenkinsfile-ConditionMethod def-InterfaceKeyword def-Keyword'>failure</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+648:       <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+649:         <span class='def-LineComment def-Comment def-Syntax'>//Only post results to Slack for Master and Maintenance branches</span>
+650:         <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>isStdBranch<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+651:           <span class='def-LineComment def-Comment def-Syntax'>//if previous build was a success, ping channel in the Slack message</span>
+652:           <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>SUCCESS</span><span class='def-StringEdge def-String'>"</span> <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> currentBuild<span class='def-Symbol'>.</span>previousBuild<span class='def-Symbol'>.</span>result<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+653:             slackSend<span class='def-SymbolStrong def-Symbol'>(</span>
+654:                 color<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>#FF0000</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+655:                 message<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>@here : NEW FAILURE: Job '</span><span class='def-VarStrong def-Var'>${env.JOB_NAME}</span><span class='def-String'> [</span><span class='def-VarStrong def-Var'>${env.BUILD_NUMBER}</span><span class='def-String'>]' (</span><span class='def-VarStrong def-Var'>${env.BUILD_URL}</span><span class='def-String'>)</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span>
+656:                 channel<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${env.SLACK_CI_CHANNEL}</span><span class='def-StringEdge def-String'>"</span>
+657:             <span class='def-SymbolStrong def-Symbol'>)</span>
+658:           <span class='def-SymbolStrong def-Symbol'>}</span>
+659:           <span class='def-Keyword'>else</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+660:             <span class='def-LineComment def-Comment def-Syntax'>//else send notification without pinging channel</span>
+661:             slackSend<span class='def-SymbolStrong def-Symbol'>(</span>
+662:                 color<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>#FF0000</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+663:                 message<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>FAILED: Job '</span><span class='def-VarStrong def-Var'>${env.JOB_NAME}</span><span class='def-String'> [</span><span class='def-VarStrong def-Var'>${env.BUILD_NUMBER}</span><span class='def-String'>]' (</span><span class='def-VarStrong def-Var'>${env.BUILD_URL}</span><span class='def-String'>)</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span>
+664:                 channel<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${env.SLACK_CI_CHANNEL}</span><span class='def-StringEdge def-String'>"</span>
+665:             <span class='def-SymbolStrong def-Symbol'>)</span>
+666:           <span class='def-SymbolStrong def-Symbol'>}</span>
+667:         <span class='def-SymbolStrong def-Symbol'>}</span>
+668:       <span class='def-SymbolStrong def-Symbol'>}</span>
+669:     <span class='def-SymbolStrong def-Symbol'>}</span>
+670:     <span class='jenkinsfile-MainMethod def-ClassKeyword def-Keyword'>always</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+671:       recordIssues<span class='def-SymbolStrong def-Symbol'>(</span>
+672:           enabledForFailure<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span><span class='def-Symbol'>,</span>
+673:           tools<span class='def-Symbol'>:</span> <span class='def-SymbolStrong def-Symbol'>[</span>
+674:               taskScanner<span class='def-SymbolStrong def-Symbol'>(</span>
+675:                   id<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>disabled</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+676:                   name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>@Disabled</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+677:                   includePattern<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>**/src/**/*.java</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+678:                   ignoreCase<span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span><span class='def-Symbol'>,</span>
+679:                   normalTags<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>@Disabled</span><span class='def-StringEdge def-String'>'</span>
+680:               <span class='def-SymbolStrong def-Symbol'>)</span><span class='def-Symbol'>,</span>
+681:               taskScanner<span class='def-SymbolStrong def-Symbol'>(</span>
+682:                   id<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>todo</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+683:                   name<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Todo(low)/Fixme(high)</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+684:                   includePattern<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>**/src/**/*.java</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+685:                   ignoreCase<span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span><span class='def-Symbol'>,</span>
+686:                   highTags<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>FIX_ME, FIXME</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span>
+687:                   lowTags<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>TO_DO, TODO</span><span class='def-StringEdge def-String'>'</span>
+688:               <span class='def-SymbolStrong def-Symbol'>)</span>
+689:           <span class='def-SymbolStrong def-Symbol'>]</span>
+690:       <span class='def-SymbolStrong def-Symbol'>)</span>
+691:       <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+692:         <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>====== Archive jacoco reports artifacts</span><span class='def-StringEdge def-String'>'</span>
+693:         <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>archiveArtifacts</span> artifacts<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>${'**/jacoco-aggregate/**/*.*'}</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span> allowEmptyArchive<span class='def-Symbol'>:</span> <span class='def-Keyword'>true</span><span class='def-Symbol'>,</span> onlyIfSuccessful<span class='def-Symbol'>:</span> <span class='def-Keyword'>false</span>
+694:       <span class='def-SymbolStrong def-Symbol'>}</span>
+695: 
+696:       <span class='jenkinsfile-OtherMethod def-FunctionKeyword def-Keyword'>script</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+697:         <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>params<span class='def-Symbol'>.</span>JENKINS_DEBUG<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+698:           jenkinsBreakpoint<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+699:         <span class='def-SymbolStrong def-Symbol'>}</span>
+700:       <span class='def-SymbolStrong def-Symbol'>}</span>
+701:     <span class='def-SymbolStrong def-Symbol'>}</span>
+702:   <span class='def-SymbolStrong def-Symbol'>}</span>
+703: <span class='jenkinsfile-SymbolStrong def-SymbolStrong def-Symbol'>}</span>
+704: 
+705: 
+706: <span class='def-Comment def-Syntax'>/**</span>
+707: <span class='def-Comment def-Syntax'> * Append a new line to job description</span>
+708: <span class='def-Comment def-Syntax'> * This is MARKDOWN, do not forget double space at the end of line</span>
+709: <span class='def-Comment def-Syntax'> *</span>
+710: <span class='def-Comment def-Syntax'> * @param new line as String or Gstring</span>
+711: <span class='def-Comment def-Syntax'> * @return void</span>
+712: <span class='def-Comment def-Syntax'> */</span>
+713: <span class='def-Keyword'>private</span> <span class='def-Keyword'>void</span> job_description_append<span class='def-SymbolStrong def-Symbol'>(</span>new_line<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+714:   <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>currentBuild<span class='def-Symbol'>.</span>description <span class='def-Symbol'>=</span><span class='def-Symbol'>=</span> <span class='def-Keyword'>null</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+715:     <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>Create the job description with: </span><span class='def-Comment def-Syntax'>\n</span><span class='def-VarStrong def-Var'>$new_line</span><span class='def-StringEdge def-String'>"</span>
+716:     currentBuild<span class='def-Symbol'>.</span>description <span class='def-Symbol'>=</span> new_line
+717:   <span class='def-SymbolStrong def-Symbol'>}</span>
+718:   <span class='def-Keyword'>else</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+719:     <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>Edit the job description adding: </span><span class='def-VarStrong def-Var'>$new_line</span><span class='def-StringEdge def-String'>"</span>
+720:     currentBuild<span class='def-Symbol'>.</span>description <span class='def-Symbol'>=</span> currentBuild<span class='def-Symbol'>.</span>description <span class='def-Symbol'>+</span> <span class='def-StringEdge def-String'>'</span><span class='def-Comment def-Syntax'>\n</span><span class='def-StringEdge def-String'>'</span> <span class='def-Symbol'>+</span> new_line
+721:   <span class='def-SymbolStrong def-Symbol'>}</span>
+722: <span class='def-SymbolStrong def-Symbol'>}</span>
+723: 
+724: <span class='def-Comment def-Syntax'>/**</span>
+725: <span class='def-Comment def-Syntax'> * Assembly all needed items to put inside extraBuildParams</span>
+726: <span class='def-Comment def-Syntax'> *</span>
+727: <span class='def-Comment def-Syntax'> * @param Boolean skip_doc, if set to true documentation build will be skipped</span>
+728: <span class='def-Comment def-Syntax'> *</span>
+729: <span class='def-Comment def-Syntax'> * @return extraBuildParams as a string ready for mvn cmd</span>
+730: <span class='def-Comment def-Syntax'> */</span>
+731: <span class='def-Keyword'>private</span> <span class='def-FunctionKeyword def-Keyword'>String</span> assemblyExtraBuildParams<span class='def-SymbolStrong def-Symbol'>(</span>Boolean skip_doc<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+732:   <span class='def-FunctionKeyword def-Keyword'>String</span> extraBuildParams
+733: 
+734:   <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Processing extraBuildParams</span><span class='def-StringEdge def-String'>'</span>
+735:   <span class='def-Keyword'>final</span> List<span class='def-Symbol'>&lt;</span><span class='def-FunctionKeyword def-Keyword'>String</span><span class='def-Symbol'>></span> buildParamsAsArray <span class='def-Symbol'>=</span> <span class='def-SymbolStrong def-Symbol'>[</span><span class='def-SymbolStrong def-Symbol'>]</span>
+736: 
+737:   <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Manage user params</span><span class='def-StringEdge def-String'>'</span>
+738:   <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>params<span class='def-Symbol'>.</span>EXTRA_BUILD_PARAMS<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+739:     buildParamsAsArray<span class='def-Symbol'>.</span>add<span class='def-SymbolStrong def-Symbol'>(</span>params<span class='def-Symbol'>.</span>EXTRA_BUILD_PARAMS <span class='def-Keyword'>as</span> <span class='def-FunctionKeyword def-Keyword'>String</span><span class='def-SymbolStrong def-Symbol'>)</span>
+740:   <span class='def-SymbolStrong def-Symbol'>}</span>
+741: 
+742:   <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Manage the skip_doc option</span><span class='def-StringEdge def-String'>'</span>
+743:   <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>skip_doc<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+744:     buildParamsAsArray<span class='def-Symbol'>.</span>add<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>--projects !documentation</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+745:     buildParamsAsArray<span class='def-Symbol'>.</span>add<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'>--define documentation.skip=true</span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+746:   <span class='def-SymbolStrong def-Symbol'>}</span>
+747: 
+748:   <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Construct final params content</span><span class='def-StringEdge def-String'>'</span>
+749:   extraBuildParams <span class='def-Symbol'>=</span> buildParamsAsArray<span class='def-Symbol'>.</span>join<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>'</span><span class='def-String'> </span><span class='def-StringEdge def-String'>'</span><span class='def-SymbolStrong def-Symbol'>)</span>
+750:   <span class='def-FunctionKeyword def-Keyword'>println</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>extraBuildParams: </span><span class='def-VarStrong def-Var'>$extraBuildParams</span><span class='def-StringEdge def-String'>"</span>
+751: 
+752:   <span class='def-Keyword'>return</span> extraBuildParams
+753: <span class='def-SymbolStrong def-Symbol'>}</span>
+754: 
+755: <span class='def-Comment def-Syntax'>/**</span>
+756: <span class='def-Comment def-Syntax'> * Implement a simple breakpoint to stop actual job</span>
+757: <span class='def-Comment def-Syntax'> * Use the method anywhere you need to stop</span>
+758: <span class='def-Comment def-Syntax'> * The first usage is to keep the pod alive on post stage.</span>
+759: <span class='def-Comment def-Syntax'> * Change and restore the job description to be more visible</span>
+760: <span class='def-Comment def-Syntax'> *</span>
+761: <span class='def-Comment def-Syntax'> * @param none</span>
+762: <span class='def-Comment def-Syntax'> * @return void</span>
+763: <span class='def-Comment def-Syntax'> */</span>
+764: <span class='def-Keyword'>private</span> <span class='def-Keyword'>void</span> jenkinsBreakpoint<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+765:   <span class='def-LineComment def-Comment def-Syntax'>// Backup the description</span>
+766:   <span class='def-FunctionKeyword def-Keyword'>String</span> job_description_backup <span class='def-Symbol'>=</span> currentBuild<span class='def-Symbol'>.</span>description
+767:   <span class='def-LineComment def-Comment def-Syntax'>// updating build description</span>
+768:   currentBuild<span class='def-Symbol'>.</span>description <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>ACTION NEEDED TO CONTINUE </span><span class='def-Comment def-Syntax'>\n</span><span class='def-String'> </span><span class='def-VarStrong def-Var'>${job_description_backup}</span><span class='def-StringEdge def-String'>"</span>
+769:   <span class='def-LineComment def-Comment def-Syntax'>// Request user action</span>
+770:   input message<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Finish the job?</span><span class='def-StringEdge def-String'>'</span><span class='def-Symbol'>,</span> ok<span class='def-Symbol'>:</span> <span class='def-StringEdge def-String'>'</span><span class='def-String'>Yes</span><span class='def-StringEdge def-String'>'</span>
+771:   <span class='def-LineComment def-Comment def-Syntax'>// updating build description</span>
+772:   currentBuild<span class='def-Symbol'>.</span>description <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>$job_description_backup</span><span class='def-StringEdge def-String'>"</span>
+773: <span class='def-SymbolStrong def-Symbol'>}</span>
+774: 
+775: <span class='def-Comment def-Syntax'>/**</span>
+776: <span class='def-Comment def-Syntax'> * create a new version from actual one and given jira ticket or user qualifier</span>
+777: <span class='def-Comment def-Syntax'> * Priority to user qualifier</span>
+778: <span class='def-Comment def-Syntax'> *</span>
+779: <span class='def-Comment def-Syntax'> * The branch name has comply with the format: user/JIRA-1234-Description</span>
+780: <span class='def-Comment def-Syntax'> * It is MANDATORY for artifact management.</span>
+781: <span class='def-Comment def-Syntax'> *</span>
+782: <span class='def-Comment def-Syntax'> * @param String version actual version to edit</span>
+783: <span class='def-Comment def-Syntax'> * @param GString ticket</span>
+784: <span class='def-Comment def-Syntax'> * @param GString user_qualifier to be checked as priority qualifier</span>
+785: <span class='def-Comment def-Syntax'> *</span>
+786: <span class='def-Comment def-Syntax'> * @return String new_version with added qualifier</span>
+787: <span class='def-Comment def-Syntax'> */</span>
+788: <span class='def-Keyword'>private</span> <span class='def-Keyword'>static</span> <span class='def-FunctionKeyword def-Keyword'>String</span> add_qualifier_to_version<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-FunctionKeyword def-Keyword'>String</span> version<span class='def-Symbol'>,</span> <span class='def-FunctionKeyword def-Keyword'>String</span> ticket<span class='def-Symbol'>,</span> <span class='def-FunctionKeyword def-Keyword'>String</span> user_qualifier<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+789:   <span class='def-FunctionKeyword def-Keyword'>String</span> new_version
+790: 
+791:   <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>user_qualifier<span class='def-Symbol'>.</span>contains<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>DEFAULT</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+792:     <span class='def-Keyword'>if</span> <span class='def-SymbolStrong def-Symbol'>(</span>version<span class='def-Symbol'>.</span>contains<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>-SNAPSHOT</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span><span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+793:       new_version <span class='def-Symbol'>=</span> version<span class='def-Symbol'>.</span>replace<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>-SNAPSHOT</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>-</span><span class='def-VarStrong def-Var'>$ticket</span><span class='def-String'>-SNAPSHOT</span><span class='def-StringEdge def-String'>"</span> <span class='def-Keyword'>as</span> <span class='def-FunctionKeyword def-Keyword'>String</span><span class='def-SymbolStrong def-Symbol'>)</span>
+794:     <span class='def-SymbolStrong def-Symbol'>}</span>
+795:     <span class='def-Keyword'>else</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+796:       new_version <span class='def-Symbol'>=</span> <span class='def-StringEdge def-String'>"</span><span class='def-VarStrong def-Var'>$version</span><span class='def-String'>-</span><span class='def-VarStrong def-Var'>$ticket</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>.</span><span class='def-FunctionKeyword def-Keyword'>toString</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+797:     <span class='def-SymbolStrong def-Symbol'>}</span>
+798:   <span class='def-SymbolStrong def-Symbol'>}</span>
+799:   <span class='def-Keyword'>else</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+800:     new_version <span class='def-Symbol'>=</span> version<span class='def-Symbol'>.</span>replace<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>-SNAPSHOT</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span> <span class='def-StringEdge def-String'>"</span><span class='def-String'>-</span><span class='def-VarStrong def-Var'>$user_qualifier</span><span class='def-String'>-SNAPSHOT</span><span class='def-StringEdge def-String'>"</span> <span class='def-Keyword'>as</span> <span class='def-FunctionKeyword def-Keyword'>String</span><span class='def-SymbolStrong def-Symbol'>)</span>
+801:   <span class='def-SymbolStrong def-Symbol'>}</span>
+802:   <span class='def-Keyword'>return</span> new_version
+803: <span class='def-SymbolStrong def-Symbol'>}</span>
+804: 
+805: <span class='def-Comment def-Syntax'>/**</span>
+806: <span class='def-Comment def-Syntax'> * extract given branch information</span>
+807: <span class='def-Comment def-Syntax'> *</span>
+808: <span class='def-Comment def-Syntax'> * The branch name has comply with the format: user/JIRA-1234-Description</span>
+809: <span class='def-Comment def-Syntax'> * It is MANDATORY for artifact management.</span>
+810: <span class='def-Comment def-Syntax'> *</span>
+811: <span class='def-Comment def-Syntax'> * @param branch_name row name of the branch</span>
+812: <span class='def-Comment def-Syntax'> *</span>
+813: <span class='def-Comment def-Syntax'> * @return A list containing the extracted: [user, ticket, description]</span>
+814: <span class='def-Comment def-Syntax'> * The method also raise an assert exception in case of wrong branch name</span>
+815: <span class='def-Comment def-Syntax'> */</span>
+816: <span class='def-Keyword'>private</span> <span class='def-Keyword'>static</span> ArrayList<span class='def-Symbol'>&lt;</span><span class='def-FunctionKeyword def-Keyword'>String</span><span class='def-Symbol'>></span> extract_branch_info<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-FunctionKeyword def-Keyword'>String</span> branch_name<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+817: 
+818:   <span class='def-FunctionKeyword def-Keyword'>String</span> branchRegex <span class='def-Symbol'>=</span> <span class='def-Symbol'>/</span><span class='def-Symbol'>^</span><span class='def-SymbolStrong def-Symbol'>(</span><span class='def-Symbol'>?</span><span class='def-Symbol'>&lt;</span>user<span class='def-Symbol'>></span><span class='def-Symbol'>.</span><span class='def-Symbol'>*</span><span class='def-SymbolStrong def-Symbol'>)</span>\<span class='def-StringEdge def-String'>/</span><span class='def-String'>(?&lt;ticket>[A-Z]{2,8}-\d{1,6})[_-](?&lt;description>.*)</span><span class='def-StringEdge def-String'>/</span>
+819:   Matcher branchMatcher <span class='def-Symbol'>=</span> branch_name <span class='def-Symbol'>=</span><span class='def-Symbol'>~</span> branchRegex
+820: 
+821:   <span class='def-Keyword'>try</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+822:     <span class='def-Keyword'>assert</span> branchMatcher<span class='def-Symbol'>.</span>matches<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-SymbolStrong def-Symbol'>)</span>
+823:   <span class='def-SymbolStrong def-Symbol'>}</span>
+824:   <span class='def-Keyword'>catch</span> <span class='def-SymbolStrong def-Symbol'>(</span>AssertionError ignored<span class='def-SymbolStrong def-Symbol'>)</span> <span class='def-SymbolStrong def-Symbol'>{</span>
+825:     <span class='def-Keyword'>return</span> <span class='def-SymbolStrong def-Symbol'>[</span><span class='def-StringEdge def-String'>"</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span> <span class='def-StringEdge def-String'>"</span><span class='def-StringEdge def-String'>"</span><span class='def-Symbol'>,</span> <span class='def-StringEdge def-String'>"</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>]</span>
+826:   <span class='def-SymbolStrong def-Symbol'>}</span>
+827: 
+828:   <span class='def-FunctionKeyword def-Keyword'>String</span> user <span class='def-Symbol'>=</span> branchMatcher<span class='def-Symbol'>.</span>group<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>user</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
+829:   <span class='def-FunctionKeyword def-Keyword'>String</span> ticket <span class='def-Symbol'>=</span> branchMatcher<span class='def-Symbol'>.</span>group<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>ticket</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
+830:   <span class='def-FunctionKeyword def-Keyword'>String</span> description <span class='def-Symbol'>=</span> branchMatcher<span class='def-Symbol'>.</span>group<span class='def-SymbolStrong def-Symbol'>(</span><span class='def-StringEdge def-String'>"</span><span class='def-String'>description</span><span class='def-StringEdge def-String'>"</span><span class='def-SymbolStrong def-Symbol'>)</span>
+831: 
+832:   <span class='def-Keyword'>return</span> <span class='def-SymbolStrong def-Symbol'>[</span>user<span class='def-Symbol'>,</span> ticket<span class='def-Symbol'>,</span> description<span class='def-SymbolStrong def-Symbol'>]</span>
+833: <span class='def-SymbolStrong def-Symbol'>}</span>
+834: 
