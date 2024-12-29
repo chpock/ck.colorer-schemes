@@ -1,0 +1,12 @@
+# name = Sequence entry that looks like two with wrong indentation
+
+- single multiline
+ - sequence entry
+
+# +STR
+#  +DOC
+#   +SEQ
+#    =VAL :single multiline - sequence entry
+#   -SEQ
+#  -DOC
+# -STR

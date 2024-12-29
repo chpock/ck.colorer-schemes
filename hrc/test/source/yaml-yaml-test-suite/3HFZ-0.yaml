@@ -1,0 +1,14 @@
+# name = Invalid content after document end marker
+# fail = true
+
+---
+key: value
+... invalid
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :key
+#    =VAL :value
+#   -MAP
+#  -DOC ...

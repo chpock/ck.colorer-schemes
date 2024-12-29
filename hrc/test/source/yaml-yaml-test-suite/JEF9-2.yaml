@@ -1,0 +1,6 @@
+# name = Trailing whitespace in streams
+
+- |+
+␣␣␣∎
+
+# null

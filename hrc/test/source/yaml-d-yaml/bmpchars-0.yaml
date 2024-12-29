@@ -1,0 +1,11 @@
+# name = bmpchars
+
+a: 𒅗
+# +STR
+#   +DOC
+#     +MAP
+#       =VAL :a
+#       =VAL :𒅗
+#     -MAP
+#   -DOC
+# -STR

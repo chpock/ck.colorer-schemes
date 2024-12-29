@@ -1,0 +1,15 @@
+# name = Flow Sequence in Block Mapping
+
+a: [b, c]
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :a
+#    +SEQ []
+#     =VAL :b
+#     =VAL :c
+#    -SEQ
+#   -MAP
+#  -DOC
+# -STR

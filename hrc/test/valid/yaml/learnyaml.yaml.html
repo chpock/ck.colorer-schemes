@@ -1,0 +1,215 @@
+﻿  0: <span class='yaml-DocumentEdge def-Keyword'>---  </span><span class='yaml-Comment def-Comment def-Syntax'># document start</span>
+  1: 
+  2: <span class='yaml-Comment def-Comment def-Syntax'># Comments in YAML look like this.</span>
+  3: <span class='yaml-Comment def-Comment def-Syntax'># YAML supports single-line comments.</span>
+  4: 
+  5: <span class='yaml-Comment def-Comment def-Syntax'>################</span>
+  6: <span class='yaml-Comment def-Comment def-Syntax'># SCALAR TYPES #</span>
+  7: <span class='yaml-Comment def-Comment def-Syntax'>################</span>
+  8: 
+  9: <span class='yaml-Comment def-Comment def-Syntax'># Our root object (which continues for the entire document) will be a map,</span>
+ 10: <span class='yaml-Comment def-Comment def-Syntax'># which is equivalent to a dictionary, hash or object in other languages.</span>
+ 11: <span class='yaml-MappingKey def-Parameter'>key</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>value</span>
+ 12: <span class='yaml-MappingKey def-Parameter'>another_key</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>Another value goes here.</span>
+ 13: <span class='yaml-MappingKey def-Parameter'>a_number_value</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>100</span>
+ 14: <span class='yaml-MappingKey def-Parameter'>scientific_notation</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberFloat def-Number'>1e+12</span>
+ 15: <span class='yaml-MappingKey def-Parameter'>hex_notation</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberHex def-Number'>0x123</span>  <span class='yaml-Comment def-Comment def-Syntax'># evaluates to 291</span>
+ 16: <span class='yaml-MappingKey def-Parameter'>octal_notation</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>0123</span> <span class='yaml-Comment def-Comment def-Syntax'># evaluates to 83</span>
+ 17: 
+ 18: <span class='yaml-Comment def-Comment def-Syntax'># The number 1 will be interpreted as a number, not a boolean.</span>
+ 19: <span class='yaml-Comment def-Comment def-Syntax'># If you want it to be interpreted as a boolean, use true.</span>
+ 20: <span class='yaml-MappingKey def-Parameter'>boolean</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-BooleanConstant def-BooleanConstant def-Constant def-Keyword'>true</span>
+ 21: <span class='yaml-MappingKey def-Parameter'>null_value</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-Constant def-Constant def-Keyword'>null</span>
+ 22: <span class='yaml-MappingKey def-Parameter'>another_null_value</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-Constant def-Constant def-Keyword'>~</span>
+ 23: <span class='yaml-MappingKey def-Parameter'>key with spaces</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>value</span>
+ 24: 
+ 25: <span class='yaml-Comment def-Comment def-Syntax'># Yes and No (doesn't matter the case) will be evaluated to boolean</span>
+ 26: <span class='yaml-Comment def-Comment def-Syntax'># true and false values respectively.</span>
+ 27: <span class='yaml-Comment def-Comment def-Syntax'># To use the actual value use single or double quotes.</span>
+ 28: <span class='yaml-BooleanConstant def-BooleanConstant def-Constant def-Keyword'>no</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-BooleanConstant def-BooleanConstant def-Constant def-Keyword'>no</span>            <span class='yaml-Comment def-Comment def-Syntax'># evaluates to "no": false</span>
+ 29: <span class='yaml-BooleanConstant def-BooleanConstant def-Constant def-Keyword'>yes</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-BooleanConstant def-BooleanConstant def-Constant def-Keyword'>No</span>           <span class='yaml-Comment def-Comment def-Syntax'># evaluates to "yes": false</span>
+ 30: <span class='yaml-MappingKey def-Parameter'>not_enclosed</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-BooleanConstant def-BooleanConstant def-Constant def-Keyword'>yes</span> <span class='yaml-Comment def-Comment def-Syntax'># evaluates to "not_enclosed": true</span>
+ 31: <span class='yaml-MappingKey def-Parameter'>enclosed</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'>yes</span><span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'>   </span><span class='yaml-Comment def-Comment def-Syntax'># evaluates to "enclosed": yes</span>
+ 32: 
+ 33: <span class='yaml-Comment def-Comment def-Syntax'># Notice that strings don't need to be quoted. However, they can be.</span>
+ 34: <span class='yaml-MappingKey def-Parameter'>however</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-String def-String'>A string, enclosed in quotes.</span><span class='yaml-StringEdge def-StringEdge def-String'>'</span>
+ 35: <span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-MappingKey def-Parameter'>Keys can be quoted too.</span><span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'>Useful if you want to put a ':' in your key.</span><span class='yaml-StringEdge def-StringEdge def-String'>"</span>
+ 36: <span class='yaml-MappingKey def-Parameter'>single quotes</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-String def-String'>have </span><span class='yaml-StringContent def-StringContent def-String'>''</span><span class='yaml-String def-String'>one</span><span class='yaml-StringContent def-StringContent def-String'>''</span><span class='yaml-String def-String'> escape pattern</span><span class='yaml-StringEdge def-StringEdge def-String'>'</span>
+ 37: <span class='yaml-MappingKey def-Parameter'>double quotes</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'>have many: </span><span class='yaml-StringContent def-StringContent def-String'>\"</span><span class='yaml-String def-String'>, </span><span class='yaml-StringContent def-StringContent def-String'>\0</span><span class='yaml-String def-String'>, </span><span class='yaml-StringContent def-StringContent def-String'>\t</span><span class='yaml-String def-String'>, </span><span class='yaml-StringContent def-StringContent def-String'>\u263A</span><span class='yaml-String def-String'>, </span><span class='yaml-StringContent def-StringContent def-String'>\x0d</span><span class='yaml-StringContent def-StringContent def-String'>\x0a</span><span class='yaml-String def-String'> == </span><span class='yaml-StringContent def-StringContent def-String'>\r</span><span class='yaml-StringContent def-StringContent def-String'>\n</span><span class='yaml-String def-String'>, and more.</span><span class='yaml-StringEdge def-StringEdge def-String'>"</span>
+ 38: <span class='yaml-Comment def-Comment def-Syntax'># UTF-8/16/32 characters need to be encoded</span>
+ 39: <span class='yaml-MappingKey def-Parameter'>Superscript two</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>\u00B2</span>
+ 40: 
+ 41: <span class='yaml-Comment def-Comment def-Syntax'># Special characters must be enclosed in single or double quotes</span>
+ 42: <span class='yaml-MappingKey def-Parameter'>special_characters</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'>[ John ] &amp; { Jane } - &lt;Doe></span><span class='yaml-StringEdge def-StringEdge def-String'>"</span>
+ 43: 
+ 44: <span class='yaml-Comment def-Comment def-Syntax'># Multiple-line strings can be written either as a 'literal block' (using |),</span>
+ 45: <span class='yaml-Comment def-Comment def-Syntax'># or a 'folded block' (using '>').</span>
+ 46: <span class='yaml-Comment def-Comment def-Syntax'># Literal block turn every newline within the string into a literal newline (\n).</span>
+ 47: <span class='yaml-Comment def-Comment def-Syntax'># Folded block removes newlines within the string.</span>
+ 48: <span class='yaml-MappingKey def-Parameter'>literal_block</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-BlockScalar def-InterfaceKeyword def-Keyword'>|</span>
+ 49: <span class='yaml-String def-String'>  This entire block of text will be the value of the 'literal_block' key,</span>
+ 50: <span class='yaml-String def-String'>  with line breaks being preserved.</span>
+ 51: 
+ 52: <span class='yaml-String def-String'>  The literal continues until de-dented, and the leading indentation is</span>
+ 53: <span class='yaml-String def-String'>  stripped.</span>
+ 54: 
+ 55: <span class='yaml-String def-String'>      Any lines that are 'more-indented' keep the rest of their indentation -</span>
+ 56: <span class='yaml-String def-String'>      these lines will be indented by 4 spaces.</span>
+ 57: <span class='yaml-MappingKey def-Parameter'>folded_style</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-BlockScalar def-InterfaceKeyword def-Keyword'>></span>
+ 58: <span class='yaml-String def-String'>  This entire block of text will be the value of 'folded_style', but this</span>
+ 59: <span class='yaml-String def-String'>  time, all newlines will be replaced with a single space.</span>
+ 60: 
+ 61: <span class='yaml-String def-String'>  Blank lines, like above, are converted to a newline character.</span>
+ 62: 
+ 63: <span class='yaml-String def-String'>      'More-indented' lines keep their newlines, too -</span>
+ 64: <span class='yaml-String def-String'>      this text will appear over two lines.</span>
+ 65: 
+ 66: <span class='yaml-Comment def-Comment def-Syntax'># |- and >- removes the trailing blank lines (also called literal/block "strip")</span>
+ 67: <span class='yaml-MappingKey def-Parameter'>literal_strip</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-BlockScalar def-InterfaceKeyword def-Keyword'>|</span><span class='yaml-BlockScalarIndent def-Prefix'>-</span>
+ 68: <span class='yaml-String def-String'>  This entire block of text will be the value of the 'literal_strip' key,</span>
+ 69: <span class='yaml-String def-String'>  with trailing blank line being stripped.</span>
+ 70: <span class='yaml-MappingKey def-Parameter'>block_strip</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-BlockScalar def-InterfaceKeyword def-Keyword'>></span><span class='yaml-BlockScalarIndent def-Prefix'>-</span>
+ 71: <span class='yaml-String def-String'>  This entire block of text will be the value of 'block_strip', but this</span>
+ 72: <span class='yaml-String def-String'>  time, all newlines will be replaced with a single space and</span>
+ 73: <span class='yaml-String def-String'>  trailing blank line being stripped.</span>
+ 74: 
+ 75: <span class='yaml-Comment def-Comment def-Syntax'># |+ and >+ keeps trailing blank lines (also called literal/block "keep")</span>
+ 76: <span class='yaml-MappingKey def-Parameter'>literal_keep</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-BlockScalar def-InterfaceKeyword def-Keyword'>|</span><span class='yaml-BlockScalarIndent def-Prefix'>+</span>
+ 77: <span class='yaml-String def-String'>  This entire block of text will be the value of the 'literal_keep' key,</span>
+ 78: <span class='yaml-String def-String'>  with trailing blank line being kept.</span>
+ 79: 
+ 80: <span class='yaml-MappingKey def-Parameter'>block_keep</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-BlockScalar def-InterfaceKeyword def-Keyword'>></span><span class='yaml-BlockScalarIndent def-Prefix'>+</span>
+ 81: <span class='yaml-String def-String'>  This entire block of text will be the value of 'block_keep', but this</span>
+ 82: <span class='yaml-String def-String'>  time, all newlines will be replaced with a single space and</span>
+ 83: <span class='yaml-String def-String'>  trailing blank line being kept.</span>
+ 84: 
+ 85: <span class='yaml-Comment def-Comment def-Syntax'>####################</span>
+ 86: <span class='yaml-Comment def-Comment def-Syntax'># COLLECTION TYPES #</span>
+ 87: <span class='yaml-Comment def-Comment def-Syntax'>####################</span>
+ 88: 
+ 89: <span class='yaml-Comment def-Comment def-Syntax'># Nesting uses indentation. 2 space indent is preferred (but not required).</span>
+ 90: <span class='yaml-MappingKey def-Parameter'>a_nested_map</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
+ 91:   <span class='yaml-MappingKey def-Parameter'>key</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>value</span>
+ 92:   <span class='yaml-MappingKey def-Parameter'>another_key</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>Another Value</span>
+ 93:   <span class='yaml-MappingKey def-Parameter'>another_nested_map</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
+ 94:     <span class='yaml-MappingKey def-Parameter'>hello</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>hello</span>
+ 95: 
+ 96: <span class='yaml-Comment def-Comment def-Syntax'># Maps don't have to have string keys.</span>
+ 97: <span class='def-NumberFloat def-Number'>0.25</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>a float key</span>
+ 98: 
+ 99: <span class='yaml-Comment def-Comment def-Syntax'># Keys can also be complex, like multi-line objects</span>
+100: <span class='yaml-Comment def-Comment def-Syntax'># We use ? followed by a space to indicate the start of a complex key.</span>
+101: <span class='yaml-SymbolMappingKey def-Symbol'>? </span><span class='yaml-BlockScalar def-InterfaceKeyword def-Keyword'>|</span>
+102: <span class='yaml-String def-String'>  This is a key</span>
+103: <span class='yaml-String def-String'>  that has multiple lines</span>
+104: <span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>and this is its value</span>
+105: 
+106: <span class='yaml-Comment def-Comment def-Syntax'># YAML also allows mapping between sequences with the complex key syntax</span>
+107: <span class='yaml-Comment def-Comment def-Syntax'># Some language parsers might complain</span>
+108: <span class='yaml-Comment def-Comment def-Syntax'># An example</span>
+109: <span class='yaml-SymbolMappingKey def-Symbol'>? </span><span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>Manchester United</span>
+110:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>Real Madrid</span>
+111: <span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>[</span> <span class='def-Date'>2001-01-01</span><span class='yaml-Symbol def-Symbol'>, </span><span class='def-Date'>2002-02-02</span><span class='yaml-String def-String'> </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>]</span>
+112: 
+113: <span class='yaml-Comment def-Comment def-Syntax'># Sequences (equivalent to lists or arrays) look like this</span>
+114: <span class='yaml-Comment def-Comment def-Syntax'># (note that the '-' counts as indentation):</span>
+115: <span class='yaml-MappingKey def-Parameter'>a_sequence</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
+116:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>Item 1</span>
+117:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>Item 2</span>
+118:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='def-NumberFloat def-Number'>0.5</span>  <span class='yaml-Comment def-Comment def-Syntax'># sequences can contain disparate types.</span>
+119:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>Item 4</span>
+120:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-MappingKey def-Parameter'>key</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>value</span>
+121:     <span class='yaml-MappingKey def-Parameter'>another_key</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>another_value</span>
+122:   <span class='yaml-SymbolSequence def-Symbol'>- - </span><span class='yaml-String def-String'>This is a sequence</span>
+123:     <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>inside another sequence</span>
+124:   <span class='yaml-SymbolSequence def-Symbol'>- - - </span><span class='yaml-String def-String'>Nested sequence indicators</span>
+125:       <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>can be collapsed</span>
+126: 
+127: <span class='yaml-Comment def-Comment def-Syntax'># Since YAML is a superset of JSON, you can also write JSON-style maps and</span>
+128: <span class='yaml-Comment def-Comment def-Syntax'># sequences:</span>
+129: <span class='yaml-MappingKey def-Parameter'>json_map</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>{</span> <span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-MappingKey def-Parameter'>key</span><span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'>value</span><span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'> </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>}</span>
+130: <span class='yaml-MappingKey def-Parameter'>json_seq</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>[</span> <span class='def-NumberDec def-Number'>3</span><span class='yaml-Symbol def-Symbol'>, </span><span class='def-NumberDec def-Number'>2</span><span class='yaml-Symbol def-Symbol'>, </span><span class='def-NumberDec def-Number'>1</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'>takeoff</span><span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'> </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>]</span>
+131: <span class='yaml-MappingKey def-Parameter'>and quotes are optional</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>{</span> <span class='yaml-MappingKey def-Parameter'>key</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>[</span> <span class='def-NumberDec def-Number'>3</span><span class='yaml-Symbol def-Symbol'>, </span><span class='def-NumberDec def-Number'>2</span><span class='yaml-Symbol def-Symbol'>, </span><span class='def-NumberDec def-Number'>1</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-String def-String'>takeoff </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>]</span> <span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>}</span>
+132: 
+133: <span class='yaml-Comment def-Comment def-Syntax'>#######################</span>
+134: <span class='yaml-Comment def-Comment def-Syntax'># EXTRA YAML FEATURES #</span>
+135: <span class='yaml-Comment def-Comment def-Syntax'>#######################</span>
+136: 
+137: <span class='yaml-Comment def-Comment def-Syntax'># YAML also has a handy feature called 'anchors', which let you easily duplicate</span>
+138: <span class='yaml-Comment def-Comment def-Syntax'># content across your document.</span>
+139: <span class='yaml-Comment def-Comment def-Syntax'># Anchors identified by &amp; character which define the value.</span>
+140: <span class='yaml-Comment def-Comment def-Syntax'># Aliases identified by * character which acts as "see above" command.</span>
+141: <span class='yaml-Comment def-Comment def-Syntax'># Both of these keys will have the same value:</span>
+142: <span class='yaml-MappingKey def-Parameter'>anchored_content</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>anchor_name </span><span class='yaml-String def-String'>This string will appear as the value of two keys.</span>
+143: <span class='yaml-MappingKey def-Parameter'>other_anchor</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>*</span><span class='yaml-Anchor def-Var'>anchor_name</span>
+144: 
+145: <span class='yaml-Comment def-Comment def-Syntax'># Anchors can be used to duplicate/inherit properties</span>
+146: <span class='yaml-MappingKey def-Parameter'>base</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>base</span>
+147:   <span class='yaml-MappingKey def-Parameter'>name</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>Everyone has same name</span>
+148: 
+149: <span class='yaml-Comment def-Comment def-Syntax'># The expression &lt;&lt; is called 'Merge Key Language-Independent Type'. It is used to</span>
+150: <span class='yaml-Comment def-Comment def-Syntax'># indicate that all the keys of one or more specified maps should be inserted</span>
+151: <span class='yaml-Comment def-Comment def-Syntax'># into the current map.</span>
+152: <span class='yaml-Comment def-Comment def-Syntax'># NOTE: If key already exists alias will not be merged</span>
+153: <span class='yaml-MappingKey def-Parameter'>foo</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
+154:   <span class='yaml-SymbolMergeKeys def-InterfaceKeyword def-Keyword'>&lt;&lt;</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>*</span><span class='yaml-Anchor def-Var'>base </span><span class='yaml-Comment def-Comment def-Syntax'># doesn't merge the anchor</span>
+155:   <span class='yaml-MappingKey def-Parameter'>age</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>10</span>
+156:   <span class='yaml-MappingKey def-Parameter'>name</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>John</span>
+157: <span class='yaml-MappingKey def-Parameter'>bar</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
+158:   <span class='yaml-SymbolMergeKeys def-InterfaceKeyword def-Keyword'>&lt;&lt;</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>*</span><span class='yaml-Anchor def-Var'>base </span><span class='yaml-Comment def-Comment def-Syntax'># base anchor will be merged</span>
+159:   <span class='yaml-MappingKey def-Parameter'>age</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>20</span>
+160: 
+161: <span class='yaml-Comment def-Comment def-Syntax'># foo name won't be changed and it will be: John. On the other hand, bar's name will be changed to the base one: Everyone has same name</span>
+162: 
+163: <span class='yaml-Comment def-Comment def-Syntax'># YAML also has tags, which you can use to explicitly declare types.</span>
+164: <span class='yaml-Comment def-Comment def-Syntax'># Syntax: !![typeName] [value]</span>
+165: <span class='yaml-MappingKey def-Parameter'>explicit_boolean</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>bool </span><span class='yaml-BooleanConstant def-BooleanConstant def-Constant def-Keyword'>true</span>
+166: <span class='yaml-MappingKey def-Parameter'>explicit_integer</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>int </span><span class='def-NumberDec def-Number'>42</span>
+167: <span class='yaml-MappingKey def-Parameter'>explicit_float</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>float </span><span class='def-NumberFloat def-Number'>-42.24</span>
+168: <span class='yaml-MappingKey def-Parameter'>explicit_string</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>str </span><span class='def-NumberFloat def-Number'>0.5</span>
+169: <span class='yaml-MappingKey def-Parameter'>explicit_datetime</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>timestamp </span><span class='def-Date'>2022-11-17</span><span class='def-Prefix'> </span><span class='def-Time'>12:34:56.78</span><span class='def-Prefix'> +9</span>
+170: <span class='yaml-MappingKey def-Parameter'>explicit_null</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>null </span><span class='yaml-Constant def-Constant def-Keyword'>null</span>
+171: 
+172: <span class='yaml-Comment def-Comment def-Syntax'># Some parsers implement language specific tags, like this one for Python's</span>
+173: <span class='yaml-Comment def-Comment def-Syntax'># complex number type.</span>
+174: <span class='yaml-MappingKey def-Parameter'>python_complex_number</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>python/complex </span><span class='yaml-String def-String'>1+2j</span>
+175: 
+176: <span class='yaml-Comment def-Comment def-Syntax'># We can also use yaml complex keys with language specific tags</span>
+177: <span class='yaml-SymbolMappingKey def-Symbol'>? </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>python/tuple </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>[</span> <span class='def-NumberDec def-Number'>5</span><span class='yaml-Symbol def-Symbol'>, </span><span class='def-NumberDec def-Number'>7</span><span class='yaml-String def-String'> </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>]</span>
+178: <span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>Fifty Seven</span>
+179: <span class='yaml-Comment def-Comment def-Syntax'># Would be {(5, 7): 'Fifty Seven'} in Python</span>
+180: 
+181: <span class='yaml-Comment def-Comment def-Syntax'>####################</span>
+182: <span class='yaml-Comment def-Comment def-Syntax'># EXTRA YAML TYPES #</span>
+183: <span class='yaml-Comment def-Comment def-Syntax'>####################</span>
+184: 
+185: <span class='yaml-Comment def-Comment def-Syntax'># Strings and numbers aren't the only scalars that YAML can understand.</span>
+186: <span class='yaml-Comment def-Comment def-Syntax'># ISO-formatted date and datetime literals are also parsed.</span>
+187: <span class='yaml-MappingKey def-Parameter'>datetime_canonical</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-Date'>2001-12-15</span><span class='def-Prefix'>T</span><span class='def-Time'>02:59:43.1</span><span class='def-Prefix'>Z</span>
+188: <span class='yaml-MappingKey def-Parameter'>datetime_space_separated_with_time_zone</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-Date'>2001-12-14</span><span class='def-Prefix'> </span><span class='def-Time'>21:59:43.10</span><span class='def-Prefix'> -5</span>
+189: <span class='yaml-MappingKey def-Parameter'>date_implicit</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-Date'>2002-12-14</span>
+190: <span class='yaml-MappingKey def-Parameter'>date_explicit</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>timestamp </span><span class='def-Date'>2002-12-14</span>
+191: 
+192: <span class='yaml-Comment def-Comment def-Syntax'># The !!binary tag indicates that a string is actually a base64-encoded</span>
+193: <span class='yaml-Comment def-Comment def-Syntax'># representation of a binary blob.</span>
+194: <span class='yaml-MappingKey def-Parameter'>gif_file</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>binary </span><span class='yaml-BlockScalar def-InterfaceKeyword def-Keyword'>|</span>
+195: <span class='yaml-String def-String'>  R0lGODlhDAAMAIQAAP//9/X17unp5WZmZgAAAOfn515eXvPz7Y6OjuDg4J+fn5</span>
+196: <span class='yaml-String def-String'>  OTk6enp56enmlpaWNjY6Ojo4SEhP/++f/++f/++f/++f/++f/++f/++f/++f/+</span>
+197: <span class='yaml-String def-String'>  +f/++f/++f/++f/++f/++SH+Dk1hZGUgd2l0aCBHSU1QACwAAAAADAAMAAAFLC</span>
+198: <span class='yaml-String def-String'>  AgjoEwnuNAFOhpEMTRiggcz4BNJHrv/zCFcLiwMWYNG84BwwEeECcgggoBADs=</span>
+199: 
+200: <span class='yaml-Comment def-Comment def-Syntax'># YAML also has a set type, which looks like this:</span>
+201: <span class='yaml-MappingKey def-Parameter'>set</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
+202:   <span class='yaml-SymbolMappingKey def-Symbol'>? </span><span class='yaml-String def-String'>item1</span>
+203:   <span class='yaml-SymbolMappingKey def-Symbol'>? </span><span class='yaml-String def-String'>item2</span>
+204:   <span class='yaml-SymbolMappingKey def-Symbol'>? </span><span class='yaml-String def-String'>item3</span>
+205: <span class='yaml-MappingKey def-Parameter'>or</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>{</span> <span class='yaml-MappingKey def-Parameter'>item1</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-MappingKey def-Parameter'>item2</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-MappingKey def-Parameter'>item3 </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>}</span>
+206: 
+207: <span class='yaml-Comment def-Comment def-Syntax'># Sets are just maps with null values; the above is equivalent to:</span>
+208: <span class='yaml-MappingKey def-Parameter'>set2</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
+209:   <span class='yaml-MappingKey def-Parameter'>item1</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-Constant def-Constant def-Keyword'>null</span>
+210:   <span class='yaml-MappingKey def-Parameter'>item2</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-Constant def-Constant def-Keyword'>null</span>
+211:   <span class='yaml-MappingKey def-Parameter'>item3</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-Constant def-Constant def-Keyword'>null</span>
+212: 
+213: <span class='yaml-DocumentEdge def-Keyword'>...  </span><span class='yaml-Comment def-Comment def-Syntax'># document end</span>
+214: 

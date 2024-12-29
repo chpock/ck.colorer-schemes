@@ -1,0 +1,25 @@
+# name = spec-07-09
+
+---
+foo
+...
+# Repeated end marker.
+...
+---
+bar
+# No end marker.
+---
+baz
+...
+
+# +STR
+#   +DOC ---
+#     =VAL :foo
+#   -DOC ...
+#   +DOC ---
+#     =VAL :bar
+#   -DOC
+#   +DOC ---
+#     =VAL :baz
+#   -DOC ...
+# -STR

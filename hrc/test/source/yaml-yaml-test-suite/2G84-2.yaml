@@ -1,0 +1,10 @@
+# name = Literal modifers
+# fail = true
+
+--- |1-∎
+
+# +STR
+#  +DOC ---
+#   =VAL |
+#  -DOC
+# -STR

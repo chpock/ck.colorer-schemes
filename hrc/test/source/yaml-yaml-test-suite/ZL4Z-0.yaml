@@ -1,0 +1,11 @@
+# name = Invalid nested mapping
+# fail = true
+
+---
+a: 'b': c
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :a
+#    =VAL 'b

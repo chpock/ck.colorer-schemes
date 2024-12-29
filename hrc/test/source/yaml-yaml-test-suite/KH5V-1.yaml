@@ -1,0 +1,9 @@
+# name = Inline tabs in double quoted
+
+"2 inline\——»tab"
+
+# +STR
+#  +DOC
+#   =VAL "2 inline\ttab
+#  -DOC
+# -STR

@@ -1,0 +1,8 @@
+# name = Scalar doc with '...' in content
+
+--- "a
+... x
+b"
+
+# +STR
+#  +DOC ---

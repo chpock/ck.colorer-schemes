@@ -1,0 +1,21 @@
+# name = Various trailing tabs
+
+a: b———»
+seq:———»
+ - a———»
+c: d———»#X
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :a
+#    =VAL :b
+#    =VAL :seq
+#    +SEQ
+#     =VAL :a
+#    -SEQ
+#    =VAL :c
+#    =VAL :d
+#   -MAP
+#  -DOC
+# -STR

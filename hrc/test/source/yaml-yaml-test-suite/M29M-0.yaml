@@ -1,0 +1,19 @@
+# name = Literal Block Scalar
+
+a: |
+ ab
+␣
+ cd
+ ef
+␣
+
+...
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :a
+#    =VAL |ab\n\ncd\nef\n
+#   -MAP
+#  -DOC ...
+# -STR

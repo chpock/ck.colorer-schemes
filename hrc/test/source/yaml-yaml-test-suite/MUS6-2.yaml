@@ -1,0 +1,11 @@
+# name = Directive variants
+# fail = true
+
+%YAML  1.1
+---
+
+# +STR
+#  +DOC ---
+#   =VAL :
+#  -DOC
+# -STR
