@@ -1,0 +1,32 @@
+
+# special strings
+
+  on: on
+  off: off # comment
+  true: true
+  false: false
+  null: null
+  ~: ~
+  .nan: .nan
+  .inf: .inf
+  -.inf: -.inf
+
+  - on
+  - off
+  - true
+  - ~ # comment
+  - -.inf
+
+  - 123
+  - 0
+  - 0x12aF
+  - 0o123
+  - 0.
+  - -0.0
+  - 12e03
+  - -2E+05
+
+# not special strings
+
+  on on: on on
+  ~ ~: ~ ~

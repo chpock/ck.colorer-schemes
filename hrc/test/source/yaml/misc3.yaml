@@ -1,0 +1,35 @@
+
+  foo:
+  foo: bar
+  foo: bar # comment
+  # anchor reuse
+  foo: *bar
+  foo: *bar # comment
+  # anchor
+  foo: &bar
+  foo: &bar # comment
+  foo: &bar value
+  foo: !bar
+  foo: !bar # comment
+  foo: !bar baz
+  # tag + anchor reuse
+  foo: !bar *bar
+  foo: !bar *bar # comment
+  # tag + anchor
+  foo: !bar &bar
+  foo: !bar &bar # comment
+  foo: !bar &bar value # comment
+
+# errors here
+
+  # nothing is allowed after anchor reference
+  foo: *bar error here
+  # tag after anchor is not allowed
+  foo: &bar !value
+  # no tag/anchor name
+  foo: *
+  foo: * foo
+  foo: &
+  foo: & foo
+  foo: !
+  foo: ! foo

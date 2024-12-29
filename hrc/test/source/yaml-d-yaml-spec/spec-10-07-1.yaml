@@ -1,0 +1,37 @@
+# name = spec-10-07
+
+%YAML 1.1
+---
+!!map {
+  ? !!null ""
+  : !!str "value",
+  ? !!str "explicit key"
+  : !!str "value",
+  ? !!str "simple key"
+  : !!str "value",
+  ? !!seq [
+    !!str "collection",
+    !!str "simple",
+    !!str "key"
+  ]
+  : !!str "value"
+}
+
+# +STR
+#   +DOC ---
+#     +MAP {} <tag:yaml.org,2002:map>
+#       =VAL <tag:yaml.org,2002:null> "
+#       =VAL <tag:yaml.org,2002:str> "value
+#       =VAL <tag:yaml.org,2002:str> "explicit key
+#       =VAL <tag:yaml.org,2002:str> "value
+#       =VAL <tag:yaml.org,2002:str> "simple key
+#       =VAL <tag:yaml.org,2002:str> "value
+#       +SEQ [] <tag:yaml.org,2002:seq>
+#         =VAL <tag:yaml.org,2002:str> "collection
+#         =VAL <tag:yaml.org,2002:str> "simple
+#         =VAL <tag:yaml.org,2002:str> "key
+#       -SEQ
+#       =VAL <tag:yaml.org,2002:str> "value
+#     -MAP
+#   -DOC
+# -STR

@@ -1,0 +1,16 @@
+# name = bool
+# detect = tag:yaml.org,2002:bool\n
+
+- abcd
+- 9a8b
+- 9.1adsf
+
+# +STR
+#   +DOC
+#     +SEQ
+#       =VAL :abcd
+#       =VAL :9a8b
+#       =VAL :9.1adsf
+#     -SEQ
+#   -DOC
+# -STR

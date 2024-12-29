@@ -1,0 +1,16 @@
+# name = Spec Example 6.28. Non-Specific Tags
+
+# Assuming conventional resolution:
+- "12"
+- 12
+- ! 12
+
+# +STR
+#  +DOC
+#   +SEQ
+#    =VAL "12
+#    =VAL :12
+#    =VAL <!> :12
+#   -SEQ
+#  -DOC
+# -STR

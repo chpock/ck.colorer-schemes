@@ -1,0 +1,19 @@
+# name = spec-08-05
+
+%YAML 1.1
+---
+!!seq [
+  !<!local> "foo",
+  !<tag:yaml.org,2002:str> "bar",
+  !<tag:ben-kiki.org,2000:type> "baz",
+]
+
+# +STR
+#   +DOC ---
+#     +SEQ [] <tag:yaml.org,2002:seq>
+#       =VAL <!local> "foo
+#       =VAL <tag:yaml.org,2002:str> "bar
+#       =VAL <tag:ben-kiki.org,2000:type> "baz
+#     -SEQ
+#   -DOC
+# -STR

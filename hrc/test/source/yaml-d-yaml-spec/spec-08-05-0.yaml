@@ -1,0 +1,17 @@
+# name = spec-08-05
+
+%TAG !o! tag:ben-kiki.org,2000:
+---
+- !local foo
+- !!str bar
+- !o!type baz
+
+# +STR
+#   +DOC ---
+#     +SEQ
+#       =VAL <!local> :foo
+#       =VAL <tag:yaml.org,2002:str> :bar
+#       =VAL <tag:ben-kiki.org,2000:type> :baz
+#     -SEQ
+#   -DOC
+# -STR

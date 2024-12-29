@@ -1,0 +1,22 @@
+﻿ 0: <span class='yaml-Comment def-Comment def-Syntax'># name = Spec Example 7.1. Alias Nodes</span>
+ 1: 
+ 2: <span class='yaml-MappingKey def-Parameter'>First occurrence</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>anchor </span><span class='yaml-String def-String'>Foo</span>
+ 3: <span class='yaml-MappingKey def-Parameter'>Second occurrence</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>*</span><span class='yaml-Anchor def-Var'>anchor</span>
+ 4: <span class='yaml-MappingKey def-Parameter'>Override anchor</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>anchor </span><span class='yaml-String def-String'>Bar</span>
+ 5: <span class='yaml-MappingKey def-Parameter'>Reuse anchor</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>*</span><span class='yaml-Anchor def-Var'>anchor</span>
+ 6: 
+ 7: <span class='yaml-Comment def-Comment def-Syntax'># +STR</span>
+ 8: <span class='yaml-Comment def-Comment def-Syntax'>#  +DOC</span>
+ 9: <span class='yaml-Comment def-Comment def-Syntax'>#   +MAP</span>
+10: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :First occurrence</span>
+11: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL &amp;anchor :Foo</span>
+12: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :Second occurrence</span>
+13: <span class='yaml-Comment def-Comment def-Syntax'>#    =ALI *anchor</span>
+14: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :Override anchor</span>
+15: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL &amp;anchor :Bar</span>
+16: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :Reuse anchor</span>
+17: <span class='yaml-Comment def-Comment def-Syntax'>#    =ALI *anchor</span>
+18: <span class='yaml-Comment def-Comment def-Syntax'>#   -MAP</span>
+19: <span class='yaml-Comment def-Comment def-Syntax'>#  -DOC</span>
+20: <span class='yaml-Comment def-Comment def-Syntax'># -STR</span>
+21: 

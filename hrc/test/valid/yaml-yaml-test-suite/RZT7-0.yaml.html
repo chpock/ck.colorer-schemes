@@ -1,0 +1,81 @@
+﻿ 0: <span class='yaml-Comment def-Comment def-Syntax'># name = Spec Example 2.28. Log File</span>
+ 1: 
+ 2: <span class='yaml-DocumentEdge def-Keyword'>---</span>
+ 3: <span class='yaml-MappingKey def-Parameter'>Time</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-Date'>2001-11-23</span><span class='def-Prefix'> </span><span class='def-Time'>15:01:42</span><span class='def-Prefix'> -5</span>
+ 4: <span class='yaml-MappingKey def-Parameter'>User</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>ed</span>
+ 5: <span class='yaml-MappingKey def-Parameter'>Warning</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
+ 6:   <span class='yaml-String def-String'>This is an error message</span>
+ 7:   <span class='yaml-String def-String'>for the log file</span>
+ 8: <span class='yaml-DocumentEdge def-Keyword'>---</span>
+ 9: <span class='yaml-MappingKey def-Parameter'>Time</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-Date'>2001-11-23</span><span class='def-Prefix'> </span><span class='def-Time'>15:02:31</span><span class='def-Prefix'> -5</span>
+10: <span class='yaml-MappingKey def-Parameter'>User</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>ed</span>
+11: <span class='yaml-MappingKey def-Parameter'>Warning</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
+12:   <span class='yaml-String def-String'>A slightly different error</span>
+13:   <span class='yaml-String def-String'>message.</span>
+14: <span class='yaml-DocumentEdge def-Keyword'>---</span>
+15: <span class='yaml-MappingKey def-Parameter'>Date</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-Date'>2001-11-23</span><span class='def-Prefix'> </span><span class='def-Time'>15:03:17</span><span class='def-Prefix'> -5</span>
+16: <span class='yaml-MappingKey def-Parameter'>User</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>ed</span>
+17: <span class='yaml-MappingKey def-Parameter'>Fatal</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
+18:   <span class='yaml-String def-String'>Unknown variable "bar"</span>
+19: <span class='yaml-MappingKey def-Parameter'>Stack</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
+20:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-MappingKey def-Parameter'>file</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>TopClass.py</span>
+21:     <span class='yaml-MappingKey def-Parameter'>line</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>23</span>
+22:     <span class='yaml-MappingKey def-Parameter'>code</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-BlockScalar def-InterfaceKeyword def-Keyword'>|</span>
+23: <span class='yaml-String def-String'>      x = MoreObject("345\n")</span>
+24:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-MappingKey def-Parameter'>file</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>MoreClass.py</span>
+25:     <span class='yaml-MappingKey def-Parameter'>line</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>58</span>
+26:     <span class='yaml-MappingKey def-Parameter'>code</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-BlockScalar def-InterfaceKeyword def-Keyword'>|</span><span class='yaml-BlockScalarIndent def-Prefix'>-</span>
+27: <span class='yaml-String def-String'>      foo = bar</span>
+28: 
+29: <span class='yaml-Comment def-Comment def-Syntax'># +STR</span>
+30: <span class='yaml-Comment def-Comment def-Syntax'>#  +DOC ---</span>
+31: <span class='yaml-Comment def-Comment def-Syntax'>#   +MAP</span>
+32: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :Time</span>
+33: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :2001-11-23 15:01:42 -5</span>
+34: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :User</span>
+35: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :ed</span>
+36: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :Warning</span>
+37: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :This is an error message for the log file</span>
+38: <span class='yaml-Comment def-Comment def-Syntax'>#   -MAP</span>
+39: <span class='yaml-Comment def-Comment def-Syntax'>#  -DOC</span>
+40: <span class='yaml-Comment def-Comment def-Syntax'>#  +DOC ---</span>
+41: <span class='yaml-Comment def-Comment def-Syntax'>#   +MAP</span>
+42: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :Time</span>
+43: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :2001-11-23 15:02:31 -5</span>
+44: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :User</span>
+45: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :ed</span>
+46: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :Warning</span>
+47: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :A slightly different error message.</span>
+48: <span class='yaml-Comment def-Comment def-Syntax'>#   -MAP</span>
+49: <span class='yaml-Comment def-Comment def-Syntax'>#  -DOC</span>
+50: <span class='yaml-Comment def-Comment def-Syntax'>#  +DOC ---</span>
+51: <span class='yaml-Comment def-Comment def-Syntax'>#   +MAP</span>
+52: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :Date</span>
+53: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :2001-11-23 15:03:17 -5</span>
+54: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :User</span>
+55: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :ed</span>
+56: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :Fatal</span>
+57: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :Unknown variable "bar"</span>
+58: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :Stack</span>
+59: <span class='yaml-Comment def-Comment def-Syntax'>#    +SEQ</span>
+60: <span class='yaml-Comment def-Comment def-Syntax'>#     +MAP</span>
+61: <span class='yaml-Comment def-Comment def-Syntax'>#      =VAL :file</span>
+62: <span class='yaml-Comment def-Comment def-Syntax'>#      =VAL :TopClass.py</span>
+63: <span class='yaml-Comment def-Comment def-Syntax'>#      =VAL :line</span>
+64: <span class='yaml-Comment def-Comment def-Syntax'>#      =VAL :23</span>
+65: <span class='yaml-Comment def-Comment def-Syntax'>#      =VAL :code</span>
+66: <span class='yaml-Comment def-Comment def-Syntax'>#      =VAL |x = MoreObject("345\\n")\n</span>
+67: <span class='yaml-Comment def-Comment def-Syntax'>#     -MAP</span>
+68: <span class='yaml-Comment def-Comment def-Syntax'>#     +MAP</span>
+69: <span class='yaml-Comment def-Comment def-Syntax'>#      =VAL :file</span>
+70: <span class='yaml-Comment def-Comment def-Syntax'>#      =VAL :MoreClass.py</span>
+71: <span class='yaml-Comment def-Comment def-Syntax'>#      =VAL :line</span>
+72: <span class='yaml-Comment def-Comment def-Syntax'>#      =VAL :58</span>
+73: <span class='yaml-Comment def-Comment def-Syntax'>#      =VAL :code</span>
+74: <span class='yaml-Comment def-Comment def-Syntax'>#      =VAL |foo = bar</span>
+75: <span class='yaml-Comment def-Comment def-Syntax'>#     -MAP</span>
+76: <span class='yaml-Comment def-Comment def-Syntax'>#    -SEQ</span>
+77: <span class='yaml-Comment def-Comment def-Syntax'>#   -MAP</span>
+78: <span class='yaml-Comment def-Comment def-Syntax'>#  -DOC</span>
+79: <span class='yaml-Comment def-Comment def-Syntax'># -STR</span>
+80: 

@@ -1,0 +1,19 @@
+# name = spec-06-07
+
+- foo
+ 
+  bar
+- |-
+  foo
+ 
+  bar
+  
+
+# +STR
+#   +DOC
+#     +SEQ
+#       =VAL :foo\nbar
+#       =VAL |foo\n\nbar
+#     -SEQ
+#   -DOC
+# -STR

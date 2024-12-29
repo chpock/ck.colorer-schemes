@@ -1,0 +1,12 @@
+# name = spec-09-29
+
+%YAML 1.1
+---
+!!str "folded text\n\
+      \tlines\n"
+
+# +STR
+#   +DOC ---
+#     =VAL <tag:yaml.org,2002:str> "folded text\n\tlines\n
+#   -DOC
+# -STR

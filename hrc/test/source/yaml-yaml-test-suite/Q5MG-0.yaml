@@ -1,0 +1,10 @@
+# name = Tab at beginning of line followed by a flow mapping
+
+———»{}
+
+# +STR
+#  +DOC
+#   +MAP {}
+#   -MAP
+#  -DOC
+# -STR

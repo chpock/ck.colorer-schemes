@@ -1,0 +1,83 @@
+
+# anchors
+
+   foo: *bla
+   foo: *bla # comment here
+
+# anchors flow style
+
+   foo: [*foo, *bar]
+   foo: [*foo, #comment
+      *bar]
+   foo: {key: *foo, key: *bar}
+   foo: {key: # comment
+      *foo, #comment
+      key: *bar}
+
+# merge keys
+
+   <<: *foo
+   <<: !tag *foo
+   <<: [*a, *b]
+   <<: !!tag [*a, *b]
+
+   <<: *foo # comment
+   <<: !tag *foo # comment
+   <<: [*a, *b] # comment
+   <<: !!tag [*a, *b] # comment
+   <<: !!tag [*a,
+       *b] # comment
+
+# merge keys - flow style
+
+   merged: {<<: *BASE, key3: value3}
+   merged: {<<    : !tag *BASE, key3: value3}
+   merged: {<<: [*a, *b], key3: value3}
+   merged: {<<: !!tag [*a, *b], key3: value3}
+
+# errors
+
+   # garbage after anchor
+   foo: *bla foo
+   foo: [*foo error here, *bar error here]
+   foo: {key: *foo error here, "key": *bar error here}
+
+   # unexpected values for merge keys
+   <<: foo
+   <<: !tag foo
+   <<: |
+   <<: "sldkfj"
+   <<: { fofof }
+
+   # unexpected values in flow-sequence style for merge keys
+   <<: [foo, bar]
+   <<: [!foo foo, !bar bar]
+
+   # nested blocks for anchor reuse are errors
+   foo: *bla
+      error here: foo
+      error here
+   foo: *bla # comment here
+      error here: foo
+      error here
+   <<: *foo
+      error here: foo
+      error here
+   <<: !tag *foo
+      error here: foo
+      error here
+   <<: *foo # comment
+      error here: foo
+      error here
+
+   # unexpected values for merge keys (flow style)
+   merged: {<<: foo, key3: value3}
+   merged: {<<: !tag foo, key3: value3}
+   merged: {<<: "foo", key3: value3}
+   merged: {<<: {key: val}, key3: value3}
+
+   # unexpected values in flow-sequence style for merge keys (flow style)
+   merged: {<<: [foo, bar], key3: value3}
+   merged: {<<: [!foo foo, !bar bar], key3: value3}
+
+

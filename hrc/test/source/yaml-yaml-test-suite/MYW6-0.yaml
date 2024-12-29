@@ -1,0 +1,13 @@
+# name = Block Scalar Strip
+
+|-
+ ab
+␣
+␣
+...
+
+# +STR
+#  +DOC
+#   =VAL |ab
+#  -DOC ...
+# -STR

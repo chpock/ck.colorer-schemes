@@ -1,0 +1,25 @@
+# name = spec-06-06
+
+%YAML 1.1
+---
+!!map {
+  ? !!str "plain"
+  : !!str "text lines",
+  ? !!str "quoted"
+  : !!str "text lines",
+  ? !!str "block"
+  : !!str "text\n 	lines\n"
+}
+
+# +STR
+#   +DOC ---
+#     +MAP {} <tag:yaml.org,2002:map>
+#       =VAL <tag:yaml.org,2002:str> "plain
+#       =VAL <tag:yaml.org,2002:str> "text lines
+#       =VAL <tag:yaml.org,2002:str> "quoted
+#       =VAL <tag:yaml.org,2002:str> "text lines
+#       =VAL <tag:yaml.org,2002:str> "block
+#       =VAL <tag:yaml.org,2002:str> "text\n \tlines\n
+#     -MAP
+#   -DOC
+# -STR

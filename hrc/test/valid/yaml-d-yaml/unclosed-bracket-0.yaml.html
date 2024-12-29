@@ -1,0 +1,17 @@
+﻿ 0: <span class='yaml-Comment def-Comment def-Syntax'># name = unclosed-bracket</span>
+ 1: <span class='yaml-Comment def-Comment def-Syntax'># fail = true</span>
+ 2: <span class='yaml-Comment def-Comment def-Syntax'># mark.line = 7</span>
+ 3: <span class='yaml-Comment def-Comment def-Syntax'># mark.column = 1</span>
+ 4: <span class='yaml-Comment def-Comment def-Syntax'># mark2.line = 2</span>
+ 5: <span class='yaml-Comment def-Comment def-Syntax'># mark2.column = 7</span>
+ 6: <span class='yaml-Comment def-Comment def-Syntax'># error = While parsing a flow sequence, expected ',' or ']', but got: streamEnd</span>
+ 7: 
+ 8: <span class='yaml-MappingKey def-Parameter'>test</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
+ 9:     <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>[</span> <span class='yaml-String def-String'>foo: bar</span>
+10: <span class='yaml-String def-String'># comment the rest of the stream to let the scanner detect the problem.</span>
+11: <span class='yaml-String def-String'>#    - baz</span>
+12: <span class='yaml-String def-String'>#"we could have detected the unclosed bracket on the above line</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-String def-String'>but this would forbid such syntax as": {</span>
+13: <span class='yaml-String def-String'>#}</span>
+14: <span class='yaml-String def-String'></span>
+15: <span class='yaml-String def-String'># null</span>
+16: <span class='yaml-String def-String'></span>

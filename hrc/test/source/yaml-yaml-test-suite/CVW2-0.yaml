@@ -1,0 +1,13 @@
+# name = Invalid comment after comma
+# fail = true
+
+---
+[ a, b, c,#invalid
+]
+
+# +STR
+#  +DOC ---
+#   +SEQ []
+#    =VAL :a
+#    =VAL :b
+#    =VAL :c

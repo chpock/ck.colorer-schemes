@@ -1,0 +1,35 @@
+# name = construct-binary
+# code = construct-binary
+
+# Explicitly typed set.
+baseball players: !!set
+  ? Mark McGwire
+  ? Sammy Sosa
+  ? Ken Griffey
+# Flow style
+baseball teams: !!set { Boston Red Sox, Detroit Tigers, New York Yankees }
+
+# +STR
+# +DOC
+# +MAP
+# =VAL :baseball players
+# +MAP <tag:yaml.org,2002:set>
+# =VAL :Mark McGwire
+# =VAL :
+# =VAL :Sammy Sosa
+# =VAL :
+# =VAL :Ken Griffey
+# =VAL :
+# -MAP
+# =VAL :baseball teams
+# +MAP {} <tag:yaml.org,2002:set>
+# =VAL :Boston Red Sox
+# =VAL :
+# =VAL :Detroit Tigers
+# =VAL :
+# =VAL :New York Yankees
+# =VAL :
+# -MAP
+# -MAP
+# -DOC
+# -STR

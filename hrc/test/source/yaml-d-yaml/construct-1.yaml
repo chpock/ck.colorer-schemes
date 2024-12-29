@@ -1,0 +1,46 @@
+# name = construct-binary
+# code = construct-binary
+
+canonical: yes
+answer: NO
+logical: True
+option: on
+constbool: on
+imutbool: on
+const_bool: on
+imut_bool: on
+
+
+but:
+    y: is a string
+    n: is a string
+
+# +STR
+# +DOC
+# +MAP
+# =VAL :canonical
+# =VAL :yes
+# =VAL :answer
+# =VAL :NO
+# =VAL :logical
+# =VAL :True
+# =VAL :option
+# =VAL :on
+# =VAL :constbool
+# =VAL :on
+# =VAL :imutbool
+# =VAL :on
+# =VAL :const_bool
+# =VAL :on
+# =VAL :imut_bool
+# =VAL :on
+# =VAL :but
+# +MAP
+# =VAL :y
+# =VAL :is a string
+# =VAL :n
+# =VAL :is a string
+# -MAP
+# -MAP
+# -DOC
+# -STR

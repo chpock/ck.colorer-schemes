@@ -1,0 +1,11 @@
+# name = Anchor and alias as mapping key
+# fail = true
+
+key1: &alias value1
+&b *alias : value2
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :key1
+#    =VAL &alias :value1

@@ -1,0 +1,24 @@
+# name = spec-09-14
+# mark.line = 2
+# mark.column = 6
+# mark2.line = 2
+# mark2.column = 5
+# fail = true
+# error = While scanning a block scalar, expected a chomping or indentation indicator, but found |\n
+
+---
+--- ||| : foo
+... >>>: bar
+---
+[
+---
+,
+... ,
+{
+--- :
+... # Nested
+}
+]
+...
+
+# null

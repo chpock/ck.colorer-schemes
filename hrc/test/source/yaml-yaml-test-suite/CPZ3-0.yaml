@@ -1,0 +1,13 @@
+# name = Doublequoted scalar starting with a tab
+
+---
+tab: "\tstring"
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :tab
+#    =VAL "\tstring
+#   -MAP
+#  -DOC
+# -STR

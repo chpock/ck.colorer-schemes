@@ -1,0 +1,12 @@
+# name = spec-09-25
+
+%YAML 1.1
+---
+!!str "literal\n\
+      \ttext\n"
+
+# +STR
+#   +DOC ---
+#     =VAL <tag:yaml.org,2002:str> "literal\n\ttext\n
+#   -DOC
+# -STR

@@ -1,0 +1,27 @@
+# name = spec-10-14
+
+%YAML 1.1
+---
+!!map {
+  ? !!str "plain key"
+  : !!null "",
+  ? !!str "quoted key"
+  : !!seq [
+    !!str "one",
+    !!str "two",
+  ]
+}
+
+# +STR
+#   +DOC ---
+#     +MAP {} <tag:yaml.org,2002:map>
+#       =VAL <tag:yaml.org,2002:str> "plain key
+#       =VAL <tag:yaml.org,2002:null> "
+#       =VAL <tag:yaml.org,2002:str> "quoted key
+#       +SEQ [] <tag:yaml.org,2002:seq>
+#         =VAL <tag:yaml.org,2002:str> "one
+#         =VAL <tag:yaml.org,2002:str> "two
+#       -SEQ
+#     -MAP
+#   -DOC
+# -STR

@@ -1,0 +1,20 @@
+# name = Sequence With Same Indentation as Parent Mapping
+
+one:
+- 2
+- 3
+four: 5
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :one
+#    +SEQ
+#     =VAL :2
+#     =VAL :3
+#    -SEQ
+#    =VAL :four
+#    =VAL :5
+#   -MAP
+#  -DOC
+# -STR

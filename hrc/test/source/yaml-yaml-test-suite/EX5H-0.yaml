@@ -1,0 +1,15 @@
+# name = Multiline Scalar at Top Level [1.3]
+
+---
+a
+b␣␣
+  c
+d
+
+e
+
+# +STR
+#  +DOC ---
+#   =VAL :a b c d\ne
+#  -DOC
+# -STR

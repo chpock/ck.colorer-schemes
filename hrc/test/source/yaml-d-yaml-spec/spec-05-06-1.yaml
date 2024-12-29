@@ -1,0 +1,21 @@
+# name = spec-05-06
+
+%YAML 1.1
+---
+!!map {
+  ? !!str "anchored"
+  : &A1 !local "value",
+  ? !!str "alias"
+  : *A1,
+}
+
+# +STR
+#   +DOC ---
+#     +MAP {} <tag:yaml.org,2002:map>
+#       =VAL <tag:yaml.org,2002:str> "anchored
+#       =VAL &A1 <!local> "value
+#       =VAL <tag:yaml.org,2002:str> "alias
+#       =ALI *A1
+#     -MAP
+#   -DOC
+# -STR

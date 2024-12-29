@@ -1,0 +1,13 @@
+# name = Block scalar with more spaces than first content line
+# fail = true
+
+empty block scalar: >
+␣
+␣␣
+␣␣␣
+ # comment
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :empty block scalar

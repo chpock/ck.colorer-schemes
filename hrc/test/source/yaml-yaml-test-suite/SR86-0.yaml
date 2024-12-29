@@ -1,0 +1,12 @@
+# name = Anchor plus Alias
+# fail = true
+
+key1: &a value
+key2: &b *a
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :key1
+#    =VAL &a :value
+#    =VAL :key2

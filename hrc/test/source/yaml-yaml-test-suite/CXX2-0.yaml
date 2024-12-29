@@ -1,0 +1,7 @@
+# name = Mapping with anchor on document start line
+# fail = true
+
+--- &anchor a: b
+
+# +STR
+#  +DOC ---

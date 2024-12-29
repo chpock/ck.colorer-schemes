@@ -1,0 +1,14 @@
+# name = Syntax character edge cases
+
+- :
+
+# +STR
+#  +DOC
+#   +SEQ
+#    +MAP
+#     =VAL :
+#     =VAL :
+#    -MAP
+#   -SEQ
+#  -DOC
+# -STR

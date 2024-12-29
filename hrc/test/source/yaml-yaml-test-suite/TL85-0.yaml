@@ -1,0 +1,15 @@
+# name = Spec Example 6.8. Flow Folding
+
+"
+  foo␣
+␣
+  —» bar
+
+  baz
+"
+
+# +STR
+#  +DOC
+#   =VAL " foo\nbar\nbaz␣
+#  -DOC
+# -STR

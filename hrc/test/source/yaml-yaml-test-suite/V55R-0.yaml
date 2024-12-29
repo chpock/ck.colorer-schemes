@@ -1,0 +1,17 @@
+# name = Aliases in Block Sequence
+
+- &a a
+- &b b
+- *a
+- *b
+
+# +STR
+#  +DOC
+#   +SEQ
+#    =VAL &a :a
+#    =VAL &b :b
+#    =ALI *a
+#    =ALI *b
+#   -SEQ
+#  -DOC
+# -STR

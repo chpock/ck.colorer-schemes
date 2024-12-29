@@ -1,0 +1,14 @@
+# name = spec-07-12a
+
+# Implicit document. Root
+# collection (mapping) node.
+foo : bar
+
+# +STR
+#   +DOC
+#     +MAP
+#       =VAL :foo
+#       =VAL :bar
+#     -MAP
+#   -DOC
+# -STR

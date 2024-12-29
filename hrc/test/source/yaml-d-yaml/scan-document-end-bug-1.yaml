@@ -1,0 +1,11 @@
+# name = scan-document-end-bug
+
+%YAML 1.1
+---
+!!null ""
+
+# +STR
+#   +DOC ---
+#     =VAL <tag:yaml.org,2002:null> "
+#   -DOC
+# -STR

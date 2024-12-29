@@ -1,0 +1,7 @@
+# name = Directive variants
+# fail = true
+
+%YAMLL 1.1
+---
+
+# null

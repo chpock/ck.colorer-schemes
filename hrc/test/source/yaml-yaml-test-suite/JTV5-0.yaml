@@ -1,0 +1,19 @@
+# name = Block Mapping with Multiline Scalars
+
+? a
+  true
+: null
+  d
+? e
+  42
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :a true
+#    =VAL :null d
+#    =VAL :e 42
+#    =VAL :
+#   -MAP
+#  -DOC
+# -STR

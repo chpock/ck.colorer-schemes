@@ -1,0 +1,17 @@
+# name = spec-06-07
+
+%YAML 1.1
+---
+!!seq [
+  !!str "foo\nbar",
+  !!str "foo\n\nbar"
+]
+
+# +STR
+#   +DOC ---
+#     +SEQ [] <tag:yaml.org,2002:seq>
+#       =VAL <tag:yaml.org,2002:str> "foo\nbar
+#       =VAL <tag:yaml.org,2002:str> "foo\n\nbar
+#     -SEQ
+#   -DOC
+# -STR

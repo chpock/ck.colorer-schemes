@@ -1,0 +1,14 @@
+# name = Bad indentation in mapping (2)
+# fail = true
+
+map:
+  key1: "quoted1"
+   key2: "bad indentation"
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :map
+#    +MAP
+#     =VAL :key1
+#     =VAL "quoted1

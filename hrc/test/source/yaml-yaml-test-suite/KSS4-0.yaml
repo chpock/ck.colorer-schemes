@@ -1,0 +1,14 @@
+# name = Scalars on --- line
+
+--- "quoted
+string"
+--- &node foo
+
+# +STR
+#  +DOC ---
+#   =VAL "quoted string
+#  -DOC
+#  +DOC ---
+#   =VAL &node :foo
+#  -DOC
+# -STR

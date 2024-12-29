@@ -1,0 +1,49 @@
+# name = construct-binary
+# code = construct-binary
+
+# Ordered sequence of nodes
+Block style: !!seq
+- Mercury   # Rotates - no light/dark sides.
+- Venus     # Deadliest. Aptly named.
+- Earth     # Mostly dirt.
+- Mars      # Seems empty.
+- Jupiter   # The king.
+- Saturn    # Pretty.
+- Uranus    # Where the sun hardly shines.
+- Neptune   # Boring. No rings.
+- Pluto     # You call this a planet?
+Flow style: !!seq [ Mercury, Venus, Earth, Mars,      # Rocks
+                    Jupiter, Saturn, Uranus, Neptune, # Gas
+                    Pluto ]                           # Overrated
+
+
+# +STR
+# +DOC
+# +MAP
+# =VAL :Block style
+# +SEQ <tag:yaml.org,2002:seq>
+# =VAL :Mercury
+# =VAL :Venus
+# =VAL :Earth
+# =VAL :Mars
+# =VAL :Jupiter
+# =VAL :Saturn
+# =VAL :Uranus
+# =VAL :Neptune
+# =VAL :Pluto
+# -SEQ
+# =VAL :Flow style
+# +SEQ [] <tag:yaml.org,2002:seq>
+# =VAL :Mercury
+# =VAL :Venus
+# =VAL :Earth
+# =VAL :Mars
+# =VAL :Jupiter
+# =VAL :Saturn
+# =VAL :Uranus
+# =VAL :Neptune
+# =VAL :Pluto
+# -SEQ
+# -MAP
+# -DOC
+# -STR

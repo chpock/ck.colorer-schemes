@@ -1,0 +1,12 @@
+# name = Flow sequence with invalid extra comma
+# fail = true
+
+---
+[ a, b, c, , ]
+
+# +STR
+#  +DOC ---
+#   +SEQ []
+#    =VAL :a
+#    =VAL :b
+#    =VAL :c

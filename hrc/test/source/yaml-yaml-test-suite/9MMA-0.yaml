@@ -1,0 +1,6 @@
+# name = Directive by itself with no document
+# fail = true
+
+%YAML 1.2
+
+# +STR

@@ -1,0 +1,11 @@
+# name = Invalid document markers in flow style
+# fail = true
+
+[
+--- ,
+...
+]
+
+# +STR
+#  +DOC
+#   +SEQ []

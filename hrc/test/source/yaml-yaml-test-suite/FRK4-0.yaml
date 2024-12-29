@@ -1,0 +1,17 @@
+# name = Spec Example 7.3. Completely Empty Flow Nodes
+
+{
+  ? foo :,
+  : bar,
+}
+
+# +STR
+#  +DOC
+#   +MAP {}
+#    =VAL :foo
+#    =VAL :
+#    =VAL :
+#    =VAL :bar
+#   -MAP
+#  -DOC
+# -STR

@@ -1,0 +1,16 @@
+# name = Three explicit integers in a block sequence
+
+---
+- !!int 1
+- !!int -2
+- !!int 33
+
+# +STR
+#  +DOC ---
+#   +SEQ
+#    =VAL <tag:yaml.org,2002:int> :1
+#    =VAL <tag:yaml.org,2002:int> :-2
+#    =VAL <tag:yaml.org,2002:int> :33
+#   -SEQ
+#  -DOC
+# -STR

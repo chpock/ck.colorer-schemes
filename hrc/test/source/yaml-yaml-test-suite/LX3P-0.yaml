@@ -1,0 +1,14 @@
+# name = Implicit Flow Mapping Key on one line
+
+[flow]: block
+
+# +STR
+#  +DOC
+#   +MAP
+#    +SEQ []
+#     =VAL :flow
+#    -SEQ
+#    =VAL :block
+#   -MAP
+#  -DOC
+# -STR

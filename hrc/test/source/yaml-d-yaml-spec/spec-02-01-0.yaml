@@ -1,0 +1,15 @@
+# name = spec-02-01
+
+- Mark McGwire
+- Sammy Sosa
+- Ken Griffey
+
+# +STR
+# +DOC
+# +SEQ
+# =VAL :Mark McGwire
+# =VAL :Sammy Sosa
+# =VAL :Ken Griffey
+# -SEQ
+# -DOC
+# -STR

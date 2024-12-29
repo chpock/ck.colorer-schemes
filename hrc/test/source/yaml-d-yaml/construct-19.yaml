@@ -1,0 +1,30 @@
+# name = construct-binary
+# code = construct-binary
+
+---
+<<: {x: 1, y: 2}
+foo: bar
+<<: {z: 3, t: 4}
+
+# +STR
+# +DOC ---
+# +MAP
+# =VAL :<<
+# +MAP {}
+# =VAL :x
+# =VAL :1
+# =VAL :y
+# =VAL :2
+# -MAP
+# =VAL :foo
+# =VAL :bar
+# =VAL :<<
+# +MAP {}
+# =VAL :z
+# =VAL :3
+# =VAL :t
+# =VAL :4
+# -MAP
+# -MAP
+# -DOC
+# -STR

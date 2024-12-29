@@ -1,0 +1,16 @@
+﻿ 0: <span class='yaml-Comment def-Comment def-Syntax'># name = Allowed characters in quoted mapping key</span>
+ 1: 
+ 2: <span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-MappingKey def-Parameter'>foo</span><span class='yaml-StringContent def-StringContent def-String'>\n</span><span class='yaml-MappingKey def-Parameter'>bar:baz</span><span class='yaml-StringContent def-StringContent def-String'>\t</span><span class='yaml-MappingKey def-Parameter'>x </span><span class='yaml-StringContent def-StringContent def-String'>\\</span><span class='yaml-MappingKey def-Parameter'>$%^&amp;*()x</span><span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>23</span>
+ 3: <span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-MappingKey def-Parameter'>x\ny:z\tx $%^&amp;*()x</span><span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>24</span>
+ 4: 
+ 5: <span class='yaml-Comment def-Comment def-Syntax'># +STR</span>
+ 6: <span class='yaml-Comment def-Comment def-Syntax'>#  +DOC</span>
+ 7: <span class='yaml-Comment def-Comment def-Syntax'>#   +MAP</span>
+ 8: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL "foo\nbar:baz\tx \\$%^&amp;*()x</span>
+ 9: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :23</span>
+10: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL 'x\\ny:z\\tx $%^&amp;*()x</span>
+11: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :24</span>
+12: <span class='yaml-Comment def-Comment def-Syntax'>#   -MAP</span>
+13: <span class='yaml-Comment def-Comment def-Syntax'>#  -DOC</span>
+14: <span class='yaml-Comment def-Comment def-Syntax'># -STR</span>
+15: 

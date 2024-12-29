@@ -1,0 +1,13 @@
+# name = Block scalar with wrong indented line after spaces only
+# fail = true
+
+block scalar: >
+␣
+␣␣
+␣␣␣
+ invalid
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :block scalar

@@ -1,0 +1,12 @@
+# name = Spec Example 6.14. “YAML” directive
+
+%YAML 1.3 # Attempt parsing
+          # with a warning
+---
+"foo"
+
+# +STR
+#  +DOC ---
+#   =VAL "foo
+#  -DOC
+# -STR

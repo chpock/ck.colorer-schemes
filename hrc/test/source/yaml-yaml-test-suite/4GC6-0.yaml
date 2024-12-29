@@ -1,0 +1,9 @@
+# name = Spec Example 7.7. Single Quoted Characters
+
+'here''s to "quotes"'
+
+# +STR
+#  +DOC
+#   =VAL 'here's to "quotes"
+#  -DOC
+# -STR

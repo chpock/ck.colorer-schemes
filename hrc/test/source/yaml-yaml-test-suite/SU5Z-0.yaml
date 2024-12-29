@@ -1,0 +1,10 @@
+# name = Comment without whitespace after doublequoted scalar
+# fail = true
+
+key: "value"# invalid comment
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :key
+#    =VAL "value

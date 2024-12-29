@@ -1,0 +1,10 @@
+# name = Flow Mapping Key on two lines
+# fail = true
+
+[23
+]: 42
+
+# +STR
+#  +DOC
+#   +SEQ []
+#    =VAL :23

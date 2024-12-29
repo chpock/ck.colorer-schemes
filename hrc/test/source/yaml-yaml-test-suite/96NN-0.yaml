@@ -1,0 +1,13 @@
+# name = Leading tab content in literals
+
+foo: |-
+ ——»bar
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :foo
+#    =VAL |\tbar
+#   -MAP
+#  -DOC
+# -STR

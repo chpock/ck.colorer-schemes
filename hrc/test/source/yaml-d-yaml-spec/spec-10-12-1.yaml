@@ -1,0 +1,23 @@
+# name = spec-10-12
+
+%YAML 1.1
+---
+!!map {
+  ? !!str "block"
+  : !!map {
+    ? !!str "key"
+    : !!str "value"
+  }
+}
+
+# +STR
+#   +DOC ---
+#     +MAP {} <tag:yaml.org,2002:map>
+#       =VAL <tag:yaml.org,2002:str> "block
+#       +MAP {} <tag:yaml.org,2002:map>
+#         =VAL <tag:yaml.org,2002:str> "key
+#         =VAL <tag:yaml.org,2002:str> "value
+#       -MAP
+#     -MAP
+#   -DOC
+# -STR

@@ -1,0 +1,21 @@
+# name = Nested top level flow mapping
+
+{ key: [[[
+  value
+ ]]]
+}
+
+# +STR
+#  +DOC
+#   +MAP {}
+#    =VAL :key
+#    +SEQ []
+#     +SEQ []
+#      +SEQ []
+#       =VAL :value
+#      -SEQ
+#     -SEQ
+#    -SEQ
+#   -MAP
+#  -DOC
+# -STR

@@ -1,0 +1,10 @@
+# name = Double quoted scalar with escaped single quote
+# fail = true
+
+---
+double: "quoted \' scalar"
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :double

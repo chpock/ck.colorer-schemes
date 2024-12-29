@@ -1,0 +1,15 @@
+# name = Flow Sequence in Flow Sequence
+
+[a, [b, c]]
+
+# +STR
+#  +DOC
+#   +SEQ []
+#    =VAL :a
+#    +SEQ []
+#     =VAL :b
+#     =VAL :c
+#    -SEQ
+#   -SEQ
+#  -DOC
+# -STR

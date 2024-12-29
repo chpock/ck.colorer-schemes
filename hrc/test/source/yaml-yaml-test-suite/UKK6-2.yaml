@@ -1,0 +1,9 @@
+# name = Syntax character edge cases
+
+!
+
+# +STR
+#  +DOC
+#   =VAL <!> :
+#  -DOC
+# -STR

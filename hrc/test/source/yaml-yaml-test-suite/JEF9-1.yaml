@@ -1,0 +1,12 @@
+# name = Trailing whitespace in streams
+
+- |+
+␣␣␣
+
+# +STR
+#  +DOC
+#   +SEQ
+#    =VAL |\n
+#   -SEQ
+#  -DOC
+# -STR

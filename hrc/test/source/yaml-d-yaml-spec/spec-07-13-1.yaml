@@ -1,0 +1,26 @@
+# name = spec-07-13
+
+%YAML 1.1
+---
+!!str "First document"
+---
+!<!foo> "No directives"
+---
+!<!foobar> "With directives"
+---
+!<!baz> "Reset settings"
+
+# +STR
+#   +DOC ---
+#     =VAL <tag:yaml.org,2002:str> "First document
+#   -DOC
+#   +DOC ---
+#     =VAL <!foo> "No directives
+#   -DOC
+#   +DOC ---
+#     =VAL <!foobar> "With directives
+#   -DOC
+#   +DOC ---
+#     =VAL <!baz> "Reset settings
+#   -DOC
+# -STR

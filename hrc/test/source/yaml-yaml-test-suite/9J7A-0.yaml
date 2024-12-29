@@ -1,0 +1,16 @@
+# name = Simple Mapping Indent
+
+foo:
+  bar: baz
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :foo
+#    +MAP
+#     =VAL :bar
+#     =VAL :baz
+#    -MAP
+#   -MAP
+#  -DOC
+# -STR

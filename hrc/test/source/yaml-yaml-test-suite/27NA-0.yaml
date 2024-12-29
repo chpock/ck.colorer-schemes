@@ -1,0 +1,10 @@
+# name = Spec Example 5.9. Directive Indicator
+
+%YAML 1.2
+--- text
+
+# +STR
+#  +DOC ---
+#   =VAL :text
+#  -DOC
+# -STR

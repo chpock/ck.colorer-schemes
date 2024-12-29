@@ -1,0 +1,10 @@
+# name = Plain dashes in flow sequence
+# fail = true
+
+---
+- [-, -]
+
+# +STR
+#  +DOC ---
+#   +SEQ
+#    +SEQ []

@@ -1,0 +1,31 @@
+# name = Nested implicit complex keys
+
+---
+[
+  [ a, [ [[b,c]]: d, e]]: 23
+]
+
+# +STR
+#  +DOC ---
+#   +SEQ []
+#    +MAP {}
+#     +SEQ []
+#      =VAL :a
+#      +SEQ []
+#       +MAP {}
+#        +SEQ []
+#         +SEQ []
+#          =VAL :b
+#          =VAL :c
+#         -SEQ
+#        -SEQ
+#        =VAL :d
+#       -MAP
+#       =VAL :e
+#      -SEQ
+#     -SEQ
+#     =VAL :23
+#    -MAP
+#   -SEQ
+#  -DOC
+# -STR

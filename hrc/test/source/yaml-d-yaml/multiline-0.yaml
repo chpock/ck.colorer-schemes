@@ -1,0 +1,13 @@
+# #Issue 309 - https://github.com/dlang-community/D-YAML/issues/309
+# name = end-of-buffer-multiline
+
+exp: |
+  foobar
+# +STR
+# +DOC
+# +MAP
+# =VAL :exp
+# =VAL |foobar
+# -MAP
+# -DOC
+# -STR

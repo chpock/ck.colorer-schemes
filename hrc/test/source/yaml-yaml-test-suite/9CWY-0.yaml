@@ -1,0 +1,16 @@
+# name = Invalid scalar at the end of mapping
+# fail = true
+
+key:
+ - item1
+ - item2
+invalid
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :key
+#    +SEQ
+#     =VAL :item1
+#     =VAL :item2
+#    -SEQ

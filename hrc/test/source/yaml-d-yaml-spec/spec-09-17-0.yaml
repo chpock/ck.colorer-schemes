@@ -1,0 +1,11 @@
+# name = spec-09-17
+
+ first line 
+   
+  more line
+
+# +STR
+#   +DOC
+#     =VAL :first line\nmore line
+#   -DOC
+# -STR

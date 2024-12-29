@@ -1,0 +1,12 @@
+# name = Spec Example 6.13. Reserved Directives [1.3]
+
+%FOO  bar baz # Should be ignored
+              # with a warning.
+---
+"foo"
+
+# +STR
+#  +DOC ---
+#   =VAL "foo
+#  -DOC
+# -STR

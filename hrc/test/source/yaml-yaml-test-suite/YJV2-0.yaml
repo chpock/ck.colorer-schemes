@@ -1,0 +1,8 @@
+# name = Dash in flow sequence
+# fail = true
+
+[-]
+
+# +STR
+#  +DOC
+#   +SEQ []

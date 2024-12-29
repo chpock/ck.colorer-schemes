@@ -1,0 +1,18 @@
+# name = spec-09-09
+
+- '
+  last'
+- ' 	
+  last'
+- ' 	first
+  last'
+
+# +STR
+#   +DOC
+#     +SEQ
+#       =VAL ' last
+#       =VAL ' last
+#       =VAL ' \tfirst last
+#     -SEQ
+#   -DOC
+# -STR

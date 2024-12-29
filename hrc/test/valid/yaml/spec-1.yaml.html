@@ -1,0 +1,136 @@
+﻿  0: 
+  1: <span class='yaml-Comment def-Comment def-Syntax'># Language-Independent Types for YAML� Version 1.1</span>
+  2: <span class='yaml-Comment def-Comment def-Syntax'># https://yaml.org/type/</span>
+  3: 
+  4: <span class='yaml-Comment def-Comment def-Syntax'>  # https://yaml.org/type/map.html</span>
+  5: 
+  6:   <span class='yaml-Comment def-Comment def-Syntax'># Unordered set of key: value pairs.</span>
+  7:   <span class='yaml-MappingKey def-Parameter'>Block style</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>map</span>
+  8:     <span class='yaml-MappingKey def-Parameter'>Clark </span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>Evans</span>
+  9:     <span class='yaml-MappingKey def-Parameter'>Brian </span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>Ingerson</span>
+ 10:     <span class='yaml-MappingKey def-Parameter'>Oren  </span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>Ben-Kiki</span>
+ 11:   <span class='yaml-MappingKey def-Parameter'>Flow style</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>map </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>{</span> <span class='yaml-MappingKey def-Parameter'>Clark</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='yaml-String def-String'>Evans</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-MappingKey def-Parameter'>Brian</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='yaml-String def-String'>Ingerson</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-MappingKey def-Parameter'>Oren</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='yaml-String def-String'>Ben-Kiki </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>}</span>
+ 12: 
+ 13: <span class='yaml-Comment def-Comment def-Syntax'>  #  https://yaml.org/type/omap.html</span>
+ 14: 
+ 15: <span class='yaml-Comment def-Comment def-Syntax'>  # Explicitly typed ordered map (dictionary).</span>
+ 16:   <span class='yaml-MappingKey def-Parameter'>Bestiary</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>omap</span>
+ 17:     <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-MappingKey def-Parameter'>aardvark</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>African pig-like ant eater. Ugly.</span>
+ 18:     <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-MappingKey def-Parameter'>anteater</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>South-American ant eater. Two species.</span>
+ 19:     <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-MappingKey def-Parameter'>anaconda</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>South-American constrictor snake. Scaly.</span>
+ 20: <span class='yaml-Comment def-Comment def-Syntax'>    # Etc.</span>
+ 21: <span class='yaml-Comment def-Comment def-Syntax'>  # Flow style</span>
+ 22:   <span class='yaml-MappingKey def-Parameter'>Numbers</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>omap </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>[</span> <span class='yaml-String def-String'>one: 1</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-String def-String'>two: 2</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-String def-String'>three : 3 </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>]</span>
+ 23: 
+ 24: <span class='yaml-Comment def-Comment def-Syntax'>  # https://yaml.org/type/pairs.html</span>
+ 25: 
+ 26: <span class='yaml-Comment def-Comment def-Syntax'>  # Explicitly typed pairs.</span>
+ 27:   <span class='yaml-MappingKey def-Parameter'>Block tasks</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>pairs</span>
+ 28:     <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-MappingKey def-Parameter'>meeting</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>with team.</span>
+ 29:     <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-MappingKey def-Parameter'>meeting</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>with boss.</span>
+ 30:     <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-MappingKey def-Parameter'>break</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>lunch.</span>
+ 31:     <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-MappingKey def-Parameter'>meeting</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>with client.</span>
+ 32:   <span class='yaml-MappingKey def-Parameter'>Flow tasks</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>pairs </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>[</span> <span class='yaml-String def-String'>meeting: with team</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-String def-String'>meeting: with boss </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>]</span>
+ 33: 
+ 34: <span class='yaml-Comment def-Comment def-Syntax'>  # https://yaml.org/type/set.html</span>
+ 35: 
+ 36: <span class='yaml-Comment def-Comment def-Syntax'>  # Explicitly typed set.</span>
+ 37:   <span class='yaml-MappingKey def-Parameter'>baseball players</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>set</span>
+ 38:     <span class='yaml-SymbolMappingKey def-Symbol'>? </span><span class='yaml-String def-String'>Mark McGwire</span>
+ 39:     <span class='yaml-SymbolMappingKey def-Symbol'>? </span><span class='yaml-String def-String'>Sammy Sosa</span>
+ 40:     <span class='yaml-SymbolMappingKey def-Symbol'>? </span><span class='yaml-String def-String'>Ken Griffey</span>
+ 41: <span class='yaml-Comment def-Comment def-Syntax'>  # Flow style</span>
+ 42:   <span class='yaml-MappingKey def-Parameter'>baseball teams</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>set </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>{</span> <span class='yaml-MappingKey def-Parameter'>Boston Red Sox</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-MappingKey def-Parameter'>Detroit Tigers</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-MappingKey def-Parameter'>New York Yankees </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>}</span>
+ 43: 
+ 44: <span class='yaml-Comment def-Comment def-Syntax'>  # https://yaml.org/type/seq.html</span>
+ 45: 
+ 46: <span class='yaml-Comment def-Comment def-Syntax'>  # Ordered sequence of nodes</span>
+ 47:   <span class='yaml-MappingKey def-Parameter'>Block style</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>seq</span>
+ 48:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>Mercury</span>   <span class='yaml-Comment def-Comment def-Syntax'># Rotates - no light/dark sides.</span>
+ 49:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>Venus</span>     <span class='yaml-Comment def-Comment def-Syntax'># Deadliest. Aptly named.</span>
+ 50:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>Earth</span>     <span class='yaml-Comment def-Comment def-Syntax'># Mostly dirt.</span>
+ 51:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>Mars</span>      <span class='yaml-Comment def-Comment def-Syntax'># Seems empty.</span>
+ 52:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>Jupiter</span>   <span class='yaml-Comment def-Comment def-Syntax'># The king.</span>
+ 53:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>Saturn</span>    <span class='yaml-Comment def-Comment def-Syntax'># Pretty.</span>
+ 54:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>Uranus</span>    <span class='yaml-Comment def-Comment def-Syntax'># Where the sun hardly shines.</span>
+ 55:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>Neptune</span>   <span class='yaml-Comment def-Comment def-Syntax'># Boring. No rings.</span>
+ 56:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>Pluto</span>     <span class='yaml-Comment def-Comment def-Syntax'># You call this a planet?</span>
+ 57:   <span class='yaml-MappingKey def-Parameter'>Flow style</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>seq </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>[</span> <span class='yaml-String def-String'>Mercury</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-String def-String'>Venus</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-String def-String'>Earth</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-String def-String'>Mars</span><span class='yaml-Symbol def-Symbol'>,      </span><span class='yaml-Comment def-Comment def-Syntax'># Rocks</span>
+ 58:                       <span class='yaml-String def-String'>Jupiter</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-String def-String'>Saturn</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-String def-String'>Uranus</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-String def-String'>Neptune</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-Comment def-Comment def-Syntax'># Gas</span>
+ 59:                       <span class='yaml-String def-String'>Pluto </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>]</span>                           <span class='yaml-Comment def-Comment def-Syntax'># Overrated</span>
+ 60: 
+ 61: <span class='yaml-Comment def-Comment def-Syntax'>  # https://yaml.org/type/bool.html</span>
+ 62: 
+ 63:   <span class='yaml-MappingKey def-Parameter'>canonical</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>y</span>
+ 64:   <span class='yaml-MappingKey def-Parameter'>answer</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-BooleanConstant def-BooleanConstant def-Constant def-Keyword'>NO</span>
+ 65:   <span class='yaml-MappingKey def-Parameter'>logical</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-BooleanConstant def-BooleanConstant def-Constant def-Keyword'>True</span>
+ 66:   <span class='yaml-MappingKey def-Parameter'>option</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-BooleanConstant def-BooleanConstant def-Constant def-Keyword'>on</span>
+ 67: 
+ 68: <span class='yaml-Comment def-Comment def-Syntax'>  # https://yaml.org/type/int.html</span>
+ 69: 
+ 70:   <span class='yaml-MappingKey def-Parameter'>canonical</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>685230</span>
+ 71:   <span class='yaml-MappingKey def-Parameter'>decimal</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>+685_230</span>
+ 72:   <span class='yaml-MappingKey def-Parameter'>octal</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>02472256</span>
+ 73:   <span class='yaml-MappingKey def-Parameter'>hexadecimal</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>0x_0A_74_AE</span>
+ 74:   <span class='yaml-MappingKey def-Parameter'>binary</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberBin def-Number'>0b1010_0111_0100_1010_1110</span>
+ 75:   <span class='yaml-MappingKey def-Parameter'>sexagesimal</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberSuffix def-Number'>190:20:30</span>
+ 76: 
+ 77: <span class='yaml-Comment def-Comment def-Syntax'>  # https://yaml.org/type/float.html</span>
+ 78: 
+ 79:   <span class='yaml-MappingKey def-Parameter'>canonical</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberFloat def-Number'>6.8523015e+5</span>
+ 80:   <span class='yaml-MappingKey def-Parameter'>exponentioal</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberFloat def-Number'>685.230_15e+03</span>
+ 81:   <span class='yaml-MappingKey def-Parameter'>fixed</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberFloat def-Number'>685_230.15</span>
+ 82:   <span class='yaml-MappingKey def-Parameter'>sexagesimal</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberSuffix def-Number'>190:20:30.15</span>
+ 83:   <span class='yaml-MappingKey def-Parameter'>negative infinity</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberFloat def-Number'>-.inf</span>
+ 84:   <span class='yaml-MappingKey def-Parameter'>not a number</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberFloat def-Number'>.NaN</span>
+ 85: 
+ 86: <span class='yaml-Comment def-Comment def-Syntax'>  # https://yaml.org/type/merge.html</span>
+ 87:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>CENTER </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>{</span> <span class='yaml-MappingKey def-Parameter'>x</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='def-NumberDec def-Number'>1</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-MappingKey def-Parameter'>y</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='def-NumberDec def-Number'>2</span><span class='yaml-String def-String'> </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>}</span>
+ 88:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>LEFT </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>{</span> <span class='yaml-MappingKey def-Parameter'>x</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='def-NumberDec def-Number'>0</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-MappingKey def-Parameter'>y</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='def-NumberDec def-Number'>2</span><span class='yaml-String def-String'> </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>}</span>
+ 89:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>BIG </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>{</span> <span class='yaml-MappingKey def-Parameter'>r</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='def-NumberDec def-Number'>10</span><span class='yaml-String def-String'> </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>}</span>
+ 90:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>SMALL </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>{</span> <span class='yaml-MappingKey def-Parameter'>r</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='def-NumberDec def-Number'>1</span><span class='yaml-String def-String'> </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>}</span>
+ 91:   <span class='yaml-Comment def-Comment def-Syntax'># All the following maps are equal:</span>
+ 92:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-Comment def-Comment def-Syntax'># Explicit keys</span>
+ 93:     <span class='yaml-MappingKey def-Parameter'>x</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>1</span>
+ 94:     <span class='yaml-MappingKey def-Parameter'>y</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>2</span>
+ 95:     <span class='yaml-MappingKey def-Parameter'>r</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>10</span>
+ 96:     <span class='yaml-MappingKey def-Parameter'>label</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>center/big</span>
+ 97:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-Comment def-Comment def-Syntax'># Merge one map</span>
+ 98:     <span class='yaml-SymbolMergeKeys def-InterfaceKeyword def-Keyword'>&lt;&lt;</span> <span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>*</span><span class='yaml-Anchor def-Var'>CENTER</span>
+ 99:     <span class='yaml-MappingKey def-Parameter'>r</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>10</span>
+100:     <span class='yaml-MappingKey def-Parameter'>label</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>center/big</span>
+101:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-Comment def-Comment def-Syntax'># Merge multiple maps</span>
+102:     <span class='yaml-SymbolMergeKeys def-InterfaceKeyword def-Keyword'>&lt;&lt;</span> <span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>[</span> <span class='yaml-SymbolAnchor def-VarStrong def-Var'>*</span><span class='yaml-Anchor def-Var'>CENTER</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>*</span><span class='yaml-Anchor def-Var'>BIG </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>]</span>
+103:     <span class='yaml-MappingKey def-Parameter'>label</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>center/big</span>
+104:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-Comment def-Comment def-Syntax'># Override</span>
+105:     <span class='yaml-SymbolMergeKeys def-InterfaceKeyword def-Keyword'>&lt;&lt;</span> <span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>[</span> <span class='yaml-SymbolAnchor def-VarStrong def-Var'>*</span><span class='yaml-Anchor def-Var'>BIG</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>*</span><span class='yaml-Anchor def-Var'>LEFT</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>*</span><span class='yaml-Anchor def-Var'>SMALL </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>]</span>
+106:     <span class='yaml-MappingKey def-Parameter'>x</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>1</span>
+107:     <span class='yaml-MappingKey def-Parameter'>label</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>center/big</span>
+108: 
+109: <span class='yaml-Comment def-Comment def-Syntax'>  # https://yaml.org/type/null.html</span>
+110: 
+111: <span class='yaml-Comment def-Comment def-Syntax'>  # This mapping has four keys,</span>
+112: <span class='yaml-Comment def-Comment def-Syntax'>  # one has a value.</span>
+113:   <span class='yaml-MappingKey def-Parameter'>empty</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
+114:   <span class='yaml-MappingKey def-Parameter'>canonical</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-Constant def-Constant def-Keyword'>~</span>
+115:   <span class='yaml-MappingKey def-Parameter'>english</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-Constant def-Constant def-Keyword'>null</span>
+116:   <span class='yaml-Constant def-Constant def-Keyword'>~</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>null key</span>
+117: <span class='yaml-Comment def-Comment def-Syntax'>  # This sequence has five</span>
+118: <span class='yaml-Comment def-Comment def-Syntax'>  # entries, two have values.</span>
+119:   <span class='yaml-MappingKey def-Parameter'>sparse</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
+120:     <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-Constant def-Constant def-Keyword'>~</span>
+121:     <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>2nd entry</span>
+122:     <span class='yaml-SymbolSequence def-Symbol'>-</span>
+123:     <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>4th entry</span>
+124:     <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-Constant def-Constant def-Keyword'>Null</span>
+125: 
+126: <span class='yaml-Comment def-Comment def-Syntax'>  # https://yaml.org/type/timestamp.html</span>
+127: 
+128:   <span class='yaml-MappingKey def-Parameter'>canonical</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:        </span><span class='def-Date'>2001-12-15</span><span class='def-Prefix'>T</span><span class='def-Time'>02:59:43.1</span><span class='def-Prefix'>Z</span>
+129:   <span class='yaml-MappingKey def-Parameter'>valid iso8601</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:    </span><span class='def-Date'>2001-12-14</span><span class='def-Prefix'>t</span><span class='def-Time'>21:59:43.10</span><span class='def-Prefix'>-05:00</span>
+130:   <span class='yaml-MappingKey def-Parameter'>space separated</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:  </span><span class='def-Date'>2001-12-14</span><span class='def-Prefix'> </span><span class='def-Time'>21:59:43.10</span><span class='def-Prefix'> -5</span>
+131:   <span class='yaml-MappingKey def-Parameter'>no time zone (Z)</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-Date'>2001-12-15</span><span class='def-Prefix'> </span><span class='def-Time'>2:59:43.10</span>
+132:   <span class='yaml-MappingKey def-Parameter'>date (00:00:00Z)</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-Date'>2002-12-14</span>
+133: 
+134: 
+135: 

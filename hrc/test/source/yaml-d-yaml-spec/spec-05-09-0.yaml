@@ -1,0 +1,10 @@
+# name = spec-05-09
+
+%YAML 1.1
+--- text
+
+# +STR
+#   +DOC ---
+#     =VAL :text
+#   -DOC
+# -STR

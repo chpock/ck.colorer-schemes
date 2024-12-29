@@ -1,0 +1,26 @@
+# name = construct-binary
+# code = construct-binary
+
+---
+- !tag1
+  x: 1
+  'y': 2
+  z: 3
+- !tag2
+  10
+
+# +STR
+# +DOC ---
+# +SEQ
+# +MAP <!tag1>
+# =VAL :x
+# =VAL :1
+# =VAL 'y
+# =VAL :2
+# =VAL :z
+# =VAL :3
+# -MAP
+# =VAL <!tag2> :10
+# -SEQ
+# -DOC
+# -STR

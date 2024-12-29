@@ -1,0 +1,13 @@
+# name = Wrong indented sequence item
+# fail = true
+
+- key: value
+ - item1
+
+# +STR
+#  +DOC
+#   +SEQ
+#    +MAP
+#     =VAL :key
+#     =VAL :value
+#    -MAP

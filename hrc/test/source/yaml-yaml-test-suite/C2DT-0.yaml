@@ -1,0 +1,20 @@
+# name = Spec Example 7.18. Flow Mapping Adjacent Values
+
+{
+"adjacent":value,
+"readable": value,
+"empty":
+}
+
+# +STR
+#  +DOC
+#   +MAP {}
+#    =VAL "adjacent
+#    =VAL :value
+#    =VAL "readable
+#    =VAL :value
+#    =VAL "empty
+#    =VAL :
+#   -MAP
+#  -DOC
+# -STR

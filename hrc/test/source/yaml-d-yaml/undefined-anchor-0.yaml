@@ -1,0 +1,11 @@
+# name = undefined-anchor
+# fail = true
+# error = Unable to load test/undefined-anchor.yaml#undefined-anchor:yaml: Found undefined alias: bat\n
+# mark.line = 3
+# mark.column = 3
+
+- foo
+- &bar baz
+- *bat
+
+# null

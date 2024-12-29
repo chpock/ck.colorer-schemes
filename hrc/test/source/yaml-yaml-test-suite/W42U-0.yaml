@@ -1,0 +1,25 @@
+# name = Spec Example 8.15. Block Sequence Entry Types
+
+- # Empty
+- |
+ block node
+- - one # Compact
+  - two # sequence
+- one: two # Compact mapping
+
+# +STR
+#  +DOC
+#   +SEQ
+#    =VAL :
+#    =VAL |block node\n
+#    +SEQ
+#     =VAL :one
+#     =VAL :two
+#    -SEQ
+#    +MAP
+#     =VAL :one
+#     =VAL :two
+#    -MAP
+#   -SEQ
+#  -DOC
+# -STR

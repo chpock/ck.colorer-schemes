@@ -1,0 +1,8 @@
+# name = Duplicate YAML directive
+# fail = true
+
+%YAML 1.2
+%YAML 1.2
+---
+
+# +STR

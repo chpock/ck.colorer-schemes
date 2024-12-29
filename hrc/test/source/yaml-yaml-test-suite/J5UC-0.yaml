@@ -1,0 +1,18 @@
+# name = Multiple Pair Block Mapping
+
+foo: blue
+bar: arrr
+baz: jazz
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :foo
+#    =VAL :blue
+#    =VAL :bar
+#    =VAL :arrr
+#    =VAL :baz
+#    =VAL :jazz
+#   -MAP
+#  -DOC
+# -STR

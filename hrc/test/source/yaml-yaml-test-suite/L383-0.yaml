@@ -1,0 +1,13 @@
+# name = Two scalar docs with trailing comments
+
+--- foo  # comment
+--- foo  # comment
+
+# +STR
+#  +DOC ---
+#   =VAL :foo
+#  -DOC
+#  +DOC ---
+#   =VAL :foo
+#  -DOC
+# -STR

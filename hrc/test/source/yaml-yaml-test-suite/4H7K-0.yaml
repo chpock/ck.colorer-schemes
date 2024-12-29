@@ -1,0 +1,14 @@
+# name = Flow sequence with invalid extra closing bracket
+# fail = true
+
+---
+[ a, b, c ] ]
+
+# +STR
+#  +DOC ---
+#   +SEQ
+#    =VAL :a
+#    =VAL :b
+#    =VAL :c
+#   -SEQ
+#  -DOC

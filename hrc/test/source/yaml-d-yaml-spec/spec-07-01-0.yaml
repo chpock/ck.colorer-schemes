@@ -1,0 +1,11 @@
+# name = spec-07-01
+
+%FOO  bar baz # Should be ignored
+               # with a warning.
+--- "foo"
+
+# +STR
+#   +DOC ---
+#     =VAL "foo
+#   -DOC
+# -STR

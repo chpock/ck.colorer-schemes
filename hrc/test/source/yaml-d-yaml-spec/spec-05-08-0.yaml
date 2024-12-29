@@ -1,0 +1,15 @@
+# name = spec-05-08
+
+single: 'text'
+double: "text"
+
+# +STR
+#   +DOC
+#     +MAP
+#       =VAL :single
+#       =VAL 'text
+#       =VAL :double
+#       =VAL "text
+#     -MAP
+#   -DOC
+# -STR

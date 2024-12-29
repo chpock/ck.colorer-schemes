@@ -1,0 +1,15 @@
+# name = Allowed characters in alias
+
+a: &:@*!$"<foo>: scalar a
+b: *:@*!$"<foo>:
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :a
+#    =VAL &:@*!$"<foo>: :scalar a
+#    =VAL :b
+#    =ALI *:@*!$"<foo>:
+#   -MAP
+#  -DOC
+# -STR

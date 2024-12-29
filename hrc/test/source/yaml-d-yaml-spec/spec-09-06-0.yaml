@@ -1,0 +1,9 @@
+# name = spec-09-06
+
+ 'here''s to "quotes"'
+
+# +STR
+#   +DOC
+#     =VAL 'here's to "quotes"
+#   -DOC
+# -STR

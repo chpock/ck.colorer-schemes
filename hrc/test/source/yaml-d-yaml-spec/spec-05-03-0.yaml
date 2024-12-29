@@ -1,0 +1,31 @@
+# name = spec-05-03
+
+sequence:
+- one
+- two
+mapping:
+  ? sky
+  : blue
+  ? sea : green
+
+# +STR
+#   +DOC
+#     +MAP
+#       =VAL :sequence
+#       +SEQ
+#         =VAL :one
+#         =VAL :two
+#       -SEQ
+#       =VAL :mapping
+#       +MAP
+#         =VAL :sky
+#         =VAL :blue
+#         +MAP
+#           =VAL :sea
+#           =VAL :green
+#         -MAP
+#         =VAL :
+#       -MAP
+#     -MAP
+#   -DOC
+# -STR

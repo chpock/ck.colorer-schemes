@@ -1,0 +1,16 @@
+# name = Wrong indendation in Sequence
+# fail = true
+
+key:
+   - ok
+   - also ok
+  - wrong
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :key
+#    +SEQ
+#     =VAL :ok
+#     =VAL :also ok
+#    -SEQ

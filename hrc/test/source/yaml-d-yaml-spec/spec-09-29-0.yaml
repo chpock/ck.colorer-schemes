@@ -1,0 +1,12 @@
+# name = spec-09-29
+
+> # Simple folded scalar
+ folded
+ text
+ 	lines
+
+# +STR
+#   +DOC
+#     =VAL >folded text\n\tlines\n
+#   -DOC
+# -STR

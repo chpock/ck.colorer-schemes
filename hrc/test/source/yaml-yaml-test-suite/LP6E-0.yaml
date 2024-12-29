@@ -1,0 +1,30 @@
+# name = Whitespace After Scalars in Flow
+
+- [a, b , c ]
+- { "a"  : b
+   , c : 'd' ,
+   e   : "f"
+  }
+- [      ]
+
+# +STR
+#  +DOC
+#   +SEQ
+#    +SEQ []
+#     =VAL :a
+#     =VAL :b
+#     =VAL :c
+#    -SEQ
+#    +MAP {}
+#     =VAL "a
+#     =VAL :b
+#     =VAL :c
+#     =VAL 'd
+#     =VAL :e
+#     =VAL "f
+#    -MAP
+#    +SEQ []
+#    -SEQ
+#   -SEQ
+#  -DOC
+# -STR

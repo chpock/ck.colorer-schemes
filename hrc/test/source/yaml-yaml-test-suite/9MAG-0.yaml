@@ -1,0 +1,9 @@
+# name = Flow sequence with invalid comma at the beginning
+# fail = true
+
+---
+[ , a, b, c ]
+
+# +STR
+#  +DOC ---
+#   +SEQ []

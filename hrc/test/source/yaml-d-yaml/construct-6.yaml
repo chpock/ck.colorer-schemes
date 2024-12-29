@@ -1,0 +1,96 @@
+# name = construct-binary
+# code = construct-binary
+
+---
+- &CENTER { x: 1, 'y': 2 }
+- &LEFT { x: 0, 'y': 2 }
+- &BIG { r: 10 }
+- &SMALL { r: 1 }
+
+# All the following maps are equal:
+
+- # Explicit keys
+  x: 1
+  'y': 2
+  r: 10
+  label: center/big
+
+- # Merge one map
+  << : *CENTER
+  r: 10
+  label: center/big
+
+- # Merge multiple maps
+  << : [ *CENTER, *BIG ]
+  label: center/big
+
+- # Override
+  << : [ *BIG, *LEFT, *SMALL ]
+  x: 1
+  label: center/big
+
+# +STR
+# +DOC ---
+# +SEQ
+# +MAP {} &CENTER
+# =VAL :x
+# =VAL :1
+# =VAL 'y
+# =VAL :2
+# -MAP
+# +MAP {} &LEFT
+# =VAL :x
+# =VAL :0
+# =VAL 'y
+# =VAL :2
+# -MAP
+# +MAP {} &BIG
+# =VAL :r
+# =VAL :10
+# -MAP
+# +MAP {} &SMALL
+# =VAL :r
+# =VAL :1
+# -MAP
+# +MAP
+# =VAL :x
+# =VAL :1
+# =VAL 'y
+# =VAL :2
+# =VAL :r
+# =VAL :10
+# =VAL :label
+# =VAL :center/big
+# -MAP
+# +MAP
+# =VAL :<<
+# =ALI *CENTER
+# =VAL :r
+# =VAL :10
+# =VAL :label
+# =VAL :center/big
+# -MAP
+# +MAP
+# =VAL :<<
+# +SEQ []
+# =ALI *CENTER
+# =ALI *BIG
+# -SEQ
+# =VAL :label
+# =VAL :center/big
+# -MAP
+# +MAP
+# =VAL :<<
+# +SEQ []
+# =ALI *BIG
+# =ALI *LEFT
+# =ALI *SMALL
+# -SEQ
+# =VAL :x
+# =VAL :1
+# =VAL :label
+# =VAL :center/big
+# -MAP
+# -SEQ
+# -DOC
+# -STR

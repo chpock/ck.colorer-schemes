@@ -1,0 +1,72 @@
+
+# flow mappings
+  bla: {value: val, 1: val, "foo": val, 'bar': val, 2: val}
+  bla: {key: value, key: 1, key: "foo", key: 'bar', key: 2}
+  bla: {["value", on, 4, true]: val, {key: val}: val}
+  bla: {  key: ["value", on, 4, true],   key: {key: val}   }
+  # tag
+  bla: {key: !str val,      key: !!int 3}
+  # anchor
+  bla: {key: *str, k::ey: *int}
+  # tag+anchor
+  bla: {key: !str *str, ke:y: !!int *str}
+  # nested flow sequences
+  bla: {[foo]: val, ksdjf: val, [bar, 1]: val}
+  bla: {key: [foo], key: ksdjf, key: [bar, 1]}
+
+# comments
+      bla: { # comment here
+          foo#not-a-comment: #comment here
+          value, # comment here
+        bar: val, # comment here
+     foo: not#comment, #comment here
+        "key # not a comment": "val # not a comment", #comment here
+   }
+
+
+# errors
+
+  # tag after tag
+  bla: {key: !str !int val, key: val2}
+  # tag after anchor
+  bla: {key: *str !str val, key: *int 3}
+  # value after anchor
+  bla: {key: *str val, k::ey: *int 3}
+  # garbage after nested flow sequences
+  bla: {key: [foo] ksdjf}
+  bla: {key: [foo] !foo}
+  bla: {key: [foo] *foo}
+  # garbage after nested flow mapping
+  bla: {key: {foo: val} ksdjf}
+  bla: {key: {foo: val} !foo}
+  bla: {key: {foo: val} *foo}
+  # garbage after single quoted value
+  bla: {key: 'foo: val' ksdjf, key: bar}
+  bla: {key: 'foo: val' !foo, key: bar}
+  bla: {key: 'foo: val' *foo, key: bar}
+  # garbage after double quoted value
+  bla: {key: "foo: val" ksdjf, key: bar}
+  bla: {key: "foo: val" !foo, key: bar}
+  bla: {key: "foo: val" *foo, key: bar}
+  # comma after comma
+  bla: {key: foo,,,key: bar,     ,   ,}
+  # no space before the comment
+  map: {item1: val, item2: val,# Comment}
+  # no colon after key, before a comment
+  bla: {[a, b, c,] #error here}
+  bla: {{key: val} #error here}
+  bla: {"foo" #error here}
+  bla: {'foo' #error here}
+  bla: {[a, b, c,] #error here: val}
+  bla: {{key: val} #error here: val}
+  bla: {"foo" #error here: val}
+  bla: {'foo' #error here: val}
+  # no comma after value, before a comment
+  bla: {foo: [a, b, c,] #error here}
+  bla: {foo: {key: val} #error here}
+  bla: {foo: "foo" #error here}
+  bla: {foo: 'foo' #error here}
+  bla: {foo: [a, b, c,] #error here, foo: bar}
+  bla: {foo: {key: val} #error here, foo: bar}
+  bla: {foo: "foo" #error here, foo: bar}
+  bla: {foo: 'foo' #error here, foo: bar}

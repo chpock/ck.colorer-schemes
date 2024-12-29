@@ -1,0 +1,17 @@
+# name = Spec Example 8.8. Literal Content [1.3]
+
+--- |
+␣
+␣␣
+  literal
+␣␣␣
+␣␣
+  text
+
+ # Comment
+
+# +STR
+#  +DOC ---
+#   =VAL |\n\nliteral\n \n\ntext\n
+#  -DOC
+# -STR

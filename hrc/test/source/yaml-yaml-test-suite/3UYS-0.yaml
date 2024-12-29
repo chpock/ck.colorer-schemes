@@ -1,0 +1,12 @@
+# name = Escaped slash in double quotes
+
+escaped slash: "a\/b"
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :escaped slash
+#    =VAL "a/b
+#   -MAP
+#  -DOC
+# -STR

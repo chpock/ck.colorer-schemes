@@ -1,0 +1,10 @@
+# name = Multiline unidented double quoted block key
+# fail = true
+
+- - "bar
+bar": x
+
+# +STR
+#  +DOC
+#   +SEQ
+#    +SEQ

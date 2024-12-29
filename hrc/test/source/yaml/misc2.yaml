@@ -1,0 +1,143 @@
+
+# document
+--- |
+  foo
+  bar
+end:
+
+# Block scalars
+
+  # multiple lines
+  - | # comment
+     foo
+     sdkfj
+     sdjlkj: bar
+  end:
+  # empty body
+  - |
+  end:
+
+  # multiple lines
+  foo: |
+     bar: baz
+     baz
+  end:
+
+  # empty body
+  foo: |
+  end:
+
+  - - - - |
+     foo
+  end:
+  foo foo: |
+     foo
+  end:
+  foo foo      : |
+     foo
+  end:
+  foo:foo: |
+     foo
+  end:
+  "": |
+     foo
+  end:
+  "\"": |
+     foo
+  end:
+  "\"\"\"": |
+     foo
+  end:
+  "aa\"": |
+     foo
+  end:
+  "\"bb": |
+     foo
+  end:
+  "foo | foo": |
+     foo
+  end:
+  "foo | \"foo": |
+     foo
+  end:
+  'foo | foo': |
+     foo
+  end:
+  '': |
+     foo
+  end:
+  '''': |
+     foo
+  end:
+  '''''''': |
+     foo
+  end:
+  'aa''': |
+     foo
+  end:
+  '''bb': |
+     foo
+  end:
+  : |
+     foo
+  end:
+  ? | # comment
+     foo
+  end:
+  '''bb'     : |
+     foo
+  end:
+  '''b: b'     :   |
+     foo
+  end:
+
+  - foo: |
+     foo
+  end:
+  - foo:bar: |
+     foo
+  end:
+  - - - - "foo": |
+     foo
+  - - - foo: |
+     foo
+  end:
+  - - 'foo': |
+     foo
+  end:
+  - no: |
+     foo
+  end:
+  - foo  :    |
+     foo
+  end:
+  - - - 'foo'   :    |
+     foo
+  end:
+  - - - 'fo: o'   :    |
+     foo
+  end:
+
+  "foo: foo # "    : |
+     foo
+  end:
+
+# errors
+
+  foo: |foo
+  foo: |+21
+  foo: |x
+  foo: |#
+
+# Not block scalars
+
+  "foo: |
+  "
+  'foo: |
+  '
+  - foo |
+  foo: foo |
+  - foo |
+  foo: foo: |
+  "foo | \"foo: |
+  "

@@ -1,0 +1,21 @@
+# name = Multiline plain flow mapping key
+
+---
+- { single line: value}
+- { multi
+  line: value}
+
+# +STR
+#  +DOC ---
+#   +SEQ
+#    +MAP {}
+#     =VAL :single line
+#     =VAL :value
+#    -MAP
+#    +MAP {}
+#     =VAL :multi line
+#     =VAL :value
+#    -MAP
+#   -SEQ
+#  -DOC
+# -STR

@@ -1,0 +1,16 @@
+# name = Spec Example 7.19. Single Pair Flow Mappings
+
+[
+foo: bar
+]
+
+# +STR
+#  +DOC
+#   +SEQ []
+#    +MAP {}
+#     =VAL :foo
+#     =VAL :bar
+#    -MAP
+#   -SEQ
+#  -DOC
+# -STR

@@ -1,0 +1,56 @@
+# Tests for plain values
+
+--- foo
+--- !!int foo # comment
+
+# plain (or empty) value
+
+  foo: bar
+      foo
+        dfgdfg
+
+  foo:
+      foo: bla
+
+  # sequence as a mapping
+  - foo: val
+  - "foo": val
+  - 'foo': val
+  - - - foo: val
+  - - - "foo": val
+  - - - 'foo': val
+  # sequence as a string
+  - lskdjflksjf
+  - lskdjfl:ksjf kdjf df kgkdl fgljglk
+  # empty
+  -
+  foo:
+    -
+      - foo
+
+  foo   : val
+  - - - "foo"    : val
+  - - "foo : foo"   : val
+
+  # sequence+anchor as a string
+  - &anchor foo
+
+matrices:
+    matrix_json_style: [
+        [1, 0, 0],
+        [0, 1, 0],
+        [0, 0, 1],
+    ]
+    matrix_yaml_style:
+      - [1, 0, 0]
+      - [0, 1, 0]
+      - [0, 0, 1]
+
+? - Detroit Tigers
+  - Chicago cubs
+: - 2001-07-23
+
+# errors
+
+  foo:
+      "error here"

@@ -1,0 +1,11 @@
+# name = Tabs that look like indentation
+
+%YAML 1.2
+————»
+---
+
+# +STR
+#  +DOC ---
+#   =VAL :
+#  -DOC
+# -STR

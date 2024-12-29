@@ -1,0 +1,14 @@
+# name = Trailing content that looks like a mapping
+# fail = true
+
+key1: "quoted1"
+key2: "quoted2" no key: nor value
+key3: "quoted3"
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :key1
+#    =VAL "quoted1
+#    =VAL :key2
+#    =VAL "quoted2

@@ -1,0 +1,13 @@
+# name = Spec Example 6.9. Separated Comment
+
+key:    # Comment
+  value
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :key
+#    =VAL :value
+#   -MAP
+#  -DOC
+# -STR

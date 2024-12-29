@@ -1,0 +1,16 @@
+# name = unclosed-bracket
+# fail = true
+# mark.line = 7
+# mark.column = 1
+# mark2.line = 2
+# mark2.column = 7
+# error = While parsing a flow sequence, expected ',' or ']', but got: streamEnd
+
+test:
+    - [ foo: bar
+# comment the rest of the stream to let the scanner detect the problem.
+#    - baz
+#"we could have detected the unclosed bracket on the above line, but this would forbid such syntax as": {
+#}
+
+# null

@@ -1,0 +1,15 @@
+# name = Spec Example 5.8. Quoted Scalar Indicators
+
+single: 'text'
+double: "text"
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :single
+#    =VAL 'text
+#    =VAL :double
+#    =VAL "text
+#   -MAP
+#  -DOC
+# -STR

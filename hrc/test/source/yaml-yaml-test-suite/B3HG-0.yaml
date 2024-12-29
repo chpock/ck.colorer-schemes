@@ -1,0 +1,13 @@
+# name = Spec Example 8.9. Folded Scalar [1.3]
+
+--- >
+ folded
+ text
+↵
+↵
+
+# +STR
+#  +DOC ---
+#   =VAL >folded text\n
+#  -DOC
+# -STR

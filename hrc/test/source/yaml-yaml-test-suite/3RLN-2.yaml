@@ -1,0 +1,10 @@
+# name = Leading tabs in double quoted
+
+"3 leading
+    ————»tab"
+
+# +STR
+#  +DOC
+#   =VAL "3 leading tab
+#  -DOC
+# -STR

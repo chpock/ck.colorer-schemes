@@ -1,0 +1,13 @@
+# name = Missing comma in flow
+# fail = true
+
+key: [ word1
+#  xxx
+  word2 ]
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :key
+#    +SEQ []
+#     =VAL :word1

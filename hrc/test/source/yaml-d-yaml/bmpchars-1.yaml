@@ -1,0 +1,17 @@
+# name = bmpchars
+
+%YAML 1.1
+---
+!!map {
+  ? !!str "a"
+    : !!str "\U00012157"
+  }
+
+# +STR
+#   +DOC ---
+#     +MAP {} <tag:yaml.org,2002:map>
+#       =VAL <tag:yaml.org,2002:str> "a
+#       =VAL <tag:yaml.org,2002:str> "𒅗
+#     -MAP
+#   -DOC
+# -STR

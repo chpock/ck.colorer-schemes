@@ -1,0 +1,21 @@
+# name = Spec Example 7.1. Alias Nodes
+
+First occurrence: &anchor Foo
+Second occurrence: *anchor
+Override anchor: &anchor Bar
+Reuse anchor: *anchor
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :First occurrence
+#    =VAL &anchor :Foo
+#    =VAL :Second occurrence
+#    =ALI *anchor
+#    =VAL :Override anchor
+#    =VAL &anchor :Bar
+#    =VAL :Reuse anchor
+#    =ALI *anchor
+#   -MAP
+#  -DOC
+# -STR
