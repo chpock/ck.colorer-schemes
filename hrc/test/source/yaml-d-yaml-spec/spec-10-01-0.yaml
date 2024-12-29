@@ -1,0 +1,19 @@
+# name = spec-10-01
+
+- [ inner, inner, ]
+- [inner,last]
+
+# +STR
+#   +DOC
+#     +SEQ
+#       +SEQ []
+#         =VAL :inner
+#         =VAL :inner
+#       -SEQ
+#       +SEQ []
+#         =VAL :inner
+#         =VAL :last
+#       -SEQ
+#     -SEQ
+#   -DOC
+# -STR

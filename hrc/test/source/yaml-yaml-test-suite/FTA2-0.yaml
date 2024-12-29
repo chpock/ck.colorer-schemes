@@ -1,0 +1,12 @@
+# name = Single block sequence with anchor and explicit document start
+
+--- &sequence
+- a
+
+# +STR
+#  +DOC ---
+#   +SEQ &sequence
+#    =VAL :a
+#   -SEQ
+#  -DOC
+# -STR

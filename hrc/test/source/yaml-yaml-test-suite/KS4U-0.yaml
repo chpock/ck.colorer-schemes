@@ -1,0 +1,14 @@
+# name = Invalid item after end of flow sequence
+# fail = true
+
+---
+[
+sequence item
+]
+invalid item
+
+# +STR
+#  +DOC ---
+#   +SEQ []
+#    =VAL :sequence item
+#   -SEQ

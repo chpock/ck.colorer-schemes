@@ -1,0 +1,17 @@
+# name = Tabs in various contexts
+# fail = true
+
+- [
+————»
+ foo
+ ]
+
+# +STR
+#  +DOC
+#   +SEQ
+#    +SEQ []
+#     =VAL :foo
+#    -SEQ
+#   -SEQ
+#  -DOC
+# -STR

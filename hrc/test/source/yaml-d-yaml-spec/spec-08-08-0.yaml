@@ -1,0 +1,33 @@
+# name = spec-08-08
+
+---
+foo:
+ "bar
+ baz"
+---
+"foo
+ bar"
+---
+foo
+ bar
+--- |
+ foo
+...
+
+# +STR
+#   +DOC ---
+#     +MAP
+#       =VAL :foo
+#       =VAL "bar baz
+#     -MAP
+#   -DOC
+#   +DOC ---
+#     =VAL "foo bar
+#   -DOC
+#   +DOC ---
+#     =VAL :foo bar
+#   -DOC
+#   +DOC ---
+#     =VAL |foo\n
+#   -DOC ...
+# -STR

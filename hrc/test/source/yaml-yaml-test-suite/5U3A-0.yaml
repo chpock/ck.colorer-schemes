@@ -1,0 +1,10 @@
+# name = Sequence on same Line as Mapping Key
+# fail = true
+
+key: - a
+     - b
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :key

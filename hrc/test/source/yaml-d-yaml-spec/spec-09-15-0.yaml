@@ -1,0 +1,36 @@
+# name = spec-09-15
+
+---
+"---" : foo
+...: bar
+---
+[
+---,
+...,
+{
+? ---
+: ...
+}
+]
+...
+
+# +STR
+#   +DOC ---
+#     +MAP
+#       =VAL "---
+#       =VAL :foo
+#       =VAL :...
+#       =VAL :bar
+#     -MAP
+#   -DOC
+# +DOC ---
+#   +SEQ []
+#     =VAL :---
+#     =VAL :...
+#     +MAP {}
+#       =VAL :---
+#       =VAL :...
+#     -MAP
+#     -SEQ
+#   -DOC ...
+# -STR

@@ -1,0 +1,46 @@
+
+# comment
+%YAML 1.2
+%YAML 1.2 #comment
+
+%TAG ! tag:clarkevans.com,2002:
+%TAG ! tag:clarkevans.com,2002: # comment
+
+# document start/end
+---
+...
+
+# document start/without end
+--- # test
+
+# non-empty document start/end
+---
+foo:
+  bar: baz
+
+... # test
+
+--- no error here
+...
+
+# garbage
+
+---error here
+... error here
+
+%YAML 1.2foo
+%YAML 1.2 baz
+%YAML baz
+
+%TAG ! tag:clarkevans.com,2002: foo
+
+# unknown directive
+%UNKNOWN
+
+# Directive is not allowed after '---'
+
+---
+%YAML 1.2
+...
+
+%YAML 1.2 # allowed here

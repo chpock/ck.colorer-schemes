@@ -1,0 +1,19 @@
+# name = Literal scalars
+
+- aaa: |2
+    xxx
+  bbb: |
+    xxx
+
+# +STR
+#  +DOC
+#   +SEQ
+#    +MAP
+#     =VAL :aaa
+#     =VAL |xxx\n
+#     =VAL :bbb
+#     =VAL |xxx\n
+#    -MAP
+#   -SEQ
+#  -DOC
+# -STR

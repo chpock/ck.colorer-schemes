@@ -1,0 +1,19 @@
+# name = Spec Example 7.11. Plain Implicit Keys
+
+implicit block key : [
+  implicit flow key : value,
+ ]
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :implicit block key
+#    +SEQ []
+#     +MAP {}
+#      =VAL :implicit flow key
+#      =VAL :value
+#     -MAP
+#    -SEQ
+#   -MAP
+#  -DOC
+# -STR

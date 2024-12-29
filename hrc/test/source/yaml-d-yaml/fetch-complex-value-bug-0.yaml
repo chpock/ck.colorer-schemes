@@ -1,0 +1,12 @@
+# name = fetch-complex-value-bug
+# fail = true
+# mark.line = 2
+# mark.column = 2
+# mark2.line = 1
+# mark2.column = 1
+# error = While parsing a block mapping, expected block end, but found: blockMappingStart
+
+? "foo"
+ : "bar"
+
+# null

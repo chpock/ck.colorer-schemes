@@ -1,0 +1,33 @@
+# name = spec-10-02
+
+%YAML 1.1
+---
+!!seq [
+  !!str "double quoted",
+  !!str "single quoted",
+  !!str "plain text",
+  !!seq [
+    !!str "nested",
+  ],
+  !!map {
+    ? !!str "single"
+    : !!str "pair"
+  }
+]
+
+# +STR
+#   +DOC ---
+#     +SEQ [] <tag:yaml.org,2002:seq>
+#       =VAL <tag:yaml.org,2002:str> "double quoted
+#       =VAL <tag:yaml.org,2002:str> "single quoted
+#       =VAL <tag:yaml.org,2002:str> "plain text
+#       +SEQ [] <tag:yaml.org,2002:seq>
+#         =VAL <tag:yaml.org,2002:str> "nested
+#       -SEQ
+#       +MAP {} <tag:yaml.org,2002:map>
+#         =VAL <tag:yaml.org,2002:str> "single
+#         =VAL <tag:yaml.org,2002:str> "pair
+#       -MAP
+#     -SEQ
+#   -DOC
+# -STR

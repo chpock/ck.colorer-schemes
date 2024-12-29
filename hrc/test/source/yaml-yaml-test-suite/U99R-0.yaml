@@ -1,0 +1,8 @@
+# name = Invalid comma in tag
+# fail = true
+
+- !!str, xxx
+
+# +STR
+#  +DOC
+#   +SEQ

@@ -1,0 +1,86 @@
+# Tests for not-plain values
+
+--- "value here" # comment
+--- !tag 'value here'
+--- [a, b, 1, 3]
+--- {a: b, b: c, 1: 2, 3: a} # comment
+
+# not-plain value
+
+  foo: {"asd": "foo"}
+  foo: ["asd", asd, 'asd']
+
+  foo: bar
+
+  foo: "bar"
+  foo: "bar
+bar baz"
+  foo: "bar
+      baz qux"
+
+  foo:
+      foo: bla
+
+  foo: &anchor 'f:oo'
+  foo: &anchor "f:oo"
+  foo: &anchor [foo, bar, baz]
+  foo: &anchor {foo: bar, key: baz}
+
+  # sequence as a string
+  - 20:22
+  - "foo"
+  - 'sdfsdf'
+  - - 'foo'
+  - - - - - 'foo'
+
+  # sequence+anchor as a string
+  - &anchor "foo"
+  - &anchor 'foo'
+  - &anchor [foo, bar, baz]
+  - &anchor {foo: bar}
+
+  # sequence as a mapping
+  - foo: "bar"
+  - - - - bar: 'baz'
+
+  - "foo\"": "bar"
+  - - - - "\"bar": 'baz'
+  - - "bar": 'baz'
+
+  - ':foo''': "bar"
+  - - - - '''bar:': 'baz'
+  - - 'bar :  bar': 'baz'
+
+  - foo   : "bar"
+  - - - foo    :    "bar"
+
+  - "foo"   : "bar"
+  - - - "foo : foo"    :    "bar"
+
+  ? - "Detroit Tigers"
+    - "Chicago cubs"
+  : - "2001-07-23"
+
+# errors
+
+  foo:
+      "bar"
+  foo:
+
+  foo: "bar" error here
+     error here
+     not: error
+   error:
+  foo:
+      "bar"
+      error here: "ettete"
+          kdjfksjdflskdjf
+          sldkfjsldkjf
+    sldkjflsjdf
+
+  - "foo"
+      error here
+  - - - - - 'foo'
+      error here
+
+  foo: *test "bar"

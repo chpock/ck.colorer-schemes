@@ -1,0 +1,21 @@
+# name = spec-10-03
+
+block: # Block
+       # sequence
+- one
+- two : three
+
+# +STR
+#   +DOC
+#     +MAP
+#       =VAL :block
+#       +SEQ
+#         =VAL :one
+#         +MAP
+#           =VAL :two
+#           =VAL :three
+#         -MAP
+#       -SEQ
+#     -MAP
+#   -DOC
+# -STR

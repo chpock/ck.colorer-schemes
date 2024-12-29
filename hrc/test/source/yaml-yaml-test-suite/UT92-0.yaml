@@ -1,0 +1,21 @@
+# name = Spec Example 9.4. Explicit Documents
+
+---
+{ matches
+% : 20 }
+...
+---
+# Empty
+...
+
+# +STR
+#  +DOC ---
+#   +MAP {}
+#    =VAL :matches %
+#    =VAL :20
+#   -MAP
+#  -DOC ...
+#  +DOC ---
+#   =VAL :
+#  -DOC ...
+# -STR

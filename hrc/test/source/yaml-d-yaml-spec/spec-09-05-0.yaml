@@ -1,0 +1,20 @@
+# name = spec-09-05
+
+- "first
+  	"
+- "first
+
+  	last"
+- "first
+ inner
+ \ 	last"
+
+# +STR
+#   +DOC
+#     +SEQ
+#       =VAL "first 
+#       =VAL "first\nlast
+#       =VAL "first inner  \tlast
+#     -SEQ
+#   -DOC
+# -STR

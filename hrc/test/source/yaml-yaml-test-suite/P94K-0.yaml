@@ -1,0 +1,16 @@
+# name = Spec Example 6.11. Multi-Line Comments
+
+key:    # Comment
+        # lines
+  value
+↵
+↵
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :key
+#    =VAL :value
+#   -MAP
+#  -DOC
+# -STR

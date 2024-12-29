@@ -1,0 +1,13 @@
+# name = Spec Example 7.6. Double Quoted Lines [1.3]
+
+---
+" 1st non-empty
+
+ 2nd non-empty␣
+ 3rd non-empty "
+
+# +STR
+#  +DOC ---
+#   =VAL " 1st non-empty\n2nd non-empty 3rd non-empty␣
+#  -DOC
+# -STR

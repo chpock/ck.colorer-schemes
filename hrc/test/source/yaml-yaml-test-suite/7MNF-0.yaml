@@ -1,0 +1,15 @@
+# name = Missing colon
+# fail = true
+
+top1:
+  key1: val1
+top2
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :top1
+#    +MAP
+#     =VAL :key1
+#     =VAL :val1
+#    -MAP

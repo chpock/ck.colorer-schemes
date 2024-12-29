@@ -1,0 +1,12 @@
+# name = Tabs in various contexts
+# fail = true
+
+-———»-1
+
+# +STR
+#  +DOC
+#   +SEQ
+#    =VAL :-1
+#   -SEQ
+#  -DOC
+# -STR

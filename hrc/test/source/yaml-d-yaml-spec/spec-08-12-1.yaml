@@ -1,0 +1,25 @@
+# name = spec-08-12
+
+%YAML 1.1
+---
+!!seq [
+  !!str "Without properties",
+  &A !!str "Anchored",
+  !!str "Tagged",
+  *A,
+  !!str "",
+  !!str "",
+]
+
+# +STR
+#   +DOC ---
+#     +SEQ [] <tag:yaml.org,2002:seq>
+#       =VAL <tag:yaml.org,2002:str> "Without properties
+#       =VAL &A <tag:yaml.org,2002:str> "Anchored
+#       =VAL <tag:yaml.org,2002:str> "Tagged
+#       =ALI *A
+#       =VAL <tag:yaml.org,2002:str> "
+#       =VAL <tag:yaml.org,2002:str> "
+#     -SEQ
+#   -DOC
+# -STR

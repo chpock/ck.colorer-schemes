@@ -1,0 +1,11 @@
+# name = spec-07-12a
+
+%YAML 1.1
+---
+!!str "Text content\n"
+
+# +STR
+#   +DOC ---
+#     =VAL <tag:yaml.org,2002:str> "Text content\n
+#   -DOC
+# -STR

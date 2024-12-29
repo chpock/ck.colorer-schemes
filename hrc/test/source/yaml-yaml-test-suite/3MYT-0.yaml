@@ -1,0 +1,11 @@
+# name = Plain Scalar looking like key, comment, anchor and tag
+
+---
+k:#foo
+ &a !t s
+
+# +STR
+#  +DOC ---
+#   =VAL :k:#foo &a !t s
+#  -DOC
+# -STR

@@ -1,0 +1,23 @@
+# name = spec-05-04
+
+sequence: [ one, two, ]
+mapping: { sky: blue, sea: green }
+
+# +STR
+#   +DOC
+#     +MAP
+#       =VAL :sequence
+#       +SEQ []
+#         =VAL :one
+#         =VAL :two
+#       -SEQ
+#       =VAL :mapping
+#       +MAP {}
+#         =VAL :sky
+#         =VAL :blue
+#         =VAL :sea
+#         =VAL :green
+#       -MAP
+#     -MAP
+#   -DOC
+# -STR

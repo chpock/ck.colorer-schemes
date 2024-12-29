@@ -1,0 +1,16 @@
+# name = spec-09-11
+
+- 'first
+  	'
+- 'first
+
+  	last'
+
+# +STR
+#   +DOC
+#     +SEQ
+#       =VAL 'first 
+#       =VAL 'first\nlast
+#     -SEQ
+#   -DOC
+# -STR

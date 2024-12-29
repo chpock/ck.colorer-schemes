@@ -1,0 +1,27 @@
+# name = spec-09-07
+
+%YAML 1.1
+---
+!!map {
+  ? !!str "simple key"
+  : !!map {
+    ? !!str "also simple"
+    : !!str "value",
+    ? !!str "not a simple key"
+    : !!str "any value"
+  }
+}
+
+# +STR
+#   +DOC ---
+#     +MAP {} <tag:yaml.org,2002:map>
+#       =VAL <tag:yaml.org,2002:str> "simple key
+#       +MAP {} <tag:yaml.org,2002:map>
+#         =VAL <tag:yaml.org,2002:str> "also simple
+#         =VAL <tag:yaml.org,2002:str> "value
+#         =VAL <tag:yaml.org,2002:str> "not a simple key
+#         =VAL <tag:yaml.org,2002:str> "any value
+#       -MAP
+#     -MAP
+#   -DOC
+# -STR

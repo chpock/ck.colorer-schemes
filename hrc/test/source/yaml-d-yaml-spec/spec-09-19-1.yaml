@@ -1,0 +1,17 @@
+# name = spec-09-19
+
+%YAML 1.1
+---
+!!seq [
+  !!str "literal\n",
+  !!str "folded\n",
+]
+
+# +STR
+#   +DOC ---
+#     +SEQ [] <tag:yaml.org,2002:seq>
+#       =VAL <tag:yaml.org,2002:str> "literal\n
+#       =VAL <tag:yaml.org,2002:str> "folded\n
+#     -SEQ
+#   -DOC
+# -STR

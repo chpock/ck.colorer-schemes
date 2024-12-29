@@ -1,0 +1,19 @@
+# name = Spec Example 7.13. Flow Sequence
+
+- [ one, two, ]
+- [three ,four]
+
+# +STR
+#  +DOC
+#   +SEQ
+#    +SEQ []
+#     =VAL :one
+#     =VAL :two
+#    -SEQ
+#    +SEQ []
+#     =VAL :three
+#     =VAL :four
+#    -SEQ
+#   -SEQ
+#  -DOC
+# -STR

@@ -19,6 +19,11 @@
         <firstline weight="5">/^\s*\{\s*"\w+":/i</firstline>
     </prototype>
 
+    <prototype name="yaml" group="rare" description="YAML (Chpock)">
+        <location link="hrc/rare/yaml.hrc" />
+        <filename weight="11">/\.ya?ml$/</filename>
+    </prototype>
+
     <prototype name="shell-posix" group="scripts" description="Shell Scripts (POSIX)">
         <location link="hrc/scripts/shell-posix.hrc" />
         <filename weight='3'>/\.(sh|spec)$/i</filename>
@@ -74,6 +79,12 @@
         <firstline weight='3'>/(^|\n)\s*node\([^\)]\)\s+\{\s*$/</firstline>
         <firstline weight='3'>/(^|\n)\s*import\s+org\.jenkinsci\./</firstline>
     </prototype>
+
+    <!-- prototype name="cloudformation-yaml" group="scripts" description="CloudFormation Template (YAML)">
+        <location link="hrc/scripts/cloudformation-yaml.hrc"/>
+        <filename weight='1'>/\.yaml$/i</filename>
+        <firstline weight='15'>/(^|\n)AWSTemplateFormatVersion:/</firstline>
+    </prototype -->
 
     <prototype name="go-template" group="misc" description="Go Template">
         <location link="hrc/misc/go-template.hrc"/>
