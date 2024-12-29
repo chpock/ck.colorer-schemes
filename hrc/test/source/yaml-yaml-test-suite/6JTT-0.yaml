@@ -1,0 +1,14 @@
+# name = Flow sequence without closing bracket
+# fail = true
+
+---
+[ [ a, b, c ]
+
+# +STR
+#  +DOC ---
+#   +SEQ []
+#    +SEQ []
+#     =VAL :a
+#     =VAL :b
+#     =VAL :c
+#    -SEQ

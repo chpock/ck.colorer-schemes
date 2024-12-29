@@ -1,0 +1,12 @@
+# name = Colon followed by comma
+
+---
+- :,
+
+# +STR
+#  +DOC ---
+#   +SEQ
+#    =VAL ::,
+#   -SEQ
+#  -DOC
+# -STR

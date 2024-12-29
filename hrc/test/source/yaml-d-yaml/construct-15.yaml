@@ -1,0 +1,25 @@
+# name = construct-binary
+# code = construct-binary
+
+canonical:        2001-12-15T02:59:43.1Z
+valid iso8601:    2001-12-14t21:59:43.1-05:00
+space separated:  2001-12-14 21:59:43.1 -5
+no time zone (Z): 2001-12-15 2:59:43.1
+date (00:00:00Z): 2002-12-14
+
+# +STR
+# +DOC
+# +MAP
+# =VAL :canonical
+# =VAL :2001-12-15T02:59:43.1Z
+# =VAL :valid iso8601
+# =VAL :2001-12-14t21:59:43.1-05:00
+# =VAL :space separated
+# =VAL :2001-12-14 21:59:43.1 -5
+# =VAL :no time zone (Z)
+# =VAL :2001-12-15 2:59:43.1
+# =VAL :date (00:00:00Z)
+# =VAL :2002-12-14
+# -MAP
+# -DOC
+# -STR

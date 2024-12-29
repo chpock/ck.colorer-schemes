@@ -1,0 +1,22 @@
+# name = bool
+# detect = tag:yaml.org,2002:bool\n
+
+- 6.8523015e+5
+- 685.230_15e+03
+- 685_230.15
+- 190:20:30.15
+- -.inf
+- .NaN
+
+# +STR
+#   +DOC
+#     +SEQ
+#       =VAL :6.8523015e+5
+#       =VAL :685.230_15e+03
+#       =VAL :685_230.15
+#       =VAL :190:20:30.15
+#       =VAL :-.inf
+#       =VAL :.NaN
+#     -SEQ
+#   -DOC
+# -STR

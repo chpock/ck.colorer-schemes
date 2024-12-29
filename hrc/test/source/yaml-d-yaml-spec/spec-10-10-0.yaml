@@ -1,0 +1,29 @@
+# name = spec-10-10
+
+{
+? explicit key1 : explicit value,
+? explicit key2 : , # Explicit empty
+? explicit key3,     # Empty value
+simple key1 : explicit value,
+simple key2 : ,     # Explicit empty
+simple key3,         # Empty value
+}
+
+# +STR
+#   +DOC
+#     +MAP {}
+#       =VAL :explicit key1
+#       =VAL :explicit value
+#       =VAL :explicit key2
+#       =VAL :
+#       =VAL :explicit key3
+#       =VAL :
+#       =VAL :simple key1
+#       =VAL :explicit value
+#       =VAL :simple key2
+#       =VAL :
+#       =VAL :simple key3
+#       =VAL :
+#     -MAP
+#   -DOC
+# -STR

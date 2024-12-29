@@ -1,0 +1,13 @@
+# name = Literal block scalar with more spaces in first line
+# fail = true
+
+---
+block scalar: |
+␣␣␣␣␣
+  more spaces at the beginning
+  are invalid
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :block scalar

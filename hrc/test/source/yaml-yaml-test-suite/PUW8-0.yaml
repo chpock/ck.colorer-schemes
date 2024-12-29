@@ -1,0 +1,17 @@
+# name = Document start on last line
+
+---
+a: b
+---
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :a
+#    =VAL :b
+#   -MAP
+#  -DOC
+#  +DOC ---
+#   =VAL :
+#  -DOC
+# -STR

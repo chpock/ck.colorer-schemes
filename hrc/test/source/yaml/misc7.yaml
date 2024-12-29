@@ -1,0 +1,53 @@
+
+# flow sequences
+  bla: [value, 1, "foo", 'bar', 2]
+  bla: [["value", on, 4, true], {key: val}]
+  # tag
+  bla: [!str val, !!int 3]
+  # anchor
+  bla: [*str, *int]
+  # tag+anchor
+  bla: [!str *str, !!int *str]
+  # nested flow sequences
+  bla: [[foo], ksdjf, [bar, 1]]
+
+# comments
+      bla: [ # comment here
+          foo #not-a-comment, # comment here
+        bar, # comment here
+     not#comment, #comment here
+   ]
+
+# errors
+
+  # tag after tag
+  bla: [!str !int val, val2]
+  # tag after anchor
+  bla: [*str !str val, *int 3]
+  # value after anchor
+  bla: [!str *str val, !!int *str 3]
+  # garbage after nested flow sequences
+  bla: [[foo] ksdjf]
+  bla: [[foo] !foo]
+  bla: [[foo] *foo]
+  # garbage after nested flow mapping
+  bla: [{foo: val} ksdjf]
+  bla: [{foo: val} !foo]
+  bla: [{foo: val} *foo]
+  # garbage after single quoted value
+  bla: ['foo: val' ksdjf, bar]
+  bla: ['foo: val' !foo, bar]
+  bla: ['foo: val' *foo, bar]
+  # garbage after double quoted value
+  bla: ["foo: val" ksdjf, bar]
+  bla: ["foo: val" !foo, bar]
+  bla: ["foo: val" *foo, bar]
+  # comma after comma
+  bla: [foo,,,bar,     ,   ,]
+  # no space before the comment
+  sequence: [item1, item2,# Comment]
+  # no comma after value, before a comment
+  bla: [[a, b, c,] #error here]
+  bla: [{key: val} #error here]
+  bla: ["foo" #error here]
+  bla: ['foo' #error here]

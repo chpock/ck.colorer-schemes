@@ -1,0 +1,17 @@
+# name = Tabs in various contexts
+# fail = true
+
+foo: |
+ ———»
+bar: 1
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :foo
+#    =VAL |\t\n
+#    =VAL :bar
+#    =VAL :1
+#   -MAP
+#  -DOC
+# -STR

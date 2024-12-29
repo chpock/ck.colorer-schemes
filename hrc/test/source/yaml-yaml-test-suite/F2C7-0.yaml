@@ -1,0 +1,17 @@
+# name = Anchors and Tags
+
+ - &a !!str a
+ - !!int 2
+ - !!int &c 4
+ - &d d
+
+# +STR
+#  +DOC
+#   +SEQ
+#    =VAL &a <tag:yaml.org,2002:str> :a
+#    =VAL <tag:yaml.org,2002:int> :2
+#    =VAL &c <tag:yaml.org,2002:int> :4
+#    =VAL &d :d
+#   -SEQ
+#  -DOC
+# -STR

@@ -1,0 +1,10 @@
+# name = Comment without whitespace after block scalar indicator
+# fail = true
+
+block: ># comment
+  scalar
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :block

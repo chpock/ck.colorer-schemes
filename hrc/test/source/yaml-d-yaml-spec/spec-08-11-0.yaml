@@ -1,0 +1,15 @@
+# name = spec-08-11
+
+First occurrence: &anchor Value
+Second occurrence: *anchor
+
+# +STR
+#   +DOC
+#     +MAP
+#       =VAL :First occurrence
+#       =VAL &anchor :Value
+#       =VAL :Second occurrence
+#       =ALI *anchor
+#     -MAP
+#   -DOC
+# -STR

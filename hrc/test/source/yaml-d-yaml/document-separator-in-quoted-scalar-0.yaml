@@ -1,0 +1,21 @@
+# name = document-separator-in-quoted-scalar
+# fail = true
+# mark.line = 10
+# mark.column = 1
+# mark2.line = 8
+# mark2.column = 1
+# error = While scanning a quoted scalar, found unexpected document separator
+
+---
+"this --- is correct"
+---
+"this
+...is also
+correct"
+---
+"a quoted scalar
+cannot contain
+---
+document separators"
+
+# null

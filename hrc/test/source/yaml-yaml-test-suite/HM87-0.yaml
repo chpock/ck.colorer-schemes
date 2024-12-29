@@ -1,0 +1,11 @@
+# name = Scalars in flow start with syntax char
+
+[:x]
+
+# +STR
+#  +DOC
+#   +SEQ []
+#    =VAL ::x
+#   -SEQ
+#  -DOC
+# -STR

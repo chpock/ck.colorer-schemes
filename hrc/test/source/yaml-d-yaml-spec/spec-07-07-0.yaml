@@ -1,0 +1,10 @@
+# name = spec-07-07a
+
+# Private application:
+!foo "bar"
+
+# +STR
+#   +DOC
+#     =VAL <!foo> "bar
+#   -DOC
+# -STR

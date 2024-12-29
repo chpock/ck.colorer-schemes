@@ -1,0 +1,12 @@
+# name = Invalid mapping after sequence
+# fail = true
+
+- item1
+- item2
+invalid: x
+
+# +STR
+#  +DOC
+#   +SEQ
+#    =VAL :item1
+#    =VAL :item2

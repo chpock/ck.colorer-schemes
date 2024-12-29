@@ -1,0 +1,10 @@
+# name = Three dashes and content without space
+
+---word1
+word2
+
+# +STR
+#  +DOC
+#   =VAL :---word1 word2
+#  -DOC
+# -STR

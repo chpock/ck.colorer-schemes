@@ -1,0 +1,10 @@
+# name = scan-document-end-bug
+
+# Ticket #4
+---
+...
+# +STR
+#   +DOC ---
+#     =VAL :
+#   -DOC ...
+# -STR

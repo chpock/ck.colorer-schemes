@@ -1,0 +1,15 @@
+# name = Wrong indendation in Map
+# fail = true
+
+key:
+  ok: 1
+ wrong: 2
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :key
+#    +MAP
+#     =VAL :ok
+#     =VAL :1
+#    -MAP

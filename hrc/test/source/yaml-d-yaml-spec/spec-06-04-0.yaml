@@ -1,0 +1,15 @@
+# name = spec-06-04
+
+key:    # Comment
+        # lines
+  value
+
+
+# +STR
+#   +DOC
+#     +MAP
+#       =VAL :key
+#       =VAL :value
+#     -MAP
+#   -DOC
+# -STR

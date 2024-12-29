@@ -1,0 +1,21 @@
+# name = Spec Example 8.18. Implicit Block Mapping Entries
+
+plain key: in-line value
+: # Both empty
+"quoted key":
+- entry
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :plain key
+#    =VAL :in-line value
+#    =VAL :
+#    =VAL :
+#    =VAL "quoted key
+#    +SEQ
+#     =VAL :entry
+#    -SEQ
+#   -MAP
+#  -DOC
+# -STR

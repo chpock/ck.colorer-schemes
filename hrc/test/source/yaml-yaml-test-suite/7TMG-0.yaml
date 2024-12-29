@@ -1,0 +1,15 @@
+# name = Comment in flow sequence before comma
+
+---
+[ word1
+# comment
+, word2]
+
+# +STR
+#  +DOC ---
+#   +SEQ []
+#    =VAL :word1
+#    =VAL :word2
+#   -SEQ
+#  -DOC
+# -STR

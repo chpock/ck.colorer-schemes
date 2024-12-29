@@ -1,0 +1,10 @@
+# name = Plain scalar with backslashes
+
+---
+plain\value\with\backslashes
+
+# +STR
+#  +DOC ---
+#   =VAL :plain\\value\\with\\backslashes
+#  -DOC
+# -STR

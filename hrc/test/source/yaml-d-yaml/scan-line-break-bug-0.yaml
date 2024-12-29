@@ -1,0 +1,14 @@
+# name = scan-line-break-bug
+
+foo:
+    bar
+    baz
+
+# +STR
+#   +DOC
+#     +MAP
+#       =VAL :foo
+#       =VAL :bar baz
+#     -MAP
+#   -DOC
+# -STR

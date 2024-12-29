@@ -1,0 +1,14 @@
+# name = Spec Example 6.7. Block Folding
+
+>
+  foo␣
+␣
+  —» bar
+
+  baz
+
+# +STR
+#  +DOC
+#   =VAL >foo \n\n\t bar\n\nbaz\n
+#  -DOC
+# -STR

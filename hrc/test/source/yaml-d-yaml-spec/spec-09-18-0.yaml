@@ -1,0 +1,22 @@
+# name = spec-09-18
+
+- | # Just the style
+ literal
+- >1 # Indentation indicator
+  folded
+- |+ # Chomping indicator
+ keep
+
+- >-1 # Both indicators
+  strip
+
+# +STR
+#   +DOC
+#     +SEQ
+#       =VAL |literal\n
+#       =VAL > folded\n
+#       =VAL |keep\n\n
+#       =VAL > strip
+#     -SEQ
+#   -DOC
+# -STR

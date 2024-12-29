@@ -1,0 +1,10 @@
+# name = Invalid document-start marker in doublequoted tring
+# fail = true
+
+---
+"
+---
+"
+
+# +STR
+#  +DOC ---
