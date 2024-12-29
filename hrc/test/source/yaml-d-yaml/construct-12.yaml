@@ -1,0 +1,10 @@
+# name = construct-binary
+# code = construct-binary
+
+--- !!str "ascii string"
+
+# +STR
+# +DOC ---
+# =VAL <tag:yaml.org,2002:str> "ascii string
+# -DOC
+# -STR

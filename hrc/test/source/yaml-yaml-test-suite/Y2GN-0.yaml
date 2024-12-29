@@ -1,0 +1,13 @@
+# name = Anchor with colon in the middle
+
+---
+key: &an:chor value
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :key
+#    =VAL &an:chor :value
+#   -MAP
+#  -DOC
+# -STR

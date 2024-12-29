@@ -1,0 +1,45 @@
+﻿ 0: <span class='yaml-Comment def-Comment def-Syntax'># name = construct-binary</span>
+ 1: <span class='yaml-Comment def-Comment def-Syntax'># code = construct-binary</span>
+ 2: 
+ 3: <span class='yaml-DocumentEdge def-Keyword'>---     </span><span class='yaml-Comment def-Comment def-Syntax'># Old schema</span>
+ 4: <span class='yaml-MappingKey def-Parameter'>link with</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
+ 5:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>library1.dll</span>
+ 6:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-String def-String'>library2.dll</span>
+ 7: <span class='yaml-DocumentEdge def-Keyword'>---     </span><span class='yaml-Comment def-Comment def-Syntax'># New schema</span>
+ 8: <span class='yaml-MappingKey def-Parameter'>link with</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
+ 9:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-MappingKey def-Parameter'>= </span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>library1.dll</span>
+10:     <span class='yaml-MappingKey def-Parameter'>version</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberFloat def-Number'>1.2</span>
+11:   <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-MappingKey def-Parameter'>= </span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>library2.dll</span>
+12:     <span class='yaml-MappingKey def-Parameter'>version</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberFloat def-Number'>2.3</span>
+13: 
+14: <span class='yaml-Comment def-Comment def-Syntax'># +STR</span>
+15: <span class='yaml-Comment def-Comment def-Syntax'># +DOC ---</span>
+16: <span class='yaml-Comment def-Comment def-Syntax'># +MAP</span>
+17: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :link with</span>
+18: <span class='yaml-Comment def-Comment def-Syntax'># +SEQ</span>
+19: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :library1.dll</span>
+20: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :library2.dll</span>
+21: <span class='yaml-Comment def-Comment def-Syntax'># -SEQ</span>
+22: <span class='yaml-Comment def-Comment def-Syntax'># -MAP</span>
+23: <span class='yaml-Comment def-Comment def-Syntax'># -DOC</span>
+24: <span class='yaml-Comment def-Comment def-Syntax'># +DOC ---</span>
+25: <span class='yaml-Comment def-Comment def-Syntax'># +MAP</span>
+26: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :link with</span>
+27: <span class='yaml-Comment def-Comment def-Syntax'># +SEQ</span>
+28: <span class='yaml-Comment def-Comment def-Syntax'># +MAP</span>
+29: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :=</span>
+30: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :library1.dll</span>
+31: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :version</span>
+32: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :1.2</span>
+33: <span class='yaml-Comment def-Comment def-Syntax'># -MAP</span>
+34: <span class='yaml-Comment def-Comment def-Syntax'># +MAP</span>
+35: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :=</span>
+36: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :library2.dll</span>
+37: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :version</span>
+38: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :2.3</span>
+39: <span class='yaml-Comment def-Comment def-Syntax'># -MAP</span>
+40: <span class='yaml-Comment def-Comment def-Syntax'># -SEQ</span>
+41: <span class='yaml-Comment def-Comment def-Syntax'># -MAP</span>
+42: <span class='yaml-Comment def-Comment def-Syntax'># -DOC</span>
+43: <span class='yaml-Comment def-Comment def-Syntax'># -STR</span>
+44: 

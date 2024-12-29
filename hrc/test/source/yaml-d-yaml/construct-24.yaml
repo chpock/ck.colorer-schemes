@@ -1,0 +1,10 @@
+# name = construct-binary
+# code = construct-binary
+
+--- implicit UTF-8
+
+# +STR
+# +DOC ---
+# =VAL :implicit UTF-8
+# -DOC
+# -STR

@@ -1,0 +1,9 @@
+# name = Invalid mapping in plain single line value
+# fail = true
+
+a: b: c: d
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :a

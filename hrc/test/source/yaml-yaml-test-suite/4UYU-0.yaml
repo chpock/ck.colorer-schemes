@@ -1,0 +1,9 @@
+# name = Colon in Double Quoted String
+
+"foo: bar\": baz"
+
+# +STR
+#  +DOC
+#   =VAL "foo: bar": baz
+#  -DOC
+# -STR

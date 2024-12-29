@@ -1,0 +1,13 @@
+# name = spec-09-10
+
+%YAML 1.1
+---
+!!str "first \
+  inner \
+  last"
+
+# +STR
+#   +DOC ---
+#     =VAL <tag:yaml.org,2002:str> "first inner last
+#   -DOC
+# -STR

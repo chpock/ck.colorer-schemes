@@ -1,0 +1,12 @@
+# name = Comment in plain multiline value
+# fail = true
+
+key: word1
+#  xxx
+  word2
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :key
+#    =VAL :word1

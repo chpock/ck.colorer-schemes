@@ -1,0 +1,13 @@
+# name = YAML directive without document end marker
+# fail = true
+
+---
+key: value
+%YAML 1.2
+---
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :key
+#    =VAL :value

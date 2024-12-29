@@ -1,0 +1,11 @@
+# name = expected-mapping
+# fail = true
+# mark.line = 1
+# mark.column = 5
+# mark2.line = 1
+# mark2.column = 24
+# error = Unable to load test/expected.yaml#expected-mapping:yaml: Error constructing Node[]: Only mappings can be maps\n
+
+--- !!seq {foo, bar, baz}
+
+# null

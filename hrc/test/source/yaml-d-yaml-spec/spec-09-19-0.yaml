@@ -1,0 +1,15 @@
+# name = spec-09-19
+
+- |
+ literal
+- >
+ folded
+
+# +STR
+#   +DOC
+#     +SEQ
+#       =VAL |literal\n
+#       =VAL >folded\n
+#     -SEQ
+#   -DOC
+# -STR

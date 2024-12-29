@@ -1,0 +1,47 @@
+# name = construct-binary
+# code = construct-binary
+
+# Explicitly typed pairs.
+Block tasks: !!pairs
+  - meeting: with team.
+  - meeting: with boss.
+  - break: lunch.
+  - meeting: with client.
+Flow tasks: !!pairs [ meeting: with team, meeting: with boss ]
+
+# +STR
+# +DOC
+# +MAP
+# =VAL :Block tasks
+# +SEQ <tag:yaml.org,2002:pairs>
+# +MAP
+# =VAL :meeting
+# =VAL :with team.
+# -MAP
+# +MAP
+# =VAL :meeting
+# =VAL :with boss.
+# -MAP
+# +MAP
+# =VAL :break
+# =VAL :lunch.
+# -MAP
+# +MAP
+# =VAL :meeting
+# =VAL :with client.
+# -MAP
+# -SEQ
+# =VAL :Flow tasks
+# +SEQ [] <tag:yaml.org,2002:pairs>
+# +MAP {}
+# =VAL :meeting
+# =VAL :with team
+# -MAP
+# +MAP {}
+# =VAL :meeting
+# =VAL :with boss
+# -MAP
+# -SEQ
+# -MAP
+# -DOC
+# -STR

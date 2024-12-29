@@ -1,0 +1,10 @@
+# name = Trailing tabs in double quoted
+
+"3 trailing\————»
+    tab"
+
+# +STR
+#  +DOC
+#   =VAL "3 trailing\t tab
+#  -DOC
+# -STR

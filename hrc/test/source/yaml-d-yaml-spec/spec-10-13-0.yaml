@@ -1,0 +1,21 @@
+# name = spec-10-13
+
+? explicit key # implicit value
+? |
+  block key
+: - one # explicit in-line
+  - two # block value
+
+# +STR
+#   +DOC
+#     +MAP
+#       =VAL :explicit key
+#       =VAL :
+#       =VAL |block key\n
+#       +SEQ
+#         =VAL :one
+#         =VAL :two
+#       -SEQ
+#     -MAP
+#   -DOC
+# -STR

@@ -1,0 +1,15 @@
+# name = Block scalar indicator order
+
+- |2-
+  explicit indent and chomp
+- |-2
+  chomp and explicit indent
+
+# +STR
+#  +DOC
+#   +SEQ
+#    =VAL |explicit indent and chomp
+#    =VAL |chomp and explicit indent
+#   -SEQ
+#  -DOC
+# -STR

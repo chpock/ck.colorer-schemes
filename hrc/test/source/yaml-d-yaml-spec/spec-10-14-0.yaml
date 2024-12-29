@@ -1,0 +1,20 @@
+# name = spec-10-14
+
+plain key: # empty value
+"quoted key":
+- one # explicit next-line
+- two # block value
+
+# +STR
+#   +DOC
+#     +MAP
+#       =VAL :plain key
+#       =VAL :
+#       =VAL "quoted key
+#       +SEQ
+#         =VAL :one
+#         =VAL :two
+#       -SEQ
+#     -MAP
+#   -DOC
+# -STR

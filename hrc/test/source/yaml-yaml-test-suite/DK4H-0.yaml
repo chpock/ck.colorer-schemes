@@ -1,0 +1,11 @@
+# name = Implicit key followed by newline
+# fail = true
+
+---
+[ key
+  : value ]
+
+# +STR
+#  +DOC ---
+#   +SEQ []
+#    =VAL :key

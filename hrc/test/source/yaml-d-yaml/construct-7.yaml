@@ -1,0 +1,51 @@
+# name = construct-binary
+# code = construct-binary
+
+# A document may be null.
+---
+---
+# This mapping has four keys,
+# one has a value.
+empty:
+canonical: ~
+english: null
+~: null key
+---
+# This sequence has five
+# entries, two have values.
+sparse:
+  - ~
+  - 2nd entry
+  -
+  - 4th entry
+  - Null
+
+# +STR
+# +DOC ---
+# =VAL :
+# -DOC
+# +DOC ---
+# +MAP
+# =VAL :empty
+# =VAL :
+# =VAL :canonical
+# =VAL :~
+# =VAL :english
+# =VAL :null
+# =VAL :~
+# =VAL :null key
+# -MAP
+# -DOC
+# +DOC ---
+# +MAP
+# =VAL :sparse
+# +SEQ
+# =VAL :~
+# =VAL :2nd entry
+# =VAL :
+# =VAL :4th entry
+# =VAL :Null
+# -SEQ
+# -MAP
+# -DOC
+# -STR

@@ -1,0 +1,12 @@
+# name = Spec Example 2.13. In literals, newlines are preserved
+
+# ASCII Art
+--- |
+  \//||\/||
+  // ||  ||__
+
+# +STR
+#  +DOC ---
+#   =VAL |\\//||\\/||\n// ||  ||__\n
+#  -DOC
+# -STR

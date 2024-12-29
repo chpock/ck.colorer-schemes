@@ -1,0 +1,31 @@
+# name = spec-07-10
+
+"Root flow
+ scalar"
+--- !!str >
+ Root block
+ scalar
+---
+# Root collection:
+foo : bar
+... # Is optional.
+---
+# Explicit document may be empty.
+
+# +STR
+#   +DOC
+#     =VAL "Root flow scalar
+#   -DOC
+#   +DOC ---
+#     =VAL <tag:yaml.org,2002:str> >Root block scalar\n
+#   -DOC
+#   +DOC ---
+#     +MAP
+#       =VAL :foo
+#       =VAL :bar
+#     -MAP
+#   -DOC ...
+#   +DOC ---
+#     =VAL :
+#   -DOC
+# -STR

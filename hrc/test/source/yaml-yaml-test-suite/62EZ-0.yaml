@@ -1,0 +1,14 @@
+# name = Invalid block mapping key on same line as previous key
+# fail = true
+
+---
+x: { y: z }in: valid
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :x
+#    +MAP {}
+#     =VAL :y
+#     =VAL :z
+#    -MAP

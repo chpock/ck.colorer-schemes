@@ -1,0 +1,16 @@
+# name = Multiline plain scalar with empty line
+
+---
+plain: a
+ b
+
+ c
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :plain
+#    =VAL :a b\nc
+#   -MAP
+#  -DOC
+# -STR

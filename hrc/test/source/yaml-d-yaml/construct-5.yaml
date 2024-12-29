@@ -1,0 +1,34 @@
+# name = construct-binary
+# code = construct-binary
+
+# Unordered set of key: value pairs.
+Block style: !!map
+  Clark : Evans
+  Brian : Ingerson
+  Oren  : Ben-Kiki
+Flow style: !!map { Clark: Evans, Brian: Ingerson, Oren: Ben-Kiki }
+
+# +STR
+# +DOC
+# +MAP
+# =VAL :Block style
+# +MAP <tag:yaml.org,2002:map>
+# =VAL :Clark
+# =VAL :Evans
+# =VAL :Brian
+# =VAL :Ingerson
+# =VAL :Oren
+# =VAL :Ben-Kiki
+# -MAP
+# =VAL :Flow style
+# +MAP {} <tag:yaml.org,2002:map>
+# =VAL :Clark
+# =VAL :Evans
+# =VAL :Brian
+# =VAL :Ingerson
+# =VAL :Oren
+# =VAL :Ben-Kiki
+# -MAP
+# -MAP
+# -DOC
+# -STR

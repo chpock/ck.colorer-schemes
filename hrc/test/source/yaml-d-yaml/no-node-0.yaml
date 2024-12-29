@@ -1,0 +1,11 @@
+# name = no-node-1
+# fail = true
+# mark.line = 1
+# mark.column = 8
+# mark2.line = 1
+# mark2.column = 1
+# error = While parsing a block sequence, expected block end, but found: flowSequenceEnd
+
+- !foo ]
+
+# null

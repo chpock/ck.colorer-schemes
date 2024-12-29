@@ -1,0 +1,21 @@
+# name = spec-07-09
+
+%YAML 1.1
+---
+!!str "foo"
+---
+!!str "bar"
+---
+!!str "baz"
+
+# +STR
+#   +DOC ---
+#     =VAL <tag:yaml.org,2002:str> "foo
+#   -DOC
+#   +DOC ---
+#     =VAL <tag:yaml.org,2002:str> "bar
+#   -DOC
+#   +DOC ---
+#     =VAL <tag:yaml.org,2002:str> "baz
+#   -DOC
+# -STR

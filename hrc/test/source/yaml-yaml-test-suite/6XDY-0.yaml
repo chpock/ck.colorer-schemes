@@ -1,0 +1,13 @@
+# name = Two document start markers
+
+---
+---
+
+# +STR
+#  +DOC ---
+#   =VAL :
+#  -DOC
+#  +DOC ---
+#   =VAL :
+#  -DOC
+# -STR

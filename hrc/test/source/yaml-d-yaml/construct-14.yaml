@@ -1,0 +1,13 @@
+# name = construct-binary
+# code = construct-binary
+
+string: abcd
+
+# +STR
+# +DOC
+# +MAP
+# =VAL :string
+# =VAL :abcd
+# -MAP
+# -DOC
+# -STR

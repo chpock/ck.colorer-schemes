@@ -1,0 +1,97 @@
+﻿ 0: <span class='yaml-Comment def-Comment def-Syntax'># name = construct-binary</span>
+ 1: <span class='yaml-Comment def-Comment def-Syntax'># code = construct-binary</span>
+ 2: 
+ 3: <span class='yaml-DocumentEdge def-Keyword'>---</span>
+ 4: <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>CENTER </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>{</span> <span class='yaml-MappingKey def-Parameter'>x</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='def-NumberDec def-Number'>1</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-MappingKey def-Parameter'>y</span><span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='def-NumberDec def-Number'>2</span><span class='yaml-String def-String'> </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>}</span>
+ 5: <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>LEFT </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>{</span> <span class='yaml-MappingKey def-Parameter'>x</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='def-NumberDec def-Number'>0</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-MappingKey def-Parameter'>y</span><span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='def-NumberDec def-Number'>2</span><span class='yaml-String def-String'> </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>}</span>
+ 6: <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>BIG </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>{</span> <span class='yaml-MappingKey def-Parameter'>r</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='def-NumberDec def-Number'>10</span><span class='yaml-String def-String'> </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>}</span>
+ 7: <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>SMALL </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>{</span> <span class='yaml-MappingKey def-Parameter'>r</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='def-NumberDec def-Number'>1</span><span class='yaml-String def-String'> </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>}</span>
+ 8: 
+ 9: <span class='yaml-Comment def-Comment def-Syntax'># All the following maps are equal:</span>
+10: 
+11: <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-Comment def-Comment def-Syntax'># Explicit keys</span>
+12:   <span class='yaml-MappingKey def-Parameter'>x</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>1</span>
+13:   <span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-MappingKey def-Parameter'>y</span><span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>2</span>
+14:   <span class='yaml-MappingKey def-Parameter'>r</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>10</span>
+15:   <span class='yaml-MappingKey def-Parameter'>label</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>center/big</span>
+16: 
+17: <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-Comment def-Comment def-Syntax'># Merge one map</span>
+18:   <span class='yaml-SymbolMergeKeys def-InterfaceKeyword def-Keyword'>&lt;&lt;</span> <span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>*</span><span class='yaml-Anchor def-Var'>CENTER</span>
+19:   <span class='yaml-MappingKey def-Parameter'>r</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>10</span>
+20:   <span class='yaml-MappingKey def-Parameter'>label</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>center/big</span>
+21: 
+22: <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-Comment def-Comment def-Syntax'># Merge multiple maps</span>
+23:   <span class='yaml-SymbolMergeKeys def-InterfaceKeyword def-Keyword'>&lt;&lt;</span> <span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>[</span> <span class='yaml-SymbolAnchor def-VarStrong def-Var'>*</span><span class='yaml-Anchor def-Var'>CENTER</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>*</span><span class='yaml-Anchor def-Var'>BIG </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>]</span>
+24:   <span class='yaml-MappingKey def-Parameter'>label</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>center/big</span>
+25: 
+26: <span class='yaml-SymbolSequence def-Symbol'>- </span><span class='yaml-Comment def-Comment def-Syntax'># Override</span>
+27:   <span class='yaml-SymbolMergeKeys def-InterfaceKeyword def-Keyword'>&lt;&lt;</span> <span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>[</span> <span class='yaml-SymbolAnchor def-VarStrong def-Var'>*</span><span class='yaml-Anchor def-Var'>BIG</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>*</span><span class='yaml-Anchor def-Var'>LEFT</span><span class='yaml-Symbol def-Symbol'>, </span><span class='yaml-SymbolAnchor def-VarStrong def-Var'>*</span><span class='yaml-Anchor def-Var'>SMALL </span><span class='yaml-SymbolFlow def-SymbolStrong def-Symbol'>]</span>
+28:   <span class='yaml-MappingKey def-Parameter'>x</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='def-NumberDec def-Number'>1</span>
+29:   <span class='yaml-MappingKey def-Parameter'>label</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>center/big</span>
+30: 
+31: <span class='yaml-Comment def-Comment def-Syntax'># +STR</span>
+32: <span class='yaml-Comment def-Comment def-Syntax'># +DOC ---</span>
+33: <span class='yaml-Comment def-Comment def-Syntax'># +SEQ</span>
+34: <span class='yaml-Comment def-Comment def-Syntax'># +MAP {} &amp;CENTER</span>
+35: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :x</span>
+36: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :1</span>
+37: <span class='yaml-Comment def-Comment def-Syntax'># =VAL 'y</span>
+38: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :2</span>
+39: <span class='yaml-Comment def-Comment def-Syntax'># -MAP</span>
+40: <span class='yaml-Comment def-Comment def-Syntax'># +MAP {} &amp;LEFT</span>
+41: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :x</span>
+42: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :0</span>
+43: <span class='yaml-Comment def-Comment def-Syntax'># =VAL 'y</span>
+44: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :2</span>
+45: <span class='yaml-Comment def-Comment def-Syntax'># -MAP</span>
+46: <span class='yaml-Comment def-Comment def-Syntax'># +MAP {} &amp;BIG</span>
+47: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :r</span>
+48: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :10</span>
+49: <span class='yaml-Comment def-Comment def-Syntax'># -MAP</span>
+50: <span class='yaml-Comment def-Comment def-Syntax'># +MAP {} &amp;SMALL</span>
+51: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :r</span>
+52: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :1</span>
+53: <span class='yaml-Comment def-Comment def-Syntax'># -MAP</span>
+54: <span class='yaml-Comment def-Comment def-Syntax'># +MAP</span>
+55: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :x</span>
+56: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :1</span>
+57: <span class='yaml-Comment def-Comment def-Syntax'># =VAL 'y</span>
+58: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :2</span>
+59: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :r</span>
+60: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :10</span>
+61: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :label</span>
+62: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :center/big</span>
+63: <span class='yaml-Comment def-Comment def-Syntax'># -MAP</span>
+64: <span class='yaml-Comment def-Comment def-Syntax'># +MAP</span>
+65: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :&lt;&lt;</span>
+66: <span class='yaml-Comment def-Comment def-Syntax'># =ALI *CENTER</span>
+67: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :r</span>
+68: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :10</span>
+69: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :label</span>
+70: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :center/big</span>
+71: <span class='yaml-Comment def-Comment def-Syntax'># -MAP</span>
+72: <span class='yaml-Comment def-Comment def-Syntax'># +MAP</span>
+73: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :&lt;&lt;</span>
+74: <span class='yaml-Comment def-Comment def-Syntax'># +SEQ []</span>
+75: <span class='yaml-Comment def-Comment def-Syntax'># =ALI *CENTER</span>
+76: <span class='yaml-Comment def-Comment def-Syntax'># =ALI *BIG</span>
+77: <span class='yaml-Comment def-Comment def-Syntax'># -SEQ</span>
+78: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :label</span>
+79: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :center/big</span>
+80: <span class='yaml-Comment def-Comment def-Syntax'># -MAP</span>
+81: <span class='yaml-Comment def-Comment def-Syntax'># +MAP</span>
+82: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :&lt;&lt;</span>
+83: <span class='yaml-Comment def-Comment def-Syntax'># +SEQ []</span>
+84: <span class='yaml-Comment def-Comment def-Syntax'># =ALI *BIG</span>
+85: <span class='yaml-Comment def-Comment def-Syntax'># =ALI *LEFT</span>
+86: <span class='yaml-Comment def-Comment def-Syntax'># =ALI *SMALL</span>
+87: <span class='yaml-Comment def-Comment def-Syntax'># -SEQ</span>
+88: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :x</span>
+89: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :1</span>
+90: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :label</span>
+91: <span class='yaml-Comment def-Comment def-Syntax'># =VAL :center/big</span>
+92: <span class='yaml-Comment def-Comment def-Syntax'># -MAP</span>
+93: <span class='yaml-Comment def-Comment def-Syntax'># -SEQ</span>
+94: <span class='yaml-Comment def-Comment def-Syntax'># -DOC</span>
+95: <span class='yaml-Comment def-Comment def-Syntax'># -STR</span>
+96: 

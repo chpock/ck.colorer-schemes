@@ -1,0 +1,19 @@
+# name = Anchor before zero indented sequence
+
+---
+seq:
+ &anchor
+- a
+- b
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :seq
+#    +SEQ &anchor
+#     =VAL :a
+#     =VAL :b
+#    -SEQ
+#   -MAP
+#  -DOC
+# -STR

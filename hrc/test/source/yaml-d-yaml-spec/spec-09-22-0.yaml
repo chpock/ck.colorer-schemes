@@ -1,0 +1,7 @@
+# name = spec-09-22
+
+strip: |-
+  text clip: |
+  textkeep: |+
+  text 
+# null

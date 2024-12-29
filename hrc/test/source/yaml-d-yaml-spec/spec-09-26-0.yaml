@@ -1,0 +1,16 @@
+# name = spec-09-26
+
+|
+ 
+  
+  literal
+ 
+  text
+
+ # Comment
+
+# +STR
+#   +DOC
+#     =VAL |\n\nliteral\n\ntext\n
+#   -DOC
+# -STR

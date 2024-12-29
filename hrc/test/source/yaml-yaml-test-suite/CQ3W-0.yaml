@@ -1,0 +1,10 @@
+# name = Double quoted string without closing quote
+# fail = true
+
+---
+key: "missing closing quote
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :key

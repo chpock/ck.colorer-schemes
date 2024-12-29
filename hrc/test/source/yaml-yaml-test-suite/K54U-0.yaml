@@ -1,0 +1,9 @@
+# name = Tab after document header
+
+---»scalar
+
+# +STR
+#  +DOC ---
+#   =VAL :scalar
+#  -DOC
+# -STR
