@@ -1,0 +1,11 @@
+# name = spec-05-13
+
+  "Text containing   
+  both space and	
+  	tab	characters"
+
+# +STR
+#   +DOC
+#     =VAL "Text containing both space and tab\tcharacters
+#   -DOC
+# -STR

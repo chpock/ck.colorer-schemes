@@ -1,0 +1,11 @@
+# name = Scalar doc with '...' in content
+
+--- "a
+...x
+b"
+
+# +STR
+#  +DOC ---
+#   =VAL "a ...x b
+#  -DOC
+# -STR

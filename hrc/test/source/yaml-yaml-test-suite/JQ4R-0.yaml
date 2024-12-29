@@ -1,0 +1,20 @@
+# name = Spec Example 8.14. Block Sequence
+
+block sequence:
+  - one
+  - two : three
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :block sequence
+#    +SEQ
+#     =VAL :one
+#     +MAP
+#      =VAL :two
+#      =VAL :three
+#     -MAP
+#    -SEQ
+#   -MAP
+#  -DOC
+# -STR

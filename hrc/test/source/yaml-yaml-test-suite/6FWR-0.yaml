@@ -1,0 +1,13 @@
+# name = Block Scalar Keep
+
+--- |+
+ ab
+␣
+␣␣
+...
+
+# +STR
+#  +DOC ---
+#   =VAL |ab\n\n \n
+#  -DOC ...
+# -STR

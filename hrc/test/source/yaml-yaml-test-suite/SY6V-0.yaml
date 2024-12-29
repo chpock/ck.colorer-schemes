@@ -1,0 +1,6 @@
+# name = Anchor before sequence entry on same line
+# fail = true
+
+&anchor - sequence entry
+
+# +STR

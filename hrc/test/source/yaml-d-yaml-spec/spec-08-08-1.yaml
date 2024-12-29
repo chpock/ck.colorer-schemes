@@ -1,0 +1,32 @@
+# name = spec-08-08
+
+%YAML 1.1
+---
+!!map {
+  ? !!str "foo"
+  : !!str "bar baz"
+}
+---
+!!str "foo bar"
+---
+!!str "foo bar"
+---
+!!str "foo\n"
+
+# +STR
+#   +DOC ---
+#     +MAP {} <tag:yaml.org,2002:map>
+#       =VAL <tag:yaml.org,2002:str> "foo
+#       =VAL <tag:yaml.org,2002:str> "bar baz
+#     -MAP
+#   -DOC
+#   +DOC ---
+#     =VAL <tag:yaml.org,2002:str> "foo bar
+#   -DOC
+#   +DOC ---
+#     =VAL <tag:yaml.org,2002:str> "foo bar
+#   -DOC
+#   +DOC ---
+#     =VAL <tag:yaml.org,2002:str> "foo\n
+#   -DOC
+# -STR

@@ -1,0 +1,24 @@
+# name = Spec Example 8.2. Block Indentation Indicator
+
+- |
+ detected
+- >
+␣
+␣␣
+  # detected
+- |1
+  explicit
+- >
+ ——»
+ detected
+
+# +STR
+#  +DOC
+#   +SEQ
+#    =VAL |detected\n
+#    =VAL >\n\n# detected\n
+#    =VAL | explicit\n
+#    =VAL >\t\ndetected\n
+#   -SEQ
+#  -DOC
+# -STR

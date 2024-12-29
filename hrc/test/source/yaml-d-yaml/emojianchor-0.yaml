@@ -1,0 +1,12 @@
+# name = emojianchor
+
+---
+- &😁 unicode anchor
+
+# +STR
+#   +DOC ---
+#     +SEQ
+#       =VAL &😁 :unicode anchor
+#     -SEQ
+#   -DOC
+# -STR

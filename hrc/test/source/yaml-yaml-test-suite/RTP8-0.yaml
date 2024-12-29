@@ -1,0 +1,12 @@
+# name = Spec Example 9.2. Document Markers
+
+%YAML 1.2
+---
+Document
+... # Suffix
+
+# +STR
+#  +DOC ---
+#   =VAL :Document
+#  -DOC ...
+# -STR

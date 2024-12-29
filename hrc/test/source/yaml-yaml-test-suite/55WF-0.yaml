@@ -1,0 +1,8 @@
+# name = Invalid escape in double quoted string
+# fail = true
+
+---
+"\."
+
+# +STR
+#  +DOC ---

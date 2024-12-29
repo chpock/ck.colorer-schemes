@@ -1,0 +1,28 @@
+# name = construct-binary
+# code = construct-binary
+
+canonical: 6.8523015e+5
+exponential: 685.230_15e+03
+fixed: 685_230.15
+sexagesimal: 190:20:30.15
+negative infinity: -.inf
+not a number: .NaN
+
+# +STR
+# +DOC
+# +MAP
+# =VAL :canonical
+# =VAL :6.8523015e+5
+# =VAL :exponential
+# =VAL :685.230_15e+03
+# =VAL :fixed
+# =VAL :685_230.15
+# =VAL :sexagesimal
+# =VAL :190:20:30.15
+# =VAL :negative infinity
+# =VAL :-.inf
+# =VAL :not a number
+# =VAL :.NaN
+# -MAP
+# -DOC
+# -STR

@@ -1,0 +1,14 @@
+# name = Wrong indented flow sequence
+# fail = true
+
+---
+flow: [a,
+b,
+c]
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :flow
+#    +SEQ []
+#     =VAL :a

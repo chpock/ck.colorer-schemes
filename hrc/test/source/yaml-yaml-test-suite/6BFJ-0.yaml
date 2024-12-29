@@ -1,0 +1,18 @@
+# name = Mapping, key and flow sequence item anchors
+
+---
+&mapping
+&key [ &item a, b, c ]: value
+
+# +STR
+#  +DOC ---
+#   +MAP &mapping
+#    +SEQ [] &key
+#     =VAL &item :a
+#     =VAL :b
+#     =VAL :c
+#    -SEQ
+#    =VAL :value
+#   -MAP
+#  -DOC
+# -STR

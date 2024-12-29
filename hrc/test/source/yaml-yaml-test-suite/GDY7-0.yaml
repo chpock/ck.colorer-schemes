@@ -1,0 +1,11 @@
+# name = Comment that looks like a mapping key
+# fail = true
+
+key: value
+this is #not a: key
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :key
+#    =VAL :value

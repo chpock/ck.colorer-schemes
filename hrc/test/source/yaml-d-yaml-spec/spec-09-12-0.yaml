@@ -1,0 +1,25 @@
+# name = spec-09-12
+
+# Outside flow collection:
+- ::std::vector
+- Up, up, and away!
+- -123
+# Inside flow collection:
+- [ '::std::vector',
+  "Up, up, and away!",
+  -123 ]
+
+# +STR
+#   +DOC
+#     +SEQ
+#       =VAL :::std::vector
+#       =VAL :Up, up, and away!
+#       =VAL :-123
+#       +SEQ []
+#         =VAL '::std::vector
+#         =VAL "Up, up, and away!
+#         =VAL :-123
+#       -SEQ
+#     -SEQ
+#   -DOC
+# -STR

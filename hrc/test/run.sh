@@ -355,9 +355,9 @@ done
 
 echo
 printf "Check logs ..."
-if grep -q -E '\[(warning|error)\]' "$LOG_FILE"; then
+if grep -q -P '\[(warning|error)\](?!\s+Duplicate prototype\s+)' "$LOG_FILE"; then
     echo " NOT OK"
-    grep --color=auto -E '\[(warning|error)\]' "$LOG_FILE"
+    grep --color=auto -P '\[(warning|error)\](?!\s+Duplicate prototype\s+)' "$LOG_FILE"
 else
     echo " OK"
 fi

@@ -1,0 +1,12 @@
+# name = question-mark-in-flow-context
+
+{ foo?bar }
+
+# +STR
+# +DOC
+# +MAP {}
+# =VAL :foo?bar
+# =VAL :
+# -MAP
+# -DOC
+# -STR

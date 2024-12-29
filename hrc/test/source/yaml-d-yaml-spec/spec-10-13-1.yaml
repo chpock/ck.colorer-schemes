@@ -1,0 +1,27 @@
+# name = spec-10-13
+
+%YAML 1.1
+---
+!!map {
+  ? !!str "explicit key"
+  : !!null "",
+  ? !!str "block key\n"
+  : !!seq [
+    !!str "one",
+    !!str "two",
+  ]
+}
+
+# +STR
+#   +DOC ---
+#     +MAP {} <tag:yaml.org,2002:map>
+#       =VAL <tag:yaml.org,2002:str> "explicit key
+#       =VAL <tag:yaml.org,2002:null> "
+#       =VAL <tag:yaml.org,2002:str> "block key\n
+#       +SEQ [] <tag:yaml.org,2002:seq>
+#         =VAL <tag:yaml.org,2002:str> "one
+#         =VAL <tag:yaml.org,2002:str> "two
+#       -SEQ
+#     -MAP
+#   -DOC
+# -STR

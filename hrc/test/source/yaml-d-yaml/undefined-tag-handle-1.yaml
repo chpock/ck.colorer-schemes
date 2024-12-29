@@ -1,0 +1,10 @@
+# name = undefined-tag-handle
+# fail = true
+# mark.line = 1
+# mark.column = 5
+# mark2.line = 1
+# mark2.column = 5
+# error = While parsing a node, found undefined tag handle: !foo!
+
+&anchor !foo!bar value
+# null

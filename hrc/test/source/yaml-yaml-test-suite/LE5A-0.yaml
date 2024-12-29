@@ -1,0 +1,19 @@
+# name = Spec Example 7.24. Flow Nodes
+
+- !!str "a"
+- 'b'
+- &anchor "c"
+- *anchor
+- !!str
+
+# +STR
+#  +DOC
+#   +SEQ
+#    =VAL <tag:yaml.org,2002:str> "a
+#    =VAL 'b
+#    =VAL &anchor "c
+#    =ALI *anchor
+#    =VAL <tag:yaml.org,2002:str> :
+#   -SEQ
+#  -DOC
+# -STR

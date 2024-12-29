@@ -1,0 +1,10 @@
+# name = Explicit Non-Specific Tag [1.3]
+
+---
+! a
+
+# +STR
+#  +DOC ---
+#   =VAL <!> :a
+#  -DOC
+# -STR

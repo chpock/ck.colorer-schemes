@@ -1,0 +1,13 @@
+# name = Invalid anchor in zero indented sequence
+# fail = true
+
+---
+seq:
+&anchor
+- a
+- b
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :seq
