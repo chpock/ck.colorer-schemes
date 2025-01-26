@@ -41,7 +41,7 @@
 
 <region name="SymbolMapping" parent="def:SymbolStrong"/>
 <region name="SymbolSequence" parent="def:Symbol"/>
-<region name="SymbolMappingComplexKey" parent="def:Symbol"/>
+<region name="SymbolMappingComplexKey" parent="def:Keyword"/>
 <region name="SymbolTag" parent="def:Tag"/>
 <region name="SymbolAnchor" parent="def:VarStrong"/>
 <region name="SymbolFlow" parent="def:SymbolStrong"/>
@@ -59,16 +59,6 @@
 <region name="DocumentEdge" parent="def:Keyword"/>
 
 <region name="MappingKey" parent="def:Parameter"/>
-
-<!-- region name="Variable" parent="def:Var"/>
-<region name="Constant" parent="def:Constant"/>
-
-<region name="SectionMain" parent="def:ClassKeyword"/>
-<region name="KeywordResource" parent="def:Keyword"/>
-<region name="Identifier" parent="def:Identifier"/>
-
-<region name="SymbolLiteral" parent="def:Operator"/>
-<region name="SymbolLiteralIndentLevel" parent="def:Prefix"/ -->
 
 <!-- for testing -->
 <region name="Test" parent="def:URL"/>
@@ -105,17 +95,32 @@
     )
 "/>
 
-<!--
-        (([^\s&quot;&apos;\-!&amp;\*\?\{\}\[\]]|\-\s?!)([^:\{\}\[\]]*:\s?!)*[^:\{\}\[\]]*)|
--->
-
 <entity name="mapping-key" value="
     (
-        (([^\s&quot;&apos;\-!&amp;\*\?\{\}\[\]]|\-\s?!)([^:]*:\s?!)*[^:]*)|
+        (([^\s&quot;&apos;\-!&amp;\*\?\{\}\[\]]|[\-\?]\s?!)([^:#]*:\s?!)*[^:#]*)(:(\s|$))?=|
         (&quot;([^&quot;]*((\\&quot;)[^&quot;]*)*)&quot;)|
         (&apos;([^&apos;]*((&apos;&apos;)[^&apos;]*)*)&apos;)
     )\s*:
 "/>
+
+<!-- includes anchor reuse -->
+<entity name="value-explicit" value="
+    (
+        \*|
+        (!\S*\s+)?
+        (&amp;\S*\s+)?
+        [&quot;'\[\{]
+    )
+"/>
+
+<entity name="value-block" value="
+    (!\S*\s+)?
+    (&amp;\S*\s+)?
+    [&gt;\|]
+"/>
+
+<entity name="mapping-key-value-explicit" value="%mapping-key;\s+%value-explicit;"/>
+<entity name="mapping-key-value-block" value="%mapping-key;\s+%value-block;"/>
 
 <scheme name="yaml">
 
@@ -141,48 +146,33 @@
     <!-- unknown directive -->
     <regexp match="/^%.*$/" region="Error"/>
 
-    <!-- document start with block scalar -->
-    <!-- block scheme="block-scalar">
+    <!-- document starts with a block scalar -->
+    <block scheme="yaml-value-block">
         <start region1="DocumentEdge" region2="def:PairStart"><![CDATA[/
-            ^((\-{3}))\s+\M
-            (!\S*\s+)?
-            (&\S*\s+)?
-            [\>\|]
+            ^((\-{3}))\s+
+            \M%value-block;
         /x]]></start>
-        <end><![CDATA[/\M^\S/]]></end>
-    </block -->
+        <end region0="DocumentEdge" region3="def:PairEnd"><![CDATA[/
+            ^(((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|(\-{3})?=|)
+        /x]]></end>
+    </block>
 
-    <!-- document start with value as "... / '... / {... / [.... -->
-    <!-- block scheme="block-not-plain">
+    <!-- document starts with an explicit value -->
+    <block scheme="yaml-value-explicit">
         <start region1="DocumentEdge" region2="def:PairStart"><![CDATA[/
-            ^((\-{3}))\s+\M
-            (!\S*\s+)?
-            (&\S*\s+)?
-            ["'\[\{]
+            ^((\-{3}))\s+
+            \M%value-explicit;
         /x]]></start>
-        <end region0="DocumentEdge" region2="def:PairEnd"><![CDATA[/
-            ^((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|(\-{3})?=
+        <end region0="DocumentEdge" region3="def:PairEnd"><![CDATA[/
+            ^(((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|(\-{3})?=|)
         /x]]></end>
-    </block -->
+    </block>
 
-    <!-- document start with plain value -->
-    <!-- block scheme="block-plain">
-        <start region1="DocumentEdge" region2="def:PairStart"><![CDATA[/
-            ^((\-{3}))\s+\M
-            (!\S*\s+)?
-            (&\S*\s+)?
-            [^\s#]
-        /xs]]></start>
-        <end region0="DocumentEdge" region2="def:PairEnd"><![CDATA[/
-            ^((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|(\-{3})?=
-        /x]]></end>
-    </block -->
-
-    <!-- document start with optional comment -->
-    <block start="/^(\-{3})\s*(?{Error}([#\s]+)?!.*$)?/" end="/^((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|(\-{3})?=/"
-        scheme="document"
-        region00="DocumentEdge"  region10="DocumentEdge"
-        region01="def:PairStart" region12="def:PairEnd"/>
+    <!-- document starts -->
+    <block start="/^((\-{3}))(?{Error}\S*)\s*/" end="/^((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|(\-{3})?=/"
+        scheme="yaml-value-implict"
+        region01="DocumentEdge"  region10="DocumentEdge"
+        region02="def:PairStart" region12="def:PairEnd"/>
 
     <inherit scheme="document"/>
 
@@ -210,13 +200,14 @@
 </scheme>
 
 <scheme name="string-double-quote">
+    <regexp match="/\\(?{Error}\s+)$/"/>
     <regexp region="StringContent"><![CDATA[/
-        \\(
+        \\((
             [0abtnvfre"/\\N_LP\x20]|
             (x[0-9a-fA-F]{2})|
             (u[0-9a-fA-F]{4})|
             (U[0-9a-fA-F]{8})
-        )
+        )|$)
     /x]]></regexp>
     <inherit scheme="string"/>
 </scheme>
@@ -266,240 +257,198 @@
     <inherit scheme="string"/>
 </scheme>
 
-<scheme name="badLine">
-    <!-- eat empty lines or mark enything unexpected as an error -->
-    <block start="/^\s*\M\S/" end="/\M^/" region="Error" inner-region="yes" scheme="def:empty" priority="low"/>
+<scheme name="line-error">
+    <!-- anything unexpected as an error -->
+    <block start="/^\s*(?{Error}\S.*)?/" end="/\M^/" region01="Error" scheme="def:empty" priority="low"/>
+</scheme>
+
+<scheme name="line-string">
+    <block start="/^\s+/" end="/\M^/" region="String" inner-region="yes" scheme="string" priority="low"/>
 </scheme>
 
 <scheme name="document">
 
+    <!-- do not allow directives inside document -->
+    <regexp match="/^%.*$/" region="Error"/>
+
     <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
 
-    <!-- detect sequences -->
-    <block start="/\M^(\s*)\-(\s*)\-(\s*)\-(\s*)\-(\s|$)/" end="/\M^(\y1\s\y2\s\y3\s\y4\-(\s|$))?!/"
+    <!-- detect sequences/complex mappings -->
+    <block start="/\M^(\s*)[\-\?:](\s+)\-(\s+)\-(\s+)\-(\s+)\-(\s|$)/" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"
+        scheme="sequence-nested-4" priority="low"/>
+    <block  start="/\M^(\s*)[\-\?:](\s+)\-(\s+)\-(\s+)\-(\s|$)/" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"
         scheme="sequence-nested-3" priority="low"/>
-    <block start="/\M^(\s*)\-(\s*)\-(\s*)\-(\s|$)/" end="/\M^(\y1\s\y2\s\y3\-(\s|$))?!/"
+    <block start="/\M^(\s*)[\-\?:](\s+)\-(\s+)\-(\s|$)/" end="/\M^(\y1\s\y2\s\y3\s)?!/"
         scheme="sequence-nested-2" priority="low"/>
-    <block start="/\M^(\s*)\-(\s*)\-(\s|$)/" end="/\M^(\y1\s\y2\-(\s|$))?!/"
+    <block start="/\M^(\s*)[\-\?:](\s+)\-(\s|$)/" end="/\M^(\y1\s\y2\s)?!/"
         scheme="sequence-nested-1" priority="low"/>
-    <block start="/\M^(\s*)\-(\s|$)/" end="/\M^(\y1\-(\s|$))?!/"
+    <block start="/\M^(\s*)[\-\?:](\s|$)/" end="/\M^(\y1\s)?!/"
         scheme="sequence" priority="low"/>
 
-    <!-- detect complex mapping -->
-    <block start="/\M^(\s*)[\?:](\s|$)/" end="/\M^(\y1[\?:])?!/" scheme="complex" priority="low"/>
+    <!-- detect mergekeys mapping -->
+    <block start="/^(\s*)\M&lt;&lt;\s*:/x" end="/\M^(\y1\s)?!/"
+        scheme="mapping-mergekeys" priority="low"/>
 
-    <block scheme="mapping-mergekeys" priority="low">
-        <start><![CDATA[/
-            ^(\s*)\M
-            <<\s*:
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s)?!/]]></end>
-    </block>
-
-    <!-- detect mapping without a value -->
-    <block scheme="mapping-without-value" priority="low">
-        <start><![CDATA[/
-            ^(\s*)\M
-            %mapping-key;
-            (\s+!\S*)?
-            (\s+&\S*)?
-            (\s+#|\s*$)
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s)?!/]]></end>
-    </block>
+    <!-- detect mapping with an explicit value -->
+    <block start="/^(\s*)\M%mapping-key-value-explicit;/x" end="/\M^(\y1\s)?!/"
+        scheme="mapping-value-explicit" priority="low"/>
 
     <!-- detect mapping with a value as a block scalar -->
-    <block scheme="mapping-with-value-block-scalar" priority="low">
-        <start><![CDATA[/
-            ^(\s*)\M
-            %mapping-key;
-            \s+
-            (!\S*\s+)?
-            (&\S*\s+)?
-            [\>\|]
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s)?!/]]></end>
-    </block>
+    <block start="/^(\s*)\M%mapping-key-value-block;/x" end="/\M^(\y1\s)?!/"
+        scheme="mapping-value-block" priority="low"/>
 
-    <!-- detect mapping with a value -->
-    <block scheme="mapping-with-value" priority="low">
-        <start><![CDATA[/
-            ^(\s*)\M
-            %mapping-key;
-            \s
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s)?!/]]></end>
-    </block>
+    <!-- detect mapping with an implicit value -->
+    <block start="/^(\s*)\M%mapping-key;/x" end="/\M^(\y1\s)?!/"
+        scheme="mapping-value-implict" priority="low"/>
 
     <block start="/^\s*#/" end="/\M^/" region="Comment" scheme="comment" priority="low"/>
 
-    <inherit scheme="badLine"/>
+    <!-- block value -->
+    <block start="/^(\s*)\M%value-block;/x" end="/\M^(\y1\s)?!/" scheme="yaml-value-first-line" priority="low"/>
+
+    <!-- explicit/implict value -->
+    <block start="/^(\s*)\M\S/x" end="/\M^/" scheme="yaml-value-first-line" priority="low"/>
+
+    <!-- everyting else is a string -->
+    <inherit scheme="line-string"/>
 
 </scheme>
 
-<scheme name="mapping-key">
-
-    <!-- double-quoted key, anything that is not a colon after a closing quote is an error -->
-    <block start="/~(&quot;)/" end="/((&quot;))\s*(?{Error}[^:])?/"
-        scheme="key-double-quote" region="MappingKey"
-        region00="StringEdge"    region11="StringEdge"
-        region01="def:PairStart" region12="def:PairEnd"/>
-
-    <!-- single-quoted key, anything that is not a colon after a closing quote is an error -->
-    <block start="/~(&apos;)/" end="/((&apos;))\s*(?{Error}[^:])?/"
-        scheme="key-single-quote" region="MappingKey"
-        region00="StringEdge"    region11="StringEdge"
-        region01="def:PairStart" region12="def:PairEnd"/>
-
-    <!-- plain key -->
-    <block start="/~\M([^\s&quot;&apos;:!&amp;&gt;#\|\-]|[:\-]\s?!)/" end="/(:(\s|$))?=/"
-        scheme="key-plain" region="MappingKey"/>
-
-</scheme>
-
-<scheme name="mapping-key-after">
-
-    <!--
-        This is what we expect at the first line of the block.
-        We check if we have at least one character before match to make sure we are
-        in the first line. Thus, these matches will not work for the second and
-        subsequent lines, as they will start at the beginning of the line.
-    -->
-
-    <!-- catch tags/anchors without name -->
-    <regexp match="/.?#1([!\*&amp;](\s.*$|$))/" region1="Error"/>
-
-    <regexp match="/.?#1:(\s+|\s*$)/" region="SymbolMapping"/>
-
-    <block start="/.?#1!/" end="/\s+|$/" scheme="tag" region00="SymbolTag" region="Tag"/>
-    <block start="/.?#1&amp;/" end="/\s+|$/" scheme="anchor" region00="SymbolAnchor" region="Anchor"/>
-    <block start="/.?#1#/" end="/$/" scheme="comment" region="Comment"/>
-
-</scheme>
-
-<scheme name="yaml-value">
-
-    <!--
-        This is what we expect at the first line of the block.
-        We check if we have at least one character before match to make sure we are
-        in the first line. Thus, these matches will not work for the second and
-        subsequent lines, as they will start at the beginning of the line.
-    -->
+<scheme name="yaml-value-first-line">
 
     <!-- eat spaces -->
-    <regexp match="/.?#1\s+/"/>
+    <regexp match="/~\s+/"/>
+
+    <!-- catch tags/anchors without name -->
+    <regexp match="/([!\*&amp;](\s.*$|$))/" region1="Error"/>
+
+    <block start="/!/" end="/\s+|$/" scheme="tag" region00="SymbolTag" region="Tag"/>
+    <!-- do not allow a tag after an anchor -->
+    <block start="/&amp;/" end="/\s+(?{Error}!\S*)?|$/" scheme="anchor" region00="SymbolAnchor" region="Anchor"/>
+    <block start="/#/" end="/$/" scheme="comment" region="Comment"/>
+
+    <!-- anything else is an actual value -->
+    <block start="/.?#1.?=/" end="/$/" scheme="yaml-value-actual"/>
+    <!--
+        this is a special case where this schema is used in the "document" schema and
+        then the value starts at the first character (the beginning of the line)
+    -->
+    <block start="/~.?=/" end="/$/" scheme="yaml-value-actual"/>
+
+</scheme>
+
+<scheme name="yaml-value-actual">
+
+    <!-- eat spaces -->
+    <regexp match="/\s+/"/>
 
     <!-- catch comments -->
-    <block start="/.?#1#/" end="/$/" region="Comment" scheme="comment"/>
+    <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
 
     <!-- value - double quoted -->
-    <block start="/.?#1(&quot;)/" end="/((&quot;))(\s*$|\s+#?=|\s*(?{Error}.*)$)/"
+    <block start="/(&quot;)/" end="/((&quot;))(\s*$|\s+#?=|\s*(?{Error}.*)$)/"
         scheme="value-double-quote" region="String"
         region00="StringEdge"    region11="StringEdge"
         region01="def:PairStart" region12="def:PairEnd"/>
 
     <!-- value - single quoted -->
-    <block start="/.?#1(&apos;)/" end="/((&apos;))(\s*$|\s+#?=|\s*(?{Error}.*)$)/"
+    <block start="/(&apos;)/" end="/((&apos;))(\s*$|\s+#?=|\s*(?{Error}.*)$)/"
         scheme="value-single-quote" region="String"
         region00="StringEdge"    region11="StringEdge"
         region01="def:PairStart" region12="def:PairEnd"/>
 
     <!-- value - flow mapping -->
-    <block start="/.?#1(\{)/" end="/((\}))(\s*$|\s+#?=|\s*(?{Error}.*)$)/"
+    <block start="/(\{)/" end="/((\}))(\s*$|\s+#?=|\s*(?{Error}.*)$)/"
         scheme="flow-mapping"
         region00="SymbolFlow"    region11="SymbolFlow"
         region01="def:PairStart" region12="def:PairEnd"/>
 
     <!-- value - flow sequence -->
-    <block start="/.?#1(\[)/" end="/((\]))(\s*$|\s+#?=|\s*(?{Error}.*)$)/"
+    <block start="/(\[)/" end="/((\]))(\s*$|\s+#?=|\s*(?{Error}.*)$)/"
         scheme="flow-sequence"
         region00="SymbolFlow"    region11="SymbolFlow"
         region01="def:PairStart" region12="def:PairEnd"/>
 
     <!-- value - anchor reuse (after anchor reuse only a comment is allowed) -->
-    <block start="/.?#1\*/" end="/\s*$|\s+#?=|\s+(?{Error}[^#].*)?$/" scheme="anchor"
+    <block start="/\*/" end="/\s*$|\s+#?=|\s+(?{Error}[^#].*?)?(\s+#|$)?=/" scheme="anchor"
         region00="SymbolAnchor" region="Anchor"/>
 
+    <!-- value - block scalar -->
+    <regexp match="/([&gt;\|])([+-])?(\d)?(\s*$|\s+#?=|\s*(?{Error}\S.*?)?(\s+#|$)?=)/"
+        region1="BlockScalar" region2="BlockScalarIndent" region3="BlockScalarIndent"/>
+
+    <!-- do not allow sequences/complex mapping here -->
+    <regexp match="/[\-\?:]\s.*?(\s#|$)?=/" region="Error"/>
+
     <!-- value - plain scalar -->
-    <block start="/.?#1\S?=/" end="/\s+#?=|$/" scheme="value-plain" region="String"/>
+    <block start="/\S?=/" end="/\s+#?=|$/" scheme="value-plain" region="String"/>
 
 </scheme>
 
-<scheme name="mapping-without-value">
+<scheme name="yaml-value-implict">
 
     <!-- eat empty lines -->
     <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
 
-    <!-- this is what we expect exclusively at the beginning of the block (the first line) -->
-
-    <inherit scheme="mapping-key"/>
-
     <!--
         This is what we expect at the first line of the block.
-        We check if we have at least one character before match to make sure we are
-        in the first line. Thus, these matches will not work for the second and
-        subsequent lines, as they will start at the beginning of the line.
+        We are checking that we have at least 1 character in front of match,
+        so here we will match something after a key, but not a newline.
     -->
-    <inherit scheme="mapping-key-after"/>
-
-    <!-- anything unexpected is an error -->
-    <regexp match="/.?#1\s*(.+)$/" region1="Error"/>
+    <block start="/.?#1.?=/" end="/$/" scheme="yaml-value-first-line"/>
+    <!-- block start="/~.?=/" end="/$/" scheme="yaml-value-first-line"/ -->
 
     <!-- this blocks matches everything starting from the second line and below -->
-
     <inherit scheme="document"/>
 
 </scheme>
 
-<scheme name="mapping-with-value-block-scalar">
+<scheme name="yaml-value-explicit">
+    <inherit scheme="yaml-value-implict">
+        <virtual scheme="document" subst-scheme="line-error"/>
+    </inherit>
+</scheme>
+
+<scheme name="yaml-value-block">
+    <inherit scheme="yaml-value-implict">
+        <virtual scheme="document" subst-scheme="line-string"/>
+    </inherit>
+</scheme>
+
+<scheme name="mapping-value-implict">
 
     <!-- this is what we expect exclusively at the beginning of the block (the first line) -->
 
-    <inherit scheme="mapping-key"/>
+    <!-- double-quoted key, anything that is not a colon after a closing quote is an error -->
+    <block start="/~(&quot;)/" end="/((&quot;))\s*(?{Error}[^:]*)(?{SymbolMapping}:)\s*/"
+        scheme="key-double-quote" region="MappingKey"
+        region00="StringEdge"    region11="StringEdge"
+        region01="def:PairStart" region12="def:PairEnd"/>
 
-    <!--
-        This is what we expect at the first line of the block.
-        We check if we have at least one character before match to make sure we are
-        in the first line. Thus, these matches will not work for the second and
-        subsequent lines, as they will start at the beginning of the line.
-    -->
-    <inherit scheme="mapping-key-after"/>
+    <!-- single-quoted key, anything that is not a colon after a closing quote is an error -->
+    <block start="/~(&apos;)/" end="/((&apos;))\s*(?{Error}[^:]*)(?{SymbolMapping}:)\s*/"
+        scheme="key-single-quote" region="MappingKey"
+        region00="StringEdge"    region11="StringEdge"
+        region01="def:PairStart" region12="def:PairEnd"/>
 
-    <regexp match="/([&gt;\|])([+-])?(\d)?(\s*$|\s+#?=|\s*(?{Error}\S.*)?$)/"
-        region1="BlockScalar" region2="BlockScalarIndent" region3="BlockScalarIndent"/>
+    <!-- plain key -->
+    <block start="/~\M([^\s&quot;&apos;:!&amp;&gt;#\|\-]|[:\-]\s?!)/" end="/:(\s+|$)/"
+        scheme="key-plain" region="MappingKey" region10="SymbolMapping"/>
 
-    <!-- anything unexpected is an error -->
-    <regexp match="/.?#1\s*(.+)$/" region1="Error"/>
-
-    <!-- this blocks matches everything starting from the second line and below -->
-
-    <!-- eat empty lines -->
-    <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
-    <!-- everyting else is a string -->
-    <block start="/^\s+/" end="/\M^/" scheme="string" region="String" priority="low"/>
+    <inherit scheme="yaml-value-implict"/>
 
 </scheme>
 
-<scheme name="mapping-with-value">
+<scheme name="mapping-value-explicit">
+    <inherit scheme="mapping-value-implict">
+        <virtual scheme="yaml-value-implict" subst-scheme="yaml-value-explicit"/>
+    </inherit>
+</scheme>
 
-    <!-- this is what we expect exclusively at the beginning of the block (the first line) -->
-
-    <inherit scheme="mapping-key"/>
-
-    <!--
-        This is what we expect at the first line of the block.
-        We check if we have at least one character before match to make sure we are
-        in the first line. Thus, these matches will not work for the second and
-        subsequent lines, as they will start at the beginning of the line.
-    -->
-    <inherit scheme="mapping-key-after"/>
-
-    <inherit scheme="yaml-value"/>
-
-    <!-- this blocks matches everything starting from the second line and below -->
-
-    <inherit scheme="badLine"/>
-
+<scheme name="mapping-value-block">
+    <inherit scheme="mapping-value-implict">
+        <virtual scheme="yaml-value-implict" subst-scheme="yaml-value-block"/>
+    </inherit>
 </scheme>
 
 <scheme name="mapping-mergekeys">
@@ -543,725 +492,307 @@
 
     <!-- this blocks matches everything starting from the second line and below -->
 
-    <inherit scheme="badLine"/>
+    <inherit scheme="line-error"/>
 
 </scheme>
 
 <scheme name="sequence">
 
-    <!-- eat empty lines -->
-    <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
-
-    <!-- detect sequence without a value -->
-    <block scheme="sequence-without-value" priority="low">
-        <start><![CDATA[/
-            ^(\s*)\M
-            \-
-            (\s+!\S*)?
-            (\s+&\S*)?
-            (\s+#|\s*$)
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value as a block scalar -->
-    <block scheme="sequence-with-value-block-scalar" priority="low">
-        <start><![CDATA[/
-            ^(\s*)\M
-            \-
-            \s+
-            (!\S*\s+)?
-            (&\S*\s+)?
-            [\>\|]
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value as mapping without a value -->
-    <block scheme="mapping-without-value" priority="low">
-        <start><![CDATA[/
-            ^(\s*)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            (\s+!\S*)?
-            (\s+&\S*)?
-            (\s+#|\s*$)
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s)?!/]]></end>
-    </block>
+    <!-- detect sequence with a value as mapping with an explicit value -->
+    <block scheme="mapping-value-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        \M%mapping-key-value-explicit;
+    /x" end="/\M^(\y1\s\y2\s)?!/"/>
 
     <!-- detect sequence with a value as mapping with a value as a block scalar -->
-    <block scheme="mapping-with-value-block-scalar" priority="low">
-        <start><![CDATA[/
-            ^(\s*)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            \s+
-            (!\S*\s+)?
-            (&\S*\s+)?
-            [\>\|]
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s)?!/]]></end>
-    </block>
+    <block scheme="mapping-value-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        \M%mapping-key-value-block;
+    /x" end="/\M^(\y1\s\y2\s)?!/"/>
 
-    <!-- detect sequence with a value as a mapping with a value -->
-    <block scheme="mapping-with-value" priority="low">
-        <start><![CDATA[/
-            ^(\s*)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            \s
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s)?!/]]></end>
-    </block>
+    <!-- detect sequence with a value as mapping with an implicit value -->
+    <block scheme="mapping-value-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        \M%mapping-key;
+    /x" end="/\M^(\y1\s\y2\s)?!/"/>
 
-    <!-- detect sequence with a value -->
-    <block scheme="sequence-with-value" priority="low">
-        <start><![CDATA[/
-            ^(\s*)
-            \M\-
-            \s+
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s)?!/]]></end>
-    </block>
+    <!-- detect sequence with an explicit value -->
+    <block scheme="yaml-value-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        \M%value-explicit;
+    /x" end="/\M^(\y1\s)?!/"/>
 
-    <inherit scheme="badLine"/>
+    <!-- detect sequence with a value as a block scalar -->
+    <block scheme="yaml-value-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        \M%value-block;
+    /x" end="/\M^(\y1\s)?!/"/>
+
+    <!-- detect sequence with an implicit value -->
+    <block scheme="yaml-value-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+|$)
+        \M(\-\s)?!
+    /x" end="/\M^(\y1\s)?!/"/>
+
+    <inherit scheme="document"/>
 
 </scheme>
 
 <scheme name="sequence-nested-1">
 
-    <!-- detect sequence without a value -->
-    <block scheme="sequence-without-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)
-            \M\-
-            (\s+!\S*)?
-            (\s+&\S*)?
-            (\s+#|\s*$)
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value as a block scalar -->
-    <block scheme="sequence-with-value-block-scalar">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)
-            \M\-
-            \s+
-            (!\S*\s+)?
-            (&\S*\s+)?
-            [\>\|]
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value as mapping without a value -->
-    <block scheme="mapping-without-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            (\s+!\S*)?
-            (\s+&\S*)?
-            (\s+#|\s*$)
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s)?!/]]></end>
-    </block>
+    <!-- detect sequence with a value as mapping with an explicit value -->
+    <block scheme="mapping-value-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key-value-explicit;
+    /x" end="/\M^(\y1\s\y2\s\y3\s)?!/"/>
 
     <!-- detect sequence with a value as mapping with a value as a block scalar -->
-    <block scheme="mapping-with-value-block-scalar">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            \s+
-            (!\S*\s+)?
-            (&\S*\s+)?
-            [\>\|]
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s)?!/]]></end>
-    </block>
+    <block scheme="mapping-value-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key-value-block;
+    /x" end="/\M^(\y1\s\y2\s\y3\s)?!/"/>
 
-    <!-- detect sequence with a value as a mapping with a value -->
-    <block scheme="mapping-with-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            \s
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s)?!/]]></end>
-    </block>
+    <!-- detect sequence with a value as mapping with an implicit value -->
+    <block scheme="mapping-value-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key;
+    /x" end="/\M^(\y1\s\y2\s\y3\s)?!/"/>
 
-    <!-- detect sequence with a value -->
-    <block scheme="sequence-with-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)
-            \M\-
-            \s+
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s)?!/]]></end>
-    </block>
+    <!-- detect sequence with an explicit value -->
+    <block scheme="yaml-value-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%value-explicit;
+    /x" end="/\M^(\y1\s\y2\s)?!/"/>
 
-    <inherit scheme="sequence"/>
+    <!-- detect sequence with a value as a block scalar -->
+    <block scheme="yaml-value-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%value-block;
+    /x" end="/\M^(\y1\s\y2\s)?!/"/>
+
+    <!-- detect sequence with an implicit value -->
+    <block scheme="yaml-value-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+|$)
+        \M(\-\s)?!
+    /x" end="/\M^(\y1\s\y2\s)?!/"/>
+
+    <inherit scheme="document"/>
 
 </scheme>
 
 <scheme name="sequence-nested-2">
 
-    <!-- detect sequence without a value -->
-    <block scheme="sequence-without-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)
-            \M\-
-            (\s+!\S*)?
-            (\s+&\S*)?
-            (\s+#|\s*$)
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value as a block scalar -->
-    <block scheme="sequence-with-value-block-scalar">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)
-            \M\-
-            \s+
-            (!\S*\s+)?
-            (&\S*\s+)?
-            [\>\|]
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value as mapping without a value -->
-    <block scheme="mapping-without-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            (\s+!\S*)?
-            (\s+&\S*)?
-            (\s+#|\s*$)
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s\y4\s)?!/]]></end>
-    </block>
+    <!-- detect sequence with a value as mapping with an explicit value -->
+    <block scheme="mapping-value-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key-value-explicit;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"/>
 
     <!-- detect sequence with a value as mapping with a value as a block scalar -->
-    <block scheme="mapping-with-value-block-scalar">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            \s+
-            (!\S*\s+)?
-            (&\S*\s+)?
-            [\>\|]
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s\y4\s)?!/]]></end>
-    </block>
+    <block scheme="mapping-value-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key-value-block;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"/>
 
-    <!-- detect sequence with a value as a mapping with a value -->
-    <block scheme="mapping-with-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            \s
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s\y4\s)?!/]]></end>
-    </block>
+    <!-- detect sequence with a value as mapping with an implicit value -->
+    <block scheme="mapping-value-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"/>
 
-    <!-- detect sequence with a value -->
-    <block scheme="sequence-with-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)
-            \M\-
-            \s+
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s)?!/]]></end>
-    </block>
+    <!-- detect sequence with an explicit value -->
+    <block scheme="yaml-value-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%value-explicit;
+    /x" end="/\M^(\y1\s\y2\s\y3\s)?!/"/>
 
-    <inherit scheme="sequence"/>
+    <!-- detect sequence with a value as a block scalar -->
+    <block scheme="yaml-value-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%value-block;
+    /x" end="/\M^(\y1\s\y2\s\y3\s)?!/"/>
+
+    <!-- detect sequence with an implicit value -->
+    <block scheme="yaml-value-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+|$)
+        \M(\-\s)?!
+    /x" end="/\M^(\y1\s\y2\s\y3\s)?!/"/>
+
+    <inherit scheme="document"/>
 
 </scheme>
 
 <scheme name="sequence-nested-3">
 
-    <!-- detect sequence without a value -->
-    <block scheme="sequence-without-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)
-            \M\-
-            (\s+!\S*)?
-            (\s+&\S*)?
-            (\s+#|\s*$)
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s\y4\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value as a block scalar -->
-    <block scheme="sequence-with-value-block-scalar">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)
-            \M\-
-            \s+
-            (!\S*\s+)?
-            (&\S*\s+)?
-            [\>\|]
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s\y4\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value as mapping without a value -->
-    <block scheme="mapping-without-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            (\s+!\S*)?
-            (\s+&\S*)?
-            (\s+#|\s*$)
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/]]></end>
-    </block>
+    <!-- detect sequence with a value as mapping with an explicit value -->
+    <block scheme="mapping-value-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key-value-explicit;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
 
     <!-- detect sequence with a value as mapping with a value as a block scalar -->
-    <block scheme="mapping-with-value-block-scalar">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            \s+
-            (!\S*\s+)?
-            (&\S*\s+)?
-            [\>\|]
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/]]></end>
-    </block>
+    <block scheme="mapping-value-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key-value-block;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
 
-    <!-- detect sequence with a value as a mapping with a value -->
-    <block scheme="mapping-with-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            \s
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/]]></end>
-    </block>
+    <!-- detect sequence with a value as mapping with an implicit value -->
+    <block scheme="mapping-value-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
 
-    <!-- detect sequence with a value -->
-    <block scheme="sequence-with-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)(?{SymbolSequence}\-)(\s+)
-            \M\-
-            \s+
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s\y4\s)?!/]]></end>
-    </block>
+    <!-- detect sequence with an explicit value -->
+    <block scheme="yaml-value-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%value-explicit;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"/>
 
-    <inherit scheme="sequence"/>
+    <!-- detect sequence with a value as a block scalar -->
+    <block scheme="yaml-value-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%value-block;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"/>
 
-</scheme>
-
-<scheme name="sequence-without-value">
-
-    <!-- eat empty lines -->
-    <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
-
-    <!-- this is what we expect exclusively at the beginning of the block (the first line) -->
-
-    <regexp match="/~\-(\s+|\s*$)/" region="SymbolSequence"/>
-
-    <!--
-        This is what we expect at the first line of the block.
-        We check if we have at least one character before match to make sure we are
-        in the first line. Thus, these matches will not work for the second and
-        subsequent lines, as they will start at the beginning of the line.
-    -->
-    <inherit scheme="mapping-key-after"/>
-
-    <!-- anything unexpected is an error -->
-    <regexp match="/.?#1\s*(.+)$/" region1="Error"/>
-
-    <!-- this blocks matches everything starting from the second line and below -->
+    <!-- detect sequence with an implicit value -->
+    <block scheme="yaml-value-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+|$)
+        \M(\-\s)?!
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"/>
 
     <inherit scheme="document"/>
 
 </scheme>
 
+<scheme name="sequence-nested-4">
 
-<scheme name="sequence-with-value-block-scalar">
+    <!-- detect sequence with a value as mapping with an explicit value -->
+    <block scheme="mapping-value-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key-value-explicit;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s\y6\s)?!/"/>
 
-    <!-- this is what we expect exclusively at the beginning of the block (the first line) -->
+    <!-- detect sequence with a value as mapping with a value as a block scalar -->
+    <block scheme="mapping-value-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key-value-block;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s\y6\s)?!/"/>
 
-    <regexp match="/~\-(\s+|\s*$)/" region="SymbolSequence"/>
+    <!-- detect sequence with a value as mapping with an implicit value -->
+    <block scheme="mapping-value-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s\y6\s)?!/"/>
 
-    <!--
-        This is what we expect at the first line of the block.
-        We check if we have at least one character before match to make sure we are
-        in the first line. Thus, these matches will not work for the second and
-        subsequent lines, as they will start at the beginning of the line.
-    -->
-    <inherit scheme="mapping-key-after"/>
+    <!-- detect sequence with an explicit value -->
+    <block scheme="yaml-value-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%value-explicit;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
 
-    <regexp match="/([&gt;\|])([+-])?(\d)?(\s*$|\s+#?=|\s*(?{Error}\S.*)?$)/"
-        region1="BlockScalar" region2="BlockScalarIndent" region3="BlockScalarIndent"/>
+    <!-- detect sequence with a value as a block scalar -->
+    <block scheme="yaml-value-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%value-block;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
 
-    <!-- anything unexpected is an error -->
-    <regexp match="/.?#1\s*(.+)$/" region1="Error"/>
-
-    <!-- this blocks matches everything starting from the second line and below -->
-
-    <!-- eat empty lines -->
-    <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
-    <!-- everyting else is a string -->
-    <block start="/^\s+/" end="/\M^/" scheme="string" region="String" priority="low"/>
-
-</scheme>
-
-<scheme name="sequence-with-value">
-
-    <!-- this is what we expect exclusively at the beginning of the block (the first line) -->
-
-    <regexp match="/~\-(\s+|\s*$)/" region="SymbolSequence"/>
-
-    <!--
-        This is what we expect at the first line of the block.
-        We check if we have at least one character before match to make sure we are
-        in the first line. Thus, these matches will not work for the second and
-        subsequent lines, as they will start at the beginning of the line.
-    -->
-    <inherit scheme="mapping-key-after"/>
-    <inherit scheme="yaml-value"/>
-
-    <!-- this blocks matches everything starting from the second line and below -->
-
-    <inherit scheme="badLine"/>
-
-</scheme>
-
-<scheme name="complex">
-
-    <!-- eat empty lines -->
-    <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
-
-    <!-- detect complex-mapping with a sequence as a value -->
-    <block start="/^\M(\s*)[\?:](\s+)\-(\s+)\-(\s|$)/x" end="/\M^(\y1\s\y2\s)?!/"
-        scheme="complex-sequence-nested-1" priority="low"/>
-    <block start="/^\M(\s*)[\?:](\s+)\-(\s|$)/x" end="/\M^(\y1\s)?!/"
-        scheme="complex-sequence" priority="low"/>
-
-    <!-- detect complex-mapping without a value -->
-    <block scheme="complex-without-value" priority="low">
-        <start><![CDATA[/
-            ^(\s*)\M
-            [\?:]
-            (\s+!\S*)?
-            (\s+&\S*)?
-            (\s+#|\s*$)
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s)?!/]]></end>
-    </block>
-
-    <!-- detect complex-mapping with a value as a block scalar -->
-    <block scheme="complex-with-value-block-scalar" priority="low">
-        <start><![CDATA[/
-            ^(\s*)\M
-            [\?:]
-            \s+
-            (!\S*\s+)?
-            (&\S*\s+)?
-            [\>\|]
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s)?!/]]></end>
-    </block>
-
-    <!-- detect complex-mapping with a value as mapping without a value -->
-    <block scheme="mapping-without-value" priority="low">
-        <start><![CDATA[/
-            ^(\s*)
-            (?{SymbolMappingComplexKey}[\?:])(\s+)
-            \M%mapping-key;
-            (\s+!\S*)?
-            (\s+&\S*)?
-            (\s+#|\s*$)
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s)?!/]]></end>
-    </block>
-
-    <!-- detect complex-mapping with a value as mapping with a value as a block scalar -->
-    <block scheme="mapping-with-value-block-scalar" priority="low">
-        <start><![CDATA[/
-            ^(\s*)
-            (?{SymbolMappingComplexKey}[\?:])(\s+)
-            \M%mapping-key;
-            \s+
-            (!\S*\s+)?
-            (&\S*\s+)?
-            [\>\|]
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s)?!/]]></end>
-    </block>
-
-    <!-- detect complex-mapping with a value as a mapping with a value -->
-    <block scheme="mapping-with-value" priority="low">
-        <start><![CDATA[/
-            ^(\s*)
-            (?{SymbolMappingComplexKey}[\?:])(\s+)
-            \M%mapping-key;
-            \s
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s)?!/]]></end>
-    </block>
-
-    <!-- detect complex-mapping with a value -->
-    <block scheme="complex-with-value" priority="low">
-        <start><![CDATA[/
-            ^(\s*)\M
-            [\?:]
-            \s+
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s)?!/]]></end>
-    </block>
-
-    <inherit scheme="badLine"/>
-
-</scheme>
-
-<scheme name="complex-without-value">
-
-    <!-- eat empty lines -->
-    <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
-
-    <!-- this is what we expect exclusively at the beginning of the block (the first line) -->
-
-    <regexp match="/~[\?:](\s+|\s*$)/" region="SymbolMappingComplexKey"/>
-
-    <!--
-        This is what we expect at the first line of the block.
-        We check if we have at least one character before match to make sure we are
-        in the first line. Thus, these matches will not work for the second and
-        subsequent lines, as they will start at the beginning of the line.
-    -->
-    <inherit scheme="mapping-key-after"/>
-
-    <!-- anything unexpected is an error -->
-    <regexp match="/.?#1\s*(.+)$/" region1="Error"/>
-
-    <!-- this blocks matches everything starting from the second line and below -->
+    <!-- detect sequence with an implicit value -->
+    <block scheme="yaml-value-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+|$)
+        (?{SymbolSequence}\-)(\s+|$)
+        \M(\-\s)?!
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
 
     <inherit scheme="document"/>
-
-</scheme>
-
-<scheme name="complex-with-value-block-scalar">
-
-    <!-- this is what we expect exclusively at the beginning of the block (the first line) -->
-
-    <regexp match="/~[\?:](\s+|\s*$)/" region="SymbolMappingComplexKey"/>
-
-    <!--
-        This is what we expect at the first line of the block.
-        We check if we have at least one character before match to make sure we are
-        in the first line. Thus, these matches will not work for the second and
-        subsequent lines, as they will start at the beginning of the line.
-    -->
-    <inherit scheme="mapping-key-after"/>
-
-    <regexp match="/([&gt;\|])([+-])?(\d)?(\s*$|\s+#?=|\s*(?{Error}\S.*)?$)/"
-        region1="BlockScalar" region2="BlockScalarIndent" region3="BlockScalarIndent"/>
-
-    <!-- anything unexpected is an error -->
-    <regexp match="/.?#1\s*(.+)$/" region1="Error"/>
-
-    <!-- this blocks matches everything starting from the second line and below -->
-
-    <!-- eat empty lines -->
-    <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
-    <!-- everyting else is a string -->
-    <block start="/^\s+/" end="/\M^/" scheme="string" region="String" priority="low"/>
-
-</scheme>
-
-<scheme name="complex-with-value">
-
-    <!-- this is what we expect exclusively at the beginning of the block (the first line) -->
-
-    <regexp match="/~[\?:](\s+|\s*$)/" region="SymbolMappingComplexKey"/>
-
-    <!--
-        This is what we expect at the first line of the block.
-        We check if we have at least one character before match to make sure we are
-        in the first line. Thus, these matches will not work for the second and
-        subsequent lines, as they will start at the beginning of the line.
-    -->
-    <inherit scheme="mapping-key-after"/>
-    <inherit scheme="yaml-value"/>
-
-    <!-- this blocks matches everything starting from the second line and below -->
-
-    <inherit scheme="badLine"/>
-
-</scheme>
-
-<scheme name="complex-sequence">
-
-    <!-- detect sequence without a value -->
-    <block scheme="sequence-without-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolMappingComplexKey}[\?:])(\s+)
-            \M\-
-            (\s+!\S*)?
-            (\s+&\S*)?
-            (\s+#|\s*$)
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value as a block scalar -->
-    <block scheme="sequence-with-value-block-scalar">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolMappingComplexKey}[\?:])(\s+)
-            \M\-
-            \s+
-            (!\S*\s+)?
-            (&\S*\s+)?
-            [\>\|]
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value as mapping without a value -->
-    <block scheme="mapping-without-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolMappingComplexKey}[\?:])(\s+)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            (\s+!\S*)?
-            (\s+&\S*)?
-            (\s+#|\s*$)
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value as mapping with a value as a block scalar -->
-    <block scheme="mapping-with-value-block-scalar">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolMappingComplexKey}[\?:])(\s+)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            \s+
-            (!\S*\s+)?
-            (&\S*\s+)?
-            [\>\|]
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value as a mapping with a value -->
-    <block scheme="mapping-with-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolMappingComplexKey}[\?:])(\s+)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            \s
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value -->
-    <block scheme="sequence-with-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolMappingComplexKey}[\?:])(\s+)
-            \M\-
-            \s+
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s)?!/]]></end>
-    </block>
-
-    <inherit scheme="sequence"/>
-
-</scheme>
-
-<scheme name="complex-sequence-nested-1">
-
-    <!-- detect sequence without a value -->
-    <block scheme="sequence-without-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolMappingComplexKey}[\?:])(\s+)(?{SymbolSequence}\-)(\s+)
-            \M\-
-            (\s+!\S*)?
-            (\s+&\S*)?
-            (\s+#|\s*$)
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value as a block scalar -->
-    <block scheme="sequence-with-value-block-scalar">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolMappingComplexKey}[\?:])(\s+)(?{SymbolSequence}\-)(\s+)
-            \M\-
-            \s+
-            (!\S*\s+)?
-            (&\S*\s+)?
-            [\>\|]
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value as mapping without a value -->
-    <block scheme="mapping-without-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolMappingComplexKey}[\?:])(\s+)(?{SymbolSequence}\-)(\s+)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            (\s+!\S*)?
-            (\s+&\S*)?
-            (\s+#|\s*$)
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s\y4\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value as mapping with a value as a block scalar -->
-    <block scheme="mapping-with-value-block-scalar">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolMappingComplexKey}[\?:])(\s+)(?{SymbolSequence}\-)(\s+)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            \s+
-            (!\S*\s+)?
-            (&\S*\s+)?
-            [\>\|]
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s\y4\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value as a mapping with a value -->
-    <block scheme="mapping-with-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolMappingComplexKey}[\?:])(\s+)(?{SymbolSequence}\-)(\s+)
-            (?{SymbolSequence}\-)(\s+)
-            \M%mapping-key;
-            \s
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s\y4\s)?!/]]></end>
-    </block>
-
-    <!-- detect sequence with a value -->
-    <block scheme="sequence-with-value">
-        <start><![CDATA[/
-            ~(\s*)(?{SymbolMappingComplexKey}[\?:])(\s+)(?{SymbolSequence}\-)(\s+)
-            \M\-
-            \s+
-        /x]]></start>
-        <end><![CDATA[/\M^(\y1\s\y2\s\y3\s)?!/]]></end>
-    </block>
-
-    <inherit scheme="sequence"/>
 
 </scheme>
 
@@ -1269,7 +800,7 @@
     <!-- eat spaces -->
     <regexp match="/\s+/"/>
     <!-- comments without space is an error -->
-    <block start="/\s?~1#/" end="/$|\}?=/" region="Error" scheme="def:empty"/>
+    <block start="/\S?#1#/" end="/$|\}?=/" region="Error" scheme="def:empty"/>
     <!-- comments -->
     <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
     <!-- mapping key: merge key -->
@@ -1310,7 +841,7 @@
     <!-- eat spaces -->
     <regexp match="/\s+/"/>
     <!-- comments without space is an error -->
-    <block start="/\s?~1#/" end="/$|\}?=/" region="Error" scheme="def:empty"/>
+    <block start="/\S?#1#/" end="/$|\}?=/" region="Error" scheme="def:empty"/>
     <!-- comments -->
     <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
     <!-- a tag, do not allow another tag to be used after the found tag -->
@@ -1330,12 +861,14 @@
     <!-- eat spaces -->
     <regexp match="/\s+/"/>
     <!-- comments without space is an error -->
-    <block start="/\s?~1#/" end="/$|\}?=/" region="Error" scheme="def:empty"/>
+    <block start="/\S?#1#/" end="/$|\}?=/" region="Error" scheme="def:empty"/>
     <!-- comments -->
     <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
     <!-- a tag, do not allow another tag to be used after the found tag -->
-    <block start="/!/" end="/\s*$|\s+(?{Error}![^,\}]*)?/" scheme="tag" region00="SymbolTag" region="Tag"/>
-    <!-- anchor, do not allow anything after the found anchor -->
+    <block start="/!/" end="/\s*$|\s+((?{Error}![^,\}\s]*)\s*)*/" scheme="tag" region00="SymbolTag" region="Tag"/>
+    <!-- anchor, do not allow a tag/anchor/anchor reuse after the found anchor -->
+    <block start="/&amp;/" end="/\s*$|\s+((?{Error}[!&amp;\*][^,\}\s]*)\s*)*/" scheme="anchor" region00="SymbolAnchor" region="Anchor"/>
+    <!-- anchor reuse, do not allow anything after the found anchor reuse -->
     <block start="/\*/" end="/\s*[,\}]?=|\s+(?{Error}[^,\}]*)/" scheme="anchor"
         region00="SymbolAnchor" region="Anchor"/>
     <!-- nested flow-sequence, allow only comma or closing bracket after this match -->
@@ -1366,11 +899,13 @@
     <!-- eat spaces -->
     <regexp match="/\s+/"/>
     <!-- comments without space is an error -->
-    <block start="/\s?~1#/" end="/$|\]?=/" region="Error" scheme="def:empty"/>
+    <block start="/\S?#1#/" end="/$|\]?=/" region="Error" scheme="def:empty"/>
     <!-- comments -->
     <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
     <!-- a tag, do not allow another tag to be used after the found tag -->
-    <block start="/!/" end="/\s*$|\s+(?{Error}![^,\]]*)?/" scheme="tag" region00="SymbolTag" region="Tag"/>
+    <block start="/!/" end="/\s*$|\s+((?{Error}![^,\]\s]*)\s*)*/" scheme="tag" region00="SymbolTag" region="Tag"/>
+    <!-- anchor, do not allow a tag/anchor/anchor reuse after the found anchor -->
+    <block start="/&amp;/" end="/\s*$|\s+((?{Error}[!&amp;\*][^,\]\s]*)\s*)*/" scheme="anchor" region00="SymbolAnchor" region="Anchor"/>
     <!-- anchor, do not allow anything after the found anchor -->
     <block start="/\*/" end="/\s*[,\]]?=|\s+(?{Error}[^,\]]*)/" scheme="anchor"
         region00="SymbolAnchor" region="Anchor"/>
@@ -1404,7 +939,7 @@
     <!-- eat spaces -->
     <regexp match="/\s+/"/>
     <!-- comments without space is an error -->
-    <block start="/\s?~1#/" end="/$|\]?=/" region="Error" scheme="def:empty"/>
+    <block start="/\S?#1#/" end="/$|\]?=/" region="Error" scheme="def:empty"/>
     <!-- comments -->
     <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
     <!-- anchor, do not allow anything after the found anchor -->
