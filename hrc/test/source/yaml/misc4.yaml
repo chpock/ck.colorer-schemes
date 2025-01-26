@@ -32,6 +32,11 @@
   - - - "foo"    : val
   - - "foo : foo"   : val
 
+  # sequence + colon in comment
+  - foo # this is a comment: foo
+  - "foo" # this is a comment: foo
+  - 'foo' # this is a comment: foo
+
   # sequence+anchor as a string
   - &anchor foo
 
@@ -50,7 +55,5 @@ matrices:
   - Chicago cubs
 : - 2001-07-23
 
-# errors
-
   foo:
-      "error here"
+      "no error here"
