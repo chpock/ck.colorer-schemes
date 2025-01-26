@@ -31,6 +31,7 @@ bar baz"
   - "foo"
   - 'sdfsdf'
   - - 'foo'
+  - - - 'foo'
   - - - - - 'foo'
 
   # sequence+anchor as a string
@@ -61,11 +62,10 @@ bar baz"
     - "Chicago cubs"
   : - "2001-07-23"
 
-# errors
-
   foo:
       "bar"
-  foo:
+
+# errors
 
   foo: "bar" error here
      error here
@@ -81,6 +81,16 @@ bar baz"
   - "foo"
       error here
   - - - - - 'foo'
-      error here
+           error here
 
   foo: *test "bar"
+
+  # sequence keys are not allowed here
+  test: - foo # <- error here
+  test: !foo - foo # <- error here
+  # complex mappings are not allowed here
+  test: ? foo # <- error here
+  test: !foo ? foo # <- error here
+  test: : foo # <- error here
+  test: !foo : foo # <- error here
+
