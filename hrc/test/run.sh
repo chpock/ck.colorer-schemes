@@ -43,9 +43,16 @@ HRD_FILE="$BIN_DIR"/gruvbox_dark_hard.hrd
 
 rm -fr "$OUT_DIR"/*
 
-if ! command -v cygpath >/dev/null 2>&1 && [ -d /c/DriveD/Projects/ck.colorer-schemes/hrc/hrc ]; then
-    cp -rf "$SELF_DIR/../hrc"/* "/c/DriveD/Projects/ck.colorer-schemes/hrc/hrc"
-    cp -f "$SELF_DIR/../proto.hrc" "/c/DriveD/Projects/ck.colorer-schemes/hrc"
+if ! command -v cygpath >/dev/null 2>&1; then
+    if [ -d /c/DriveD/Projects/ck.colorer-schemes/hrc/hrc ]; then
+        cp -rf "$SELF_DIR/../hrc"/* "/c/DriveD/Projects/ck.colorer-schemes/hrc/hrc"
+        cp -f "$SELF_DIR/../proto.hrc" "/c/DriveD/Projects/ck.colorer-schemes/hrc"
+    fi
+    if [ -e /d/Sync/Envy ]; then
+        mkdir -p /d/Sync/Envy/ck.colorer-schemes/hrc/hrc
+        cp -rf "$SELF_DIR/../hrc"/* /d/Sync/Envy/ck.colorer-schemes/hrc/hrc
+        cp -f "$SELF_DIR/../proto.hrc" /d/Sync/Envy/ck.colorer-schemes/hrc
+    fi
 fi
 
 print_color() {
