@@ -187,7 +187,12 @@ ${A,pat} ${BASH,pat} ${A,,pat} ${BASH,,pat}
 ${A^$(command here)} ${BASH,,`test`"sdfasdf"$'\r\t\e'}
 
 ${A@U} ${A@u} ${A@L} ${A@Q} ${A@E} ${A@P} ${A@A} ${A@K} ${A@a} ${A@k}
+${!A@U} ${!A@u} ${!A@L} ${!A@Q} ${!A@E} ${!A@P} ${!A@A} ${!A@K} ${!A@a} ${!A@k}
 ${BASH@U} ${BASH@u} ${BASH@L} ${BASH@Q} ${BASH@E} ${BASH@P} ${BASH@A} ${BASH@K} ${BASH@a} ${BASH@k}
+
+# errors here
+${A@x} ${A@.} ${A@error here} ${A@!} ${A@@} ${A@-}
+${!A@x} ${!A@.} ${!A@error here} ${!A@!} ${!A@@} ${!A@-}
 
 for i in; do
    "'${M:$i:1}" # <- test in for loop

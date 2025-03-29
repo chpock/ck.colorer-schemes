@@ -15,3 +15,7 @@ do
 done
 
 ids+=( $! )
+
+# https://github.com/colorer/Colorer-schemes/issues/172
+
+echo "${!var@Q}" more text here
