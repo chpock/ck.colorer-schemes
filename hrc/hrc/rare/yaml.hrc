@@ -271,7 +271,8 @@
     <!-- do not allow directives inside document -->
     <regexp match="/^%.*$/" region="Error"/>
 
-    <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
+    <!-- comments -->
+    <block start="/\s*\m#/" end="/\M^/" region="Comment" scheme="comment" priority="low"/>
 
     <!-- detect sequences/complex mappings -->
     <block start="/\M^(\s*)[\-\?:](\s+)\-(\s+)\-(\s+)\-(\s+)\-(\s|$)/" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"
@@ -300,8 +301,6 @@
     <!-- detect mapping with an implicit value -->
     <block start="/^(\s*)\M%mapping-key;/x" end="/\M^(\y1\s)?!/"
         scheme="mapping-value-implict" priority="low"/>
-
-    <block start="/^\s*#/" end="/\M^/" region="Comment" scheme="comment" priority="low"/>
 
     <!-- block value -->
     <block start="/^(\s*)\M%value-block;/x" end="/\M^(\y1\s)?!/" scheme="yaml-value-first-line" priority="low"/>
