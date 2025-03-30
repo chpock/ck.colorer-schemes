@@ -95,15 +95,33 @@
     )
 "/>
 
+<!--
+
+    Regexp for mapping key has the following scheme:
+
+    (
+        (*alias)|
+        ((&anchor)?(
+            key|
+            "key"|
+            'key'
+        ))
+    )\s*:
+
+-->
+
 <entity name="mapping-key" value="
     (
-        (([^\s&quot;&apos;\-!&amp;\*\?\{\}\[\]]|[\-\?]\s?!)([^:#]*:\s?!)*[^:#]*)(:(\s|$))?=|
-        (&quot;([^&quot;]*((\\&quot;)[^&quot;]*)*)&quot;)|
-        (&apos;([^&apos;]*((&apos;&apos;)[^&apos;]*)*)&apos;)
+        (\*[^\s\[\]\{\},]+)|
+        ((&amp;[^\s\[\]\{\},]+\s+)?(
+            (([^\s&quot;&apos;\-!&amp;\*\?\{\}\[\]]|[\-\?]\s?!)([^:#]*:\s?!)*[^:#]*)(:(\s|$))?=|
+            (&quot;([^&quot;]*((\\&quot;)[^&quot;]*)*)&quot;)|
+            (&apos;([^&apos;]*((&apos;&apos;)[^&apos;]*)*)&apos;)
+        ))
     )\s*:
 "/>
 
-<!-- includes anchor reuse -->
+<!-- includes alias -->
 <entity name="value-explicit" value="
     (
         \*|
@@ -346,7 +364,7 @@
     <!-- eat spaces -->
     <regexp match="/~\s+/"/>
 
-    <!-- catch tags/anchors without name -->
+    <!-- catch tags/aliases/anchors without name -->
     <regexp match="/([!\*&amp;](\s.*$|$))/" region1="Error"/>
 
     <block start="/!/" end="/\s+|$/" scheme="tag" region00="SymbolTag" region="Tag"/>
@@ -396,7 +414,7 @@
         region00="SymbolFlow"    region11="SymbolFlow"
         region01="def:PairStart" region12="def:PairEnd"/>
 
-    <!-- value - anchor reuse (after anchor reuse only a comment is allowed) -->
+    <!-- value - alias (after alias only a comment is allowed) -->
     <block start="/\*/" end="/\s*$|\s+#?=|\s+(?{Error}[^#].*?)?(\s+#|$)?=/" scheme="anchor"
         region00="SymbolAnchor" region="Anchor"/>
 
@@ -455,19 +473,29 @@
     <!-- this is what we expect exclusively at the beginning of the block (the first line) -->
 
     <!-- double-quoted key, anything that is not a colon after a closing quote is an error -->
-    <block start="/~(&quot;)/" end="/((&quot;))\s*(?{Error}[^:]*)(?{SymbolMapping}:)\s*/"
+    <block
+        start="/~((?{SymbolAnchor}&amp;)(?{Anchor}[^\s\[\]\{\},]+)\s+)?((&quot;))/"
+        end="/((&quot;))\s*(?{Error}[^:]*)(?{SymbolMapping}:)\s*/"
         scheme="key-double-quote" region="MappingKey"
-        region00="StringEdge"    region11="StringEdge"
-        region01="def:PairStart" region12="def:PairEnd"/>
+        region02="StringEdge"    region11="StringEdge"
+        region03="def:PairStart" region12="def:PairEnd"/>
 
     <!-- single-quoted key, anything that is not a colon after a closing quote is an error -->
-    <block start="/~(&apos;)/" end="/((&apos;))\s*(?{Error}[^:]*)(?{SymbolMapping}:)\s*/"
+    <block
+        start="/~((?{SymbolAnchor}&amp;)(?{Anchor}[^\s\[\]\{\},]+)\s+)?(&apos;)/"
+        end="/((&apos;))\s*(?{Error}[^:]*)(?{SymbolMapping}:)\s*/"
         scheme="key-single-quote" region="MappingKey"
-        region00="StringEdge"    region11="StringEdge"
-        region01="def:PairStart" region12="def:PairEnd"/>
+        region02="StringEdge"    region11="StringEdge"
+        region03="def:PairStart" region12="def:PairEnd"/>
+
+    <!-- alias as a key -->
+    <block start="/~\*/" end="/:(\s+|$)/" scheme="anchor" region="Anchor"
+        region00="SymbolAnchor" region10="SymbolMapping"/>
 
     <!-- plain key -->
-    <block start="/~\M([^\s&quot;&apos;:!&amp;&gt;#\|\-]|[:\-]\s?!)/" end="/:(\s+|$)/"
+    <block
+        start="/~((?{SymbolAnchor}&amp;)(?{Anchor}[^\s\[\]\{\},]+)\s+)?\M([^\s&quot;&apos;:!&amp;&gt;#\|\-]|[:\-]\s?!)/"
+        end="/:(\s+|$)/"
         scheme="key-plain" region="MappingKey" region10="SymbolMapping"/>
 
     <inherit scheme="yaml-value-implict"/>
@@ -503,7 +531,7 @@
         subsequent lines, as they will start at the beginning of the line.
     -->
 
-    <!-- catch tags/anchors without name -->
+    <!-- catch tags/aliases/anchors without name -->
     <regexp match="/.?#1\s*([!\*&amp;](\s.*$|$))/" region1="Error"/>
 
     <!-- tags -->
@@ -515,7 +543,7 @@
         region00="SymbolFlow"    region11="SymbolFlow"
         region01="def:PairStart" region12="def:PairEnd"/>
 
-    <!-- actual value as anchor reuse (after anchor reuse only a comment is allowed) -->
+    <!-- actual value as alias (after alias only a comment is allowed) -->
     <block start="/.?#1\*/" end="/\s*$|\s+#?=|\s+(?{Error}[^#].*)?$/" scheme="anchor"
         region00="SymbolAnchor" region="Anchor"/>
 
@@ -881,7 +909,7 @@
     <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
     <!-- a tag, do not allow another tag to be used after the found tag -->
     <block start="/!/" end="/\s*$|\s+(?{Error}![^,\}]*)?/" scheme="tag" region00="SymbolTag" region="Tag"/>
-    <!-- anchor, do not allow anything after the found anchor -->
+    <!-- alias, do not allow anything after the found alias -->
     <block start="/\*/" end="/\s*[,\}]?=|\s+(?{Error}[^,\}]*)/" scheme="anchor"
         region00="SymbolAnchor" region="Anchor"/>
     <!-- nested flow-sequence, allow only comma or closing bracket after this match -->
@@ -901,9 +929,9 @@
     <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
     <!-- a tag, do not allow another tag to be used after the found tag -->
     <block start="/!/" end="/\s*$|\s+((?{Error}![^,\}\s]*)\s*)*/" scheme="tag" region00="SymbolTag" region="Tag"/>
-    <!-- anchor, do not allow a tag/anchor/anchor reuse after the found anchor -->
+    <!-- anchor, do not allow a tag/anchor/alias after the found anchor -->
     <block start="/&amp;/" end="/\s*$|\s+((?{Error}[!&amp;\*][^,\}\s]*)\s*)*/" scheme="anchor" region00="SymbolAnchor" region="Anchor"/>
-    <!-- anchor reuse, do not allow anything after the found anchor reuse -->
+    <!-- alias, do not allow anything after the found alias -->
     <block start="/\*/" end="/\s*[,\}]?=|\s+(?{Error}[^,\}]*)/" scheme="anchor"
         region00="SymbolAnchor" region="Anchor"/>
     <!-- nested flow-sequence, allow only comma or closing bracket after this match -->
@@ -939,9 +967,9 @@
     <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
     <!-- a tag, do not allow another tag to be used after the found tag -->
     <block start="/!/" end="/\s*$|\s+((?{Error}![^,\]\s]*)\s*)*/" scheme="tag" region00="SymbolTag" region="Tag"/>
-    <!-- anchor, do not allow a tag/anchor/anchor reuse after the found anchor -->
+    <!-- anchor, do not allow a tag/anchor/alias after the found anchor -->
     <block start="/&amp;/" end="/\s*$|\s+((?{Error}[!&amp;\*][^,\]\s]*)\s*)*/" scheme="anchor" region00="SymbolAnchor" region="Anchor"/>
-    <!-- anchor, do not allow anything after the found anchor -->
+    <!-- alias, do not allow anything after the found alias -->
     <block start="/\*/" end="/\s*[,\]]?=|\s+(?{Error}[^,\]]*)/" scheme="anchor"
         region00="SymbolAnchor" region="Anchor"/>
     <!-- nested flow-sequence, allow only comma or closing bracket after this match -->
@@ -977,7 +1005,7 @@
     <block start="/\S?#1#/" end="/$|\]?=/" region="Error" scheme="def:empty"/>
     <!-- comments -->
     <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
-    <!-- anchor, do not allow anything after the found anchor -->
+    <!-- alias, do not allow anything after the found alias -->
     <block start="/\*/" end="/\s*[,\]]?=|\s+(?{Error}[^,\]]*)/" scheme="anchor"
         region00="SymbolAnchor" region="Anchor"/>
     <!-- allow comma, but do not allow another comma to be used after the found comma -->
