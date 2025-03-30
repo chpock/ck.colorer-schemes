@@ -268,8 +268,11 @@
 
 <scheme name="document">
 
+    <!-- eat empty lines -->
+    <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
+
     <!-- do not allow directives inside document -->
-    <regexp match="/^%.*$/" region="Error"/>
+    <block start="/^%/" end="/\M^/" region="Error" scheme="def:empty" priority="low"/>
 
     <!-- comments -->
     <block start="/\s*\m#/" end="/\M^/" region="Comment" scheme="comment" priority="low"/>
@@ -307,9 +310,6 @@
 
     <!-- explicit/implict value -->
     <block start="/^(\s*)\M\S/x" end="/\M^/" scheme="yaml-value-first-line" priority="low"/>
-
-    <!-- everyting else is a string -->
-    <inherit scheme="line-string"/>
 
 </scheme>
 
@@ -386,18 +386,24 @@
 
 <scheme name="yaml-value-implict">
 
-    <!-- eat empty lines -->
-    <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
-
     <!--
         This is what we expect at the first line of the block.
         We are checking that we have at least 1 character in front of match,
         so here we will match something after a key, but not a newline.
     -->
     <block start="/.?#1.?=/" end="/$/" scheme="yaml-value-first-line"/>
-    <!-- block start="/~.?=/" end="/$/" scheme="yaml-value-first-line"/ -->
 
     <!-- this blocks matches everything starting from the second line and below -->
+
+    <!--
+         Note: we cannot rely on 'eat empty lines' in the 'document' schema, as
+         that 'document' schema will be replaced in the yaml-value-explicit and
+         yaml-value-block schemas, but this ignoring of empty lines rule
+         should be active.
+    -->
+    <!-- eat empty lines -->
+    <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
+
     <inherit scheme="document"/>
 
 </scheme>
