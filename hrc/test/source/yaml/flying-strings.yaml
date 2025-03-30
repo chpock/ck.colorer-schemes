@@ -1,0 +1,75 @@
+
+# 0 level
+
+Kind is kind of the referent. For example
+  "Secret".
+
+tls must not be specified for protocols ['HTTP', 'TCP',
+  'UDP']
+
+self.all(p1, self.exists_one(p2, p1.group == p2.group && p1.kind
+  == p2.kind && p1.name == p2.name && (((!has(p1.__namespace__)
+  || p1.__namespace__ == '') && (!has(p2.__namespace__) || p2.__namespace__
+  == '')) || (has(p1.__namespace__) && has(p2.__namespace__) &&
+  p1.__namespace__ == p2.__namespace__ )) && (((!has(p1.sectionName)
+  || p1.sectionName == '') && (!has(p2.sectionName) || p2.sectionName
+  == '')) || (has(p1.sectionName) && has(p2.sectionName) && p1.sectionName
+  == p2.sectionName))))
+
+Kind is kind of the referent. For example
+  "HTTPRoute" or "Service".
+
+value must be an absolute path and start with
+  '/' when type one of ['Exact', 'PathPrefix']
+
+# 1 level
+
+description: Kind is kind of the referent. For example
+  "Secret".
+
+message: tls must not be specified for protocols ['HTTP', 'TCP',
+  'UDP']
+
+rule: self.all(p1, self.exists_one(p2, p1.group == p2.group && p1.kind
+  == p2.kind && p1.name == p2.name && (((!has(p1.__namespace__)
+  || p1.__namespace__ == '') && (!has(p2.__namespace__) || p2.__namespace__
+  == '')) || (has(p1.__namespace__) && has(p2.__namespace__) &&
+  p1.__namespace__ == p2.__namespace__ )) && (((!has(p1.sectionName)
+  || p1.sectionName == '') && (!has(p2.sectionName) || p2.sectionName
+  == '')) || (has(p1.sectionName) && has(p2.sectionName) && p1.sectionName
+  == p2.sectionName))))
+
+description: Kind is kind of the referent. For example
+  "HTTPRoute" or "Service".
+
+message: value must be an absolute path and start with
+  '/' when type one of ['Exact', 'PathPrefix']
+
+# 2 levels
+
+foo:
+  description: Kind is kind of the referent. For example
+    "Secret".
+
+foo:
+  message: tls must not be specified for protocols ['HTTP', 'TCP',
+    'UDP']
+
+foo:
+  rule: self.all(p1, self.exists_one(p2, p1.group == p2.group && p1.kind
+    == p2.kind && p1.name == p2.name && (((!has(p1.__namespace__)
+    || p1.__namespace__ == '') && (!has(p2.__namespace__) || p2.__namespace__
+    == '')) || (has(p1.__namespace__) && has(p2.__namespace__) &&
+    p1.__namespace__ == p2.__namespace__ )) && (((!has(p1.sectionName)
+    || p1.sectionName == '') && (!has(p2.sectionName) || p2.sectionName
+    == '')) || (has(p1.sectionName) && has(p2.sectionName) && p1.sectionName
+    == p2.sectionName))))
+
+foo:
+  description: Kind is kind of the referent. For example
+    "HTTPRoute" or "Service".
+
+foo:
+  message: value must be an absolute path and start with
+    '/' when type one of ['Exact', 'PathPrefix']
+
