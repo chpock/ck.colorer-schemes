@@ -55,6 +55,12 @@ if ! command -v cygpath >/dev/null 2>&1; then
     fi
 fi
 
+ERASE_LINE_STRING="$(printf "\r%$(tput cols)s\r")"
+
+erase_line() {
+    printf '%s' "$ERASE_LINE_STRING"
+}
+
 print_color() {
     local NAME="$1" COL
     if [ "$NAME" = "fg" -o "$NAME" = "bg" ]; then
@@ -344,7 +350,8 @@ for SOURCE in "$SOURCE_DIR"/* "$SOURCE_DIR"/*/*; do
     filter_diff < "$VALID" > "${VALID}.filtered"
     filter_diff < "$OUT" > "${OUT}.filtered"
     if diff -rubBaN -U10 "${VALID}.filtered" "${OUT}.filtered" >"$DIFF"; then
-        echo " OK"
+        # echo " OK"
+        erase_line
         rm -f "${VALID}.filtered" "${OUT}.filtered" "$DIFF"
         continue
     fi
