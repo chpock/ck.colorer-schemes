@@ -148,8 +148,8 @@
 
     <!-- document starts with a block scalar -->
     <block scheme="yaml-value-block">
-        <start region1="DocumentEdge" region2="def:PairStart"><![CDATA[/
-            ^((\-{3}))\s+
+        <start region1="DocumentEdge" region2="def:PairStart" region3="Error"><![CDATA[/
+            ^((\-{3}))(\S*)\s+
             \M%value-block;
         /x]]></start>
         <end region0="DocumentEdge" region3="def:PairEnd"><![CDATA[/
@@ -159,9 +159,20 @@
 
     <!-- document starts with an explicit value -->
     <block scheme="yaml-value-explicit">
-        <start region1="DocumentEdge" region2="def:PairStart"><![CDATA[/
-            ^((\-{3}))\s+
+        <start region1="DocumentEdge" region2="def:PairStart" region3="Error"><![CDATA[/
+            ^((\-{3}))(\S*)\s+
             \M%value-explicit;
+        /x]]></start>
+        <end region0="DocumentEdge" region3="def:PairEnd"><![CDATA[/
+            ^(((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|(\-{3})?=|)
+        /x]]></end>
+    </block>
+
+    <!-- document starts with an implict value -->
+    <block scheme="yaml-value-implict">
+        <start region1="DocumentEdge" region2="def:PairStart" region3="Error"><![CDATA[/
+            ^((\-{3}))(\S*)\s+
+            \M[^#\s]
         /x]]></start>
         <end region0="DocumentEdge" region3="def:PairEnd"><![CDATA[/
             ^(((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|(\-{3})?=|)
@@ -170,7 +181,7 @@
 
     <!-- document starts -->
     <block start="/^((\-{3}))(?{Error}\S*)\s*/" end="/^((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|(\-{3})?=/"
-        scheme="yaml-value-implict"
+        scheme="document"
         region01="DocumentEdge"  region10="DocumentEdge"
         region02="def:PairStart" region12="def:PairEnd"/>
 
@@ -263,10 +274,10 @@
 </scheme>
 
 <scheme name="line-string">
-    <block start="/^\s+/" end="/\M^/" region="String" inner-region="yes" scheme="string" priority="low"/>
+    <block start="/^\s+\S?=/" end="/\M^/" region="String" inner-region="yes" scheme="string" priority="low"/>
 </scheme>
 
-<scheme name="document">
+<scheme name="document-common">
 
     <!-- eat empty lines -->
     <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
@@ -305,11 +316,28 @@
     <block start="/^(\s*)\M%mapping-key;/x" end="/\M^(\y1\s)?!/"
         scheme="mapping-value-implict" priority="low"/>
 
+</scheme>
+
+<scheme name="document">
+
+    <inherit scheme="document-common"/>
+
     <!-- block value -->
     <block start="/^(\s*)\M%value-block;/x" end="/\M^(\y1\s)?!/" scheme="yaml-value-first-line" priority="low"/>
 
     <!-- explicit/implict value -->
     <block start="/^(\s*)\M\S/x" end="/\M^/" scheme="yaml-value-first-line" priority="low"/>
+
+</scheme>
+
+<scheme name="document-implict">
+
+    <inherit scheme="document-common"/>
+
+    <!-- detect lines with comments -->
+    <block start="/^\s+\M\S.*\s#/" end="/\M#/" scheme="string" region="String" inner-region="yes" priority="low"/>
+
+    <inherit scheme="line-string"/>
 
 </scheme>
 
@@ -404,19 +432,21 @@
     <!-- eat empty lines -->
     <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
 
-    <inherit scheme="document"/>
+
+    <block start="/^\M(\s+)\S/" end="/\M^(\y1)?!/"
+        scheme="document-implict" priority="low"/>
 
 </scheme>
 
 <scheme name="yaml-value-explicit">
     <inherit scheme="yaml-value-implict">
-        <virtual scheme="document" subst-scheme="line-error"/>
+        <virtual scheme="document-implict" subst-scheme="line-error"/>
     </inherit>
 </scheme>
 
 <scheme name="yaml-value-block">
     <inherit scheme="yaml-value-implict">
-        <virtual scheme="document" subst-scheme="line-string"/>
+        <virtual scheme="document-implict" subst-scheme="line-string"/>
     </inherit>
 </scheme>
 

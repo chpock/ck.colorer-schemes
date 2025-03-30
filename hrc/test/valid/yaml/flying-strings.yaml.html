@@ -25,52 +25,52 @@
 24: <span class='yaml-Comment def-Comment def-Syntax'># 1 level</span>
 25: 
 26: <span class='yaml-MappingKey def-Parameter'>description</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>Kind is kind of the referent. For example</span>
-27:   <span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'>Secret</span><span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-Error def-Error'>.</span>
+27:   <span class='yaml-String def-String'>"Secret".</span>
 28: 
 29: <span class='yaml-MappingKey def-Parameter'>message</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>tls must not be specified for protocols ['HTTP', 'TCP',</span>
-30:   <span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-String def-String'>UDP</span><span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-Error def-Error'>]</span>
+30:   <span class='yaml-String def-String'>'UDP']</span>
 31: 
 32: <span class='yaml-MappingKey def-Parameter'>rule</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>self.all(p1, self.exists_one(p2, p1.group == p2.group &amp;&amp; p1.kind</span>
 33:   <span class='yaml-String def-String'>== p2.kind &amp;&amp; p1.name == p2.name &amp;&amp; (((!has(p1.__namespace__)</span>
-34:   <span class='yaml-BlockScalar def-InterfaceKeyword def-Keyword'>|</span><span class='yaml-Error def-Error'>| p1.__namespace__ == '') &amp;&amp; (!has(p2.__namespace__) || p2.__namespace__</span>
+34:   <span class='yaml-String def-String'>|| p1.__namespace__ == '') &amp;&amp; (!has(p2.__namespace__) || p2.__namespace__</span>
 35:   <span class='yaml-String def-String'>== '')) || (has(p1.__namespace__) &amp;&amp; has(p2.__namespace__) &amp;&amp;</span>
 36:   <span class='yaml-String def-String'>p1.__namespace__ == p2.__namespace__ )) &amp;&amp; (((!has(p1.sectionName)</span>
-37:   <span class='yaml-BlockScalar def-InterfaceKeyword def-Keyword'>|</span><span class='yaml-Error def-Error'>| p1.sectionName == '') &amp;&amp; (!has(p2.sectionName) || p2.sectionName</span>
+37:   <span class='yaml-String def-String'>|| p1.sectionName == '') &amp;&amp; (!has(p2.sectionName) || p2.sectionName</span>
 38:   <span class='yaml-String def-String'>== '')) || (has(p1.sectionName) &amp;&amp; has(p2.sectionName) &amp;&amp; p1.sectionName</span>
 39:   <span class='yaml-String def-String'>== p2.sectionName))))</span>
 40: 
 41: <span class='yaml-MappingKey def-Parameter'>description</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>Kind is kind of the referent. For example</span>
-42:   <span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'>HTTPRoute</span><span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'> </span><span class='yaml-Error def-Error'>or "Service".</span>
+42:   <span class='yaml-String def-String'>"HTTPRoute" or "Service".</span>
 43: 
 44: <span class='yaml-MappingKey def-Parameter'>message</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>value must be an absolute path and start with</span>
-45:   <span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-String def-String'>/</span><span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-String def-String'> </span><span class='yaml-Error def-Error'>when type one of ['Exact', 'PathPrefix']</span>
+45:   <span class='yaml-String def-String'>'/' when type one of ['Exact', 'PathPrefix']</span>
 46: 
 47: <span class='yaml-Comment def-Comment def-Syntax'># 2 levels</span>
 48: 
 49: <span class='yaml-MappingKey def-Parameter'>foo</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
 50:   <span class='yaml-MappingKey def-Parameter'>description</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>Kind is kind of the referent. For example</span>
-51:     <span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'>Secret</span><span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-Error def-Error'>.</span>
+51:     <span class='yaml-String def-String'>"Secret".</span>
 52: 
 53: <span class='yaml-MappingKey def-Parameter'>foo</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
 54:   <span class='yaml-MappingKey def-Parameter'>message</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>tls must not be specified for protocols ['HTTP', 'TCP',</span>
-55:     <span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-String def-String'>UDP</span><span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-Error def-Error'>]</span>
+55:     <span class='yaml-String def-String'>'UDP']</span>
 56: 
 57: <span class='yaml-MappingKey def-Parameter'>foo</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
 58:   <span class='yaml-MappingKey def-Parameter'>rule</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>self.all(p1, self.exists_one(p2, p1.group == p2.group &amp;&amp; p1.kind</span>
 59:     <span class='yaml-String def-String'>== p2.kind &amp;&amp; p1.name == p2.name &amp;&amp; (((!has(p1.__namespace__)</span>
-60:     <span class='yaml-BlockScalar def-InterfaceKeyword def-Keyword'>|</span><span class='yaml-Error def-Error'>| p1.__namespace__ == '') &amp;&amp; (!has(p2.__namespace__) || p2.__namespace__</span>
+60:     <span class='yaml-String def-String'>|| p1.__namespace__ == '') &amp;&amp; (!has(p2.__namespace__) || p2.__namespace__</span>
 61:     <span class='yaml-String def-String'>== '')) || (has(p1.__namespace__) &amp;&amp; has(p2.__namespace__) &amp;&amp;</span>
 62:     <span class='yaml-String def-String'>p1.__namespace__ == p2.__namespace__ )) &amp;&amp; (((!has(p1.sectionName)</span>
-63:     <span class='yaml-BlockScalar def-InterfaceKeyword def-Keyword'>|</span><span class='yaml-Error def-Error'>| p1.sectionName == '') &amp;&amp; (!has(p2.sectionName) || p2.sectionName</span>
+63:     <span class='yaml-String def-String'>|| p1.sectionName == '') &amp;&amp; (!has(p2.sectionName) || p2.sectionName</span>
 64:     <span class='yaml-String def-String'>== '')) || (has(p1.sectionName) &amp;&amp; has(p2.sectionName) &amp;&amp; p1.sectionName</span>
 65:     <span class='yaml-String def-String'>== p2.sectionName))))</span>
 66: 
 67: <span class='yaml-MappingKey def-Parameter'>foo</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
 68:   <span class='yaml-MappingKey def-Parameter'>description</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>Kind is kind of the referent. For example</span>
-69:     <span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'>HTTPRoute</span><span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'> </span><span class='yaml-Error def-Error'>or "Service".</span>
+69:     <span class='yaml-String def-String'>"HTTPRoute" or "Service".</span>
 70: 
 71: <span class='yaml-MappingKey def-Parameter'>foo</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span>
 72:   <span class='yaml-MappingKey def-Parameter'>message</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>: </span><span class='yaml-String def-String'>value must be an absolute path and start with</span>
-73:     <span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-String def-String'>/</span><span class='yaml-StringEdge def-StringEdge def-String'>'</span><span class='yaml-String def-String'> </span><span class='yaml-Error def-Error'>when type one of ['Exact', 'PathPrefix']</span>
+73:     <span class='yaml-String def-String'>'/' when type one of ['Exact', 'PathPrefix']</span>
 74: 
 75: 
