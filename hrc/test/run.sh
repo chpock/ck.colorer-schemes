@@ -28,6 +28,11 @@ elif [ -n "$1" ]; then
     exit 1
 fi
 
+if [ "$1" = "-squash" ]; then
+    shift
+    SQUASH=1
+fi
+
 MASKS="$1"
 
 if [ "$(uname -o)" = "Cygwin" ]; then
@@ -157,6 +162,16 @@ filter_diff() {
         done
         printf '%s' "$LINE"
         echo
+    done
+}
+
+squash() {
+    while IFS= read -r LINE; do
+        if [ "$SQUASH" = "1" ]; then
+            LINE="${LINE// /}"
+            LINE="${LINE//spanclass=/span class=}"
+        fi
+        echo "$LINE"
     done
 }
 
@@ -347,8 +362,8 @@ for SOURCE in "$SOURCE_DIR"/* "$SOURCE_DIR"/*/*; do
     fi
 
     printf "; Check ..."
-    filter_diff < "$VALID" > "${VALID}.filtered"
-    filter_diff < "$OUT" > "${OUT}.filtered"
+    filter_diff < "$VALID" | squash > "${VALID}.filtered"
+    filter_diff < "$OUT" | squash > "${OUT}.filtered"
     if diff -rubBaN -U10 "${VALID}.filtered" "${OUT}.filtered" >"$DIFF"; then
         # echo " OK"
         erase_line
