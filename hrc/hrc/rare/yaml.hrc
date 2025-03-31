@@ -254,6 +254,8 @@
             (U[0-9a-fA-F]{8})
         )|$)
     /x]]></regexp>
+    <!-- unknown escapes -->
+    <regexp match="/\\./" region="Error"/>
     <inherit scheme="string"/>
 </scheme>
 
