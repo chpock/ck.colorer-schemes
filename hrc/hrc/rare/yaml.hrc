@@ -101,24 +101,40 @@
 
     (
         (*alias)|
-        ((&anchor)?(
-            key|
-            "key"|
-            'key'
-        ))
+        (
+            ((&anchor|!tag)\s+)*
+            (
+                key|
+                "key"|
+                'key'|
+                ''
+            )
+        )
     )\s*:
+
+    Notes:
+      - aliases/anchors can contain any characters except ,[]{}
+        https://github.com/adrienverge/yamllint/issues/686
+        https://yaml-core.narkive.com/Q1Th79CA/what-characters-allowed-in-anchor-names
+      - there are no explicit requirements for tags in YAML specs, lets use everything except space
+      - tags/anchors are node properties and they can be specified in any order
+        https://yaml.org/spec/1.2.2/#69-node-properties
 
 -->
 
 <entity name="mapping-key" value="
     (
         (\*[^\s\[\]\{\},]+)|
-        ((&amp;[^\s\[\]\{\},]+\s+)?(
-            (([^\s&quot;&apos;\-!&amp;\*\?\{\}\[\]]|[\-\?]\s?!)([^:#]*:\s?!)*[^:#]*)(:(\s|$))?=|
-            (&quot;([^&quot;]*((\\&quot;)[^&quot;]*)*)&quot;)|
-            (&apos;([^&apos;]*((&apos;&apos;)[^&apos;]*)*)&apos;)
-        ))
-    )\s*:
+        (
+            (((&amp;[^\s\[\]\{\},]+)|(!\S+))\s+)*
+            (
+                (([^\s&quot;&apos;\-!&amp;\*\?\{\}\[\]]|[\-\?]\s?!)([^:#]*:\s?!)*[^:#]*)(:(\s|$))?=|
+                (&quot;([^&quot;]*((\\&quot;)[^&quot;]*)*)\\?~1&quot;)|
+                (&apos;([^&apos;]*((&apos;&apos;)[^&apos;]*)*)((&apos;&apos;)+|&apos;?~1)&apos;)|
+                (&apos;&apos;)
+            )
+        )
+    )\s*:(\s?=|$)
 "/>
 
 <!-- includes alias -->
@@ -468,35 +484,84 @@
     </inherit>
 </scheme>
 
+<scheme name="mapping-key-anchor-first">
+
+    <block start="/~&amp;\M[^\s\[\]\{\},]+/" end="/~[^\s\[\]\{\},]+\m/" scheme="anchor" region="Anchor"
+        region00="SymbolAnchor"/>
+
+    <block start="/\s+!?=/" end="/\M:(\s+|$)/" scheme="mapping-key-tag-last"/>
+
+    <block start="/\s+[^\s:]?=/" end="/\M:(\s+|$)/" scheme="mapping-key-key-only"/>
+
+</scheme>
+
+<scheme name="mapping-key-tag-first">
+
+    <block start="/~!\M\S+/" end="/~\S+\m/" scheme="tag" region="Tag"
+        region00="SymbolTag"/>
+
+    <block start="/\s+&amp;?=/" end="/\M:(\s+|$)/" scheme="mapping-key-anchor-last"/>
+
+    <block start="/\s+[^\s:]?=/" end="/\M:(\s+|$)/" scheme="mapping-key-key-only"/>
+
+</scheme>
+
+<scheme name="mapping-key-anchor-last">
+
+    <block start="/~&amp;\M[^\s\[\]\{\},]+/" end="/~[^\s\[\]\{\},]+\m/" scheme="anchor" region="Anchor"
+        region00="SymbolAnchor"/>
+
+    <block start="/\s+[^\s:]?=/" end="/\M:(\s+|$)/" scheme="mapping-key-key-only"/>
+
+</scheme>
+
+<scheme name="mapping-key-tag-last">
+
+    <block start="/~!\M\S+/" end="/~\S+\m/" scheme="tag" region="Tag"
+        region00="SymbolTag"/>
+
+    <block start="/\s+[^\s:]?=/" end="/\M:(\s+|$)/" scheme="mapping-key-key-only"/>
+
+</scheme>
+
+<scheme name="mapping-key-key-only">
+
+    <!-- double-quoted key -->
+    <block start="/~(&quot;)/" end="/(&quot;)/" scheme="key-double-quote" region="MappingKey"
+        region00="StringEdge"    region10="StringEdge"
+        region01="def:PairStart" region11="def:PairEnd"/>
+
+    <!-- single-quoted key -->
+    <block start="/~(&apos;)/" end="/(&apos;)/" scheme="key-single-quote" region="MappingKey"
+        region00="StringEdge"    region10="StringEdge"
+        region01="def:PairStart" region11="def:PairEnd"/>
+
+    <!-- plain key -->
+    <block start="/~\M([^\s&quot;&apos;:!&amp;&gt;#\|\-]|[:\-]\s?!)/" end="/\M:(\s+|$)/"
+        scheme="key-plain" region="MappingKey" />
+
+    <!-- anything that is not a colon/space after a key is an error -->
+    <regexp match="/[^:\s]/" region="Error"/>
+
+</scheme>
+
+
 <scheme name="mapping-value-implict">
 
     <!-- this is what we expect exclusively at the beginning of the block (the first line) -->
 
-    <!-- double-quoted key, anything that is not a colon after a closing quote is an error -->
-    <block
-        start="/~((?{SymbolAnchor}&amp;)(?{Anchor}[^\s\[\]\{\},]+)\s+)?((&quot;))/"
-        end="/((&quot;))\s*(?{Error}[^:]*)(?{SymbolMapping}:)\s*/"
-        scheme="key-double-quote" region="MappingKey"
-        region02="StringEdge"    region11="StringEdge"
-        region03="def:PairStart" region12="def:PairEnd"/>
+    <block start="/~&amp;?=/" end="/(:)(\s+|$)/" scheme="mapping-key-anchor-first"
+        region11="SymbolMapping"/>
 
-    <!-- single-quoted key, anything that is not a colon after a closing quote is an error -->
-    <block
-        start="/~((?{SymbolAnchor}&amp;)(?{Anchor}[^\s\[\]\{\},]+)\s+)?(&apos;)/"
-        end="/((&apos;))\s*(?{Error}[^:]*)(?{SymbolMapping}:)\s*/"
-        scheme="key-single-quote" region="MappingKey"
-        region02="StringEdge"    region11="StringEdge"
-        region03="def:PairStart" region12="def:PairEnd"/>
+    <block start="/~!?=/" end="/(:)(\s+|$)/" scheme="mapping-key-tag-first"
+        region11="SymbolMapping"/>
 
     <!-- alias as a key -->
-    <block start="/~\*/" end="/:(\s+|$)/" scheme="anchor" region="Anchor"
-        region00="SymbolAnchor" region10="SymbolMapping"/>
+    <block start="/~\*/" end="/(:)(\s+|$)/" scheme="anchor" region="Anchor"
+        region00="SymbolAnchor" region11="SymbolMapping"/>
 
-    <!-- plain key -->
-    <block
-        start="/~((?{SymbolAnchor}&amp;)(?{Anchor}[^\s\[\]\{\},]+)\s+)?\M([^\s&quot;&apos;:!&amp;&gt;#\|\-]|[:\-]\s?!)/"
-        end="/:(\s+|$)/"
-        scheme="key-plain" region="MappingKey" region10="SymbolMapping"/>
+    <block start="/~\S?=/" end="/(:)(\s+|$)/" scheme="mapping-key-key-only"
+        region11="SymbolMapping"/>
 
     <inherit scheme="yaml-value-implict"/>
 
