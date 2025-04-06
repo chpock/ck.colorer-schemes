@@ -384,12 +384,15 @@
     <!-- eat spaces -->
     <regexp match="/~\s+/"/>
 
-    <!-- catch tags/aliases/anchors without name -->
-    <regexp match="/([!\*&amp;](\s.*$|$))/" region1="Error"/>
+    <!-- catch anchors/aliases without name -->
+    <regexp match="/[&amp;\*]($|\s?=)/" region="Error"/>
 
-    <block start="/!/" end="/\s+|$/" scheme="tag" region00="SymbolTag" region="Tag"/>
-    <!-- do not allow a tag after an anchor -->
-    <block start="/&amp;/" end="/\s+(?{Error}!\S*)?|$/" scheme="anchor" region00="SymbolAnchor" region="Anchor"/>
+    <!-- do not allow tags after a tag -->
+    <block start="/!/" end="/\s+((?{Error}!\S*)\s*)*|$/" scheme="tag" region00="SymbolTag" region="Tag"/>
+
+    <!-- do not allow anchors/aliases after an anchor -->
+    <block start="/&amp;/" end="/\s+((?{Error}[&amp;\*]\S*)\s*)*|$/" scheme="anchor" region00="SymbolAnchor" region="Anchor"/>
+
     <block start="/#/" end="/$/" scheme="comment" region="Comment"/>
 
     <!-- anything else is an actual value -->

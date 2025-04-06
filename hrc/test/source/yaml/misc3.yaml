@@ -12,24 +12,31 @@
   foo: !bar
   foo: !bar # comment
   foo: !bar baz
-  # tag + anchor reuse
+  # tag + alias
   foo: !bar *bar
   foo: !bar *bar # comment
   # tag + anchor
   foo: !bar &bar
   foo: !bar &bar # comment
   foo: !bar &bar value # comment
+  # anchor + tag
+  foo: &bar !tag
+  foo: &bar !tag # comment
+  foo: &bar !tag value # comment
+  # empty tag name
+  foo: !
+  foo: ! foo
 
 # errors here
 
-  # nothing is allowed after anchor reference
+  # nothing is allowed after alias
   foo: *bar error here
-  # tag after anchor is not allowed
-  foo: &bar !value
+  foo: *bar !tag
+  foo: *bar &anchor
+  # alias is not allowed after anchor
+  foo: &bar *error
   # no tag/anchor name
   foo: *
   foo: * foo
   foo: &
   foo: & foo
-  foo: !
-  foo: ! foo
