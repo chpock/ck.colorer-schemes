@@ -23,6 +23,38 @@
         "key # not a comment": "val # not a comment", #comment here
    }
 
+  bla: {[a, b, c,] #comment here
+  }
+  bla: {{key: val} #comment here
+  }
+  bla: {"foo" #comment here
+  }
+  bla: {'foo' #comment here
+  }
+  bla: {[a, b, c,] #comment here: val
+  }
+  bla: {{key: val} #comment here: val
+  }
+  bla: {"foo" #comment here: val
+  }
+  bla: {'foo' #comment here: val
+  }
+  bla: {foo: [a, b, c,] #comment here
+  }
+  bla: {foo: {key: val} #comment here
+  }
+  bla: {foo: "foo" #comment here
+  }
+  bla: {foo: 'foo' #comment here
+  }
+  bla: {foo: [a, b, c,] #comment here, foo: bar
+  }
+  bla: {foo: {key: val} #comment here, foo: bar
+  }
+  bla: {foo: "foo" #comment here, foo: bar
+  }
+  bla: {foo: 'foo' #comment here, foo: bar
+  }
 
 # errors
 
@@ -52,21 +84,21 @@
   bla: {key: foo,,,key: bar,     ,   ,}
   # no space before the comment
   map: {item1: val, item2: val,# Comment}
-  # no colon after key, before a comment
-  bla: {[a, b, c,] #error here}
-  bla: {{key: val} #error here}
-  bla: {"foo" #error here}
-  bla: {'foo' #error here}
-  bla: {[a, b, c,] #error here: val}
-  bla: {{key: val} #error here: val}
-  bla: {"foo" #error here: val}
-  bla: {'foo' #error here: val}
-  # no comma after value, before a comment
-  bla: {foo: [a, b, c,] #error here}
-  bla: {foo: {key: val} #error here}
-  bla: {foo: "foo" #error here}
-  bla: {foo: 'foo' #error here}
-  bla: {foo: [a, b, c,] #error here, foo: bar}
-  bla: {foo: {key: val} #error here, foo: bar}
-  bla: {foo: "foo" #error here, foo: bar}
-  bla: {foo: 'foo' #error here, foo: bar}
+  # no colon after key
+  bla: {[a, b, c,] error here}
+  bla: {{key: val} error here}
+  bla: {"foo" error here}
+  bla: {'foo' error here}
+  bla: {[a, b, c,] error here: val}
+  bla: {{key: val} error here: val}
+  bla: {"foo" error here: val}
+  bla: {'foo' error here: val}
+  # no comma after value
+  bla: {foo: [a, b, c,] error here}
+  bla: {foo: {key: val} error here}
+  bla: {foo: "foo" error here}
+  bla: {foo: 'foo' error here}
+  bla: {foo: [a, b, c,] error here, foo: bar}
+  bla: {foo: {key: val} error here, foo: bar}
+  bla: {foo: "foo" error here, foo: bar}
+  bla: {foo: 'foo' error here, foo: bar}

@@ -18,6 +18,15 @@
      not#comment, #comment here
    ]
 
+  bla: [[a, b, c,] #comment here
+  ]
+  bla: [{key: val} #comment here
+  ]
+  bla: ["foo" #comment here
+  ]
+  bla: ['foo' #comment here
+  ]
+
 # errors
 
   # tag after tag
@@ -46,8 +55,8 @@
   bla: [foo,,,bar,     ,   ,]
   # no space before the comment
   sequence: [item1, item2,# Comment]
-  # no comma after value, before a comment
-  bla: [[a, b, c,] #error here]
-  bla: [{key: val} #error here]
-  bla: ["foo" #error here]
-  bla: ['foo' #error here]
+  # no comma after value
+  bla: [[a, b, c,] error here]
+  bla: [{key: val} error here]
+  bla: ["foo" error here]
+  bla: ['foo' error here]

@@ -939,21 +939,21 @@
     <block start="/(&lt;&lt;)\s*(:)/" end="/[,\}]?=/" scheme="flow-mapping-value-mergekeys"
         region01="SymbolMergeKeys" region02="SymbolMapping"/>
     <!-- mapping key: double quoted -->
-    <block start="/((&quot;))/" end="/((&quot;))\s*(?{Error}[^,:\}]*)/" scheme="key-double-quote"
+    <block start="/((&quot;))/" end="/((&quot;))\s*(?{Error}([^#,:\}]|\s?~1#)*)/" scheme="key-double-quote"
         region="MappingKey"
         region00="StringEdge"    region11="StringEdge"
         region01="def:PairStart" region12="def:PairEnd"/>
     <!-- mapping key: single quoted -->
-    <block start="/((&apos;))/" end="/((&apos;))\s*(?{Error}[^,:\}]*)/" scheme="key-single-quote"
+    <block start="/((&apos;))/" end="/((&apos;))\s*(?{Error}([^#,:\}]|\s?~1#)*)/" scheme="key-single-quote"
         region="MappingKey"
         region00="StringEdge"    region11="StringEdge"
         region01="def:PairStart" region12="def:PairEnd"/>
     <!-- mapping key: flow-sequence -->
-    <block start="/((\[))/" end="/((\]))\s*(?{Error}[^,:\}]*)/" scheme="flow-sequence"
+    <block start="/((\[))/" end="/((\]))\s*(?{Error}([^#,:\}]|\s?~1#)*)/" scheme="flow-sequence"
         region00="SymbolFlow"    region11="SymbolFlow"
         region01="def:PairStart" region12="def:PairEnd"/>
     <!-- mapping key: flow-mapping -->
-    <block start="/((\{))/" end="/((\}))\s*(?{Error}[^,:\}]*)/" scheme="flow-mapping"
+    <block start="/((\{))/" end="/((\}))\s*(?{Error}([^#,:\}]|\s?~1#)*)/" scheme="flow-mapping"
         region00="SymbolFlow"    region11="SymbolFlow"
         region01="def:PairStart" region12="def:PairEnd"/>
     <!-- mapping key: plain scalar -->
@@ -982,7 +982,7 @@
     <block start="/\*/" end="/\s*[,\}]?=|\s+(?{Error}[^,\}]*)/" scheme="anchor"
         region00="SymbolAnchor" region="Anchor"/>
     <!-- nested flow-sequence, allow only comma or closing bracket after this match -->
-    <block start="/(\[)/" end="/((\]))\s*(?{Error}[^,\}]*)/" scheme="flow-sequence-mergekeys"
+    <block start="/(\[)/" end="/((\]))\s*(?{Error}([^#,\}]|\s?~1#)*)/" scheme="flow-sequence-mergekeys"
         region00="SymbolFlow"    region11="SymbolFlow"
         region01="def:PairStart" region12="def:PairEnd"/>
     <!-- anything unexpected is an error -->
@@ -1001,23 +1001,23 @@
     <!-- anchor, do not allow a tag/anchor/alias after the found anchor -->
     <block start="/&amp;/" end="/\s*$|\s+((?{Error}[!&amp;\*][^,\}\s]*)\s*)*/" scheme="anchor" region00="SymbolAnchor" region="Anchor"/>
     <!-- alias, do not allow anything after the found alias -->
-    <block start="/\*/" end="/\s*[,\}]?=|\s+(?{Error}[^,\}]*)/" scheme="anchor"
+    <block start="/\*/" end="/\s*[,\}]?=|\s+(?{Error}([^#,\}]|\s?~1#)*)/" scheme="anchor"
         region00="SymbolAnchor" region="Anchor"/>
     <!-- nested flow-sequence, allow only comma or closing bracket after this match -->
-    <block start="/(\[)/" end="/((\]))\s*(?{Error}[^,\}]*)/" scheme="flow-sequence"
+    <block start="/(\[)/" end="/((\]))\s*(?{Error}([^#,\}]|\s?~1#)*)/" scheme="flow-sequence"
         region00="SymbolFlow"    region11="SymbolFlow"
         region01="def:PairStart" region12="def:PairEnd"/>
     <!-- nested flow-mapping, allow only comma or closing bracket after this match -->
-    <block start="/(\{)/" end="/((\}))\s*(?{Error}[^,\}]*)/" scheme="flow-mapping"
+    <block start="/(\{)/" end="/((\}))\s*(?{Error}([^#,\}]|\s?~1#)*)/" scheme="flow-mapping"
         region00="SymbolFlow"    region11="SymbolFlow"
         region01="def:PairStart" region12="def:PairEnd"/>
     <!-- double quoted value, allow only comma or closing bracket after this match -->
-    <block start="/(&quot;)/" end="/((&quot;))\s*(?{Error}[^,\}]*)/" scheme="value-double-quote"
+    <block start="/(&quot;)/" end="/((&quot;))\s*(?{Error}([^#,\}]|\s?~1#)*)/" scheme="value-double-quote"
         region="String"
         region00="StringEdge"    region11="StringEdge"
         region01="def:PairStart" region12="def:PairEnd"/>
     <!-- single quoted value, allow only comma or closing bracket after this match -->
-    <block start="/(&apos;)/" end="/((&apos;))\s*(?{Error}[^,\}]*)/" scheme="value-single-quote"
+    <block start="/(&apos;)/" end="/((&apos;))\s*(?{Error}([^#,\}]|\s?~1#)*)/" scheme="value-single-quote"
         region="String"
         region00="StringEdge"    region11="StringEdge"
         region01="def:PairStart" region12="def:PairEnd"/>
@@ -1039,23 +1039,23 @@
     <!-- anchor, do not allow a tag/anchor/alias after the found anchor -->
     <block start="/&amp;/" end="/\s*$|\s+((?{Error}[!&amp;\*][^,\]\s]*)\s*)*/" scheme="anchor" region00="SymbolAnchor" region="Anchor"/>
     <!-- alias, do not allow anything after the found alias -->
-    <block start="/\*/" end="/\s*[,\]]?=|\s+(?{Error}[^,\]]*)/" scheme="anchor"
+    <block start="/\*/" end="/\s*[,\]]?=|\s+(?{Error}([^#,\]]|\s?~1#)*)/" scheme="anchor"
         region00="SymbolAnchor" region="Anchor"/>
     <!-- nested flow-sequence, allow only comma or closing bracket after this match -->
-    <block start="/(\[)/" end="/((\]))\s*(?{Error}[^,\]]*)/" scheme="flow-sequence"
+    <block start="/(\[)/" end="/((\]))\s*(?{Error}([^#,\]]|\s?~1#)*)/" scheme="flow-sequence"
         region00="SymbolFlow"    region11="SymbolFlow"
         region01="def:PairStart" region12="def:PairEnd"/>
     <!-- nested flow-mapping, allow only comma or closing bracket after this match -->
-    <block start="/(\{)/" end="/((\}))\s*(?{Error}[^,\]]*)/" scheme="flow-mapping"
+    <block start="/(\{)/" end="/((\}))\s*(?{Error}([^#,\]]|\s?~1#)*)/" scheme="flow-mapping"
         region00="SymbolFlow"    region11="SymbolFlow"
         region01="def:PairStart" region12="def:PairEnd"/>
     <!-- double quoted value, allow only comma or closing bracket after this match -->
-    <block start="/(&quot;)/" end="/((&quot;))\s*(?{Error}[^,\]]*)/" scheme="value-double-quote"
+    <block start="/(&quot;)/" end="/((&quot;))\s*(?{Error}([^#,\]]|\s?~1#)*)/" scheme="value-double-quote"
         region="String"
         region00="StringEdge"    region11="StringEdge"
         region01="def:PairStart" region12="def:PairEnd"/>
     <!-- single quoted value, allow only comma or closing bracket after this match -->
-    <block start="/(&apos;)/" end="/((&apos;))\s*(?{Error}[^,\]]*)/" scheme="value-single-quote"
+    <block start="/(&apos;)/" end="/((&apos;))\s*(?{Error}([^#,\]]|\s?~1#)*)/" scheme="value-single-quote"
         region="String"
         region00="StringEdge"    region11="StringEdge"
         region01="def:PairStart" region12="def:PairEnd"/>
@@ -1075,7 +1075,7 @@
     <!-- comments -->
     <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
     <!-- alias, do not allow anything after the found alias -->
-    <block start="/\*/" end="/\s*[,\]]?=|\s+(?{Error}[^,\]]*)/" scheme="anchor"
+    <block start="/\*/" end="/\s*[,\]]?=|\s+(?{Error}([^#,\]]|\s?~1#)*)/" scheme="anchor"
         region00="SymbolAnchor" region="Anchor"/>
     <!-- allow comma, but do not allow another comma to be used after the found comma -->
     <regexp match="/,\s*(?{Error},[\s,]*)?/" region="Symbol"/>
