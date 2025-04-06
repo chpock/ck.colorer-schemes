@@ -128,10 +128,10 @@
         (
             (((&amp;[^\s\[\]\{\},]+)|(!\S+))\s+)*
             (
-                (([^\s&quot;&apos;\-!&amp;\*\?\{\}\[\]]|[\-\?]\s?!)([^:#]*:\s?!)*[^:#]*)(:(\s|$))?=|
-                (&quot;([^&quot;]*((\\&quot;)[^&quot;]*)*)\\?~1&quot;)|
-                (&apos;([^&apos;]*((&apos;&apos;)[^&apos;]*)*)((&apos;&apos;)+|&apos;?~1)&apos;)|
-                (&apos;&apos;)
+                ([^\s&quot;&apos;\-!&amp;\*\?:\{\}\[\]]|[\-\?:]\s?!) ((:(\s|$)|\s#)?!.)* (:(\s|$))?= |
+                &quot; ([^&quot;]*((\\&quot;)[^&quot;]*)*) \\?~1&quot; |
+                &apos; ([^&apos;]*((&apos;&apos;)[^&apos;]*)*)((&apos;&apos;)+|&apos;?~1) &apos; |
+                &apos;&apos;
             )
         )
     )\s*:(\s?=|$)
