@@ -179,6 +179,8 @@
 
     <!-- unknown directive -->
     <regexp match="/^%.*$/" region="Error"/>
+    <!-- document end without document start -->
+    <regexp match="/^((\.{3}))\s*(?{Error}([#\s]+)?!.*$)?/" region1="DocumentEdge" region2="def:PairEnd"/>
 
     <!-- document starts with a block scalar -->
     <block scheme="yaml-value-block">
@@ -187,7 +189,7 @@
             \M%value-block;
         /x]]></start>
         <end region0="DocumentEdge" region3="def:PairEnd"><![CDATA[/
-            ^(((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|(\-{3})?=|)
+            ^(((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|\S?=)
         /x]]></end>
     </block>
 
@@ -198,7 +200,7 @@
             \M%value-explicit;
         /x]]></start>
         <end region0="DocumentEdge" region3="def:PairEnd"><![CDATA[/
-            ^(((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|(\-{3})?=|)
+            ^(((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|\S?=)
         /x]]></end>
     </block>
 
@@ -209,7 +211,7 @@
             \M[^#\s]
         /x]]></start>
         <end region0="DocumentEdge" region3="def:PairEnd"><![CDATA[/
-            ^(((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|(\-{3})?=|)
+            ^(((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|\S?=)
         /x]]></end>
     </block>
 
