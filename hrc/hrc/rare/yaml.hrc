@@ -937,21 +937,21 @@
     <block start="/(&lt;&lt;)\s*(:)/" end="/[,\}]?=/" scheme="flow-mapping-value-mergekeys"
         region01="SymbolMergeKeys" region02="SymbolMapping"/>
     <!-- mapping key: double quoted -->
-    <block start="/((&quot;))/" end="/((&quot;))\s*(?{Error}[^:\}]*)/" scheme="key-double-quote"
+    <block start="/((&quot;))/" end="/((&quot;))\s*(?{Error}[^,:\}]*)/" scheme="key-double-quote"
         region="MappingKey"
         region00="StringEdge"    region11="StringEdge"
         region01="def:PairStart" region12="def:PairEnd"/>
     <!-- mapping key: single quoted -->
-    <block start="/((&apos;))/" end="/((&apos;))\s*(?{Error}[^:\}]*)/" scheme="key-single-quote"
+    <block start="/((&apos;))/" end="/((&apos;))\s*(?{Error}[^,:\}]*)/" scheme="key-single-quote"
         region="MappingKey"
         region00="StringEdge"    region11="StringEdge"
         region01="def:PairStart" region12="def:PairEnd"/>
     <!-- mapping key: flow-sequence -->
-    <block start="/((\[))/" end="/((\]))\s*(?{Error}[^:\}]*)/" scheme="flow-sequence"
+    <block start="/((\[))/" end="/((\]))\s*(?{Error}[^,:\}]*)/" scheme="flow-sequence"
         region00="SymbolFlow"    region11="SymbolFlow"
         region01="def:PairStart" region12="def:PairEnd"/>
     <!-- mapping key: flow-mapping -->
-    <block start="/((\{))/" end="/((\}))\s*(?{Error}[^:\}]*)/" scheme="flow-mapping"
+    <block start="/((\{))/" end="/((\}))\s*(?{Error}[^,:\}]*)/" scheme="flow-mapping"
         region00="SymbolFlow"    region11="SymbolFlow"
         region01="def:PairStart" region12="def:PairEnd"/>
     <!-- mapping key: plain scalar -->
