@@ -60,3 +60,11 @@
   bla: [{key: val} error here]
   bla: ["foo" error here]
   bla: ['foo' error here]
+
+  bla: ['foo'] # comment here
+    # comment here
+    error here
+  bla: {foo: bar} #comment here
+    # comment here
+    error here
+
