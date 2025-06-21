@@ -307,6 +307,8 @@
 </scheme>
 
 <scheme name="line-error">
+    <!-- comments -->
+    <block start="/^\s*\m#/" end="/\M^/" region="Comment" scheme="comment" priority="low"/>
     <!-- anything unexpected as an error -->
     <block start="/^\s*(?{Error}\S.*)?/" end="/\M^/" region01="Error" scheme="def:empty" priority="low"/>
 </scheme>
