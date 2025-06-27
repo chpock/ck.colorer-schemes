@@ -156,6 +156,19 @@ function func-name { command here; }
 
 function -error here;
 
+# 3.4 Shell Parameters
+
+var+="value" \
+    var+="val2"
+BASH+="value" # comment here
+var+="value" error here # comment here
+declare str+=" world" str2+="foo"
+local str+=" world" str2+="foo" VAR str3+="bar"
+export str+=" world" str2+="foo" \
+    str3+="bar" VAR1 VAR2=foo
+# This leads to an error as readonly variables cannot be reassigned or appended
+readonly val+="hi"
+
 # 3.5.3 Shell Parameter Expansion
 
 ${A:-word} ${BASH:-word}

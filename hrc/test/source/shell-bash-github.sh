@@ -30,3 +30,10 @@ done
 for (( i = 0; i < L; i++ )); do
     (( B = (B + A) % 65521 )) || :
 done
+
+# https://github.com/chpock/ck.colorer-schemes/issues/13
+
+var="value"
+var+="value"
+BASH+="value" # comment here
+var+="value" error here # comment here
