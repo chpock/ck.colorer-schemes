@@ -622,6 +622,7 @@
         <symb name="&amp;&amp;"/> <symb name="||"/>
         <symb name="&amp;"/>      <symb name="^"/>
         <symb name="|"/>
+        <symb name="("/>          <symb name=")"/>
     </keywords>
 </scheme>
 

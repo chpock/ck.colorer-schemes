@@ -37,3 +37,8 @@ var="value"
 var+="value"
 BASH+="value" # comment here
 var+="value" error here # comment here
+
+# https://github.com/chpock/ck.colorer-schemes/issues/14
+
+(( B = (B + A) % 65521 )) || :
+echo $(( B = (B + A) % 65521 ))
