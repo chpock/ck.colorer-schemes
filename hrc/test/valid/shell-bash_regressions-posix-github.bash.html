@@ -13,3 +13,17 @@
 12: <span class='shell-posix-CommandReserved def-Keyword'>do</span>
 13:     <span class='shell-posix-Variable def-Var'>result</span><span class='shell-posix-Symbol def-Symbol'>=</span><span class='shell-posix-Symbol def-Symbol'>`</span><span class='shell-posix-CommandBuiltin def-FunctionKeyword def-Keyword'>touch</span><span class='shell-posix-Insertion def-Insertion'> </span><span class='shell-posix-VariableStrong def-VarStrong def-Var'>${</span><span class='shell-posix-Variable def-Var'>i</span><span class='shell-posix-VariableStrong def-VarStrong def-Var'>}</span><span class='shell-posix-Symbol def-Symbol'>`</span>
 14: <span class='shell-posix-CommandReserved def-Keyword'>done</span>
+15: 
+16: <span class='shell-posix-Comment def-Comment def-Syntax'># </span><span class='def-URL def-URI'>https://github.com/chpock/ck.colorer-schemes/issues/15</span>
+17: 
+18: <span class='shell-posix-CommandReserved def-Keyword'>while</span> <span class='shell-posix-CommandBuiltin def-FunctionKeyword def-Keyword'>read</span> LINE<span class='shell-posix-SymbolStrong def-SymbolStrong def-Symbol'>;</span> <span class='shell-posix-CommandReserved def-Keyword'>do</span>
+19:     <span class='shell-posix-CommandBuiltin def-FunctionKeyword def-Keyword'>echo</span> <span class='shell-posix-StringEdge def-StringEdge def-String'>"</span><span class='shell-posix-String def-String'>X-</span><span class='shell-posix-VariableStrong def-VarStrong def-Var'>$</span><span class='shell-posix-Variable def-Var'>LINE</span><span class='shell-posix-StringEdge def-StringEdge def-String'>"</span>
+20: <span class='shell-posix-CommandReserved def-Keyword'>done</span> \
+21:     <span class='shell-posix-RedirectSymbol def-InterfaceKeyword def-Keyword'>&lt;</span> /tmp/input \
+22:     <span class='shell-posix-RedirectSymbol def-InterfaceKeyword def-Keyword'>></span> /tmp/output
+23: 
+24: <span class='shell-posix-CommandReserved def-Keyword'>for</span> <span class='shell-posix-Variable def-Var'>VAR</span> <span class='shell-posix-CommandReserved def-Keyword'>in</span> <span class='shell-posix-Number def-Number'>1</span> <span class='shell-posix-Number def-Number'>2</span> <span class='shell-posix-Number def-Number'>3</span> <span class='shell-posix-Number def-Number'>4</span><span class='shell-posix-SymbolStrong def-SymbolStrong def-Symbol'>;</span> <span class='shell-posix-CommandReserved def-Keyword'>do</span>
+25:     <span class='shell-posix-CommandBuiltin def-FunctionKeyword def-Keyword'>echo</span> <span class='shell-posix-StringEdge def-StringEdge def-String'>"</span><span class='shell-posix-String def-String'>X-</span><span class='shell-posix-VariableStrong def-VarStrong def-Var'>$</span><span class='shell-posix-Variable def-Var'>VAR</span><span class='shell-posix-StringEdge def-StringEdge def-String'>"</span>
+26: <span class='shell-posix-CommandReserved def-Keyword'>done</span> \
+27:     <span class='shell-posix-RedirectSymbol def-InterfaceKeyword def-Keyword'>></span> /tmp/output
+28: 
