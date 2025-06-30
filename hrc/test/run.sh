@@ -172,7 +172,7 @@ squash() {
             LINE="${LINE//spanclass=/span class=}"
         fi
         echo "$LINE"
-    done
+    done | sed 's#<span[^>]*></span>##g' # removes span tags without content
 }
 
 html2console() {
