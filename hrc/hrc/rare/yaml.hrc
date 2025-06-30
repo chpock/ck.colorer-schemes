@@ -183,7 +183,7 @@
     <regexp match="/^((\.{3}))\s*(?{Error}([#\s]+)?!.*$)?/" region1="DocumentEdge" region2="def:PairEnd"/>
 
     <!-- document starts with a block scalar -->
-    <block scheme="yaml-value-block">
+    <block scheme="value-block">
         <start region1="DocumentEdge" region2="def:PairStart" region3="Error"><![CDATA[/
             ^((\-{3}))(\S*)\s+
             \M%value-block;
@@ -194,7 +194,7 @@
     </block>
 
     <!-- document starts with an explicit value -->
-    <block scheme="yaml-value-explicit">
+    <block scheme="value-explicit">
         <start region1="DocumentEdge" region2="def:PairStart" region3="Error"><![CDATA[/
             ^((\-{3}))(\S*)\s+
             \M%value-explicit;
@@ -205,7 +205,7 @@
     </block>
 
     <!-- document starts with an implict value -->
-    <block scheme="yaml-value-implict">
+    <block scheme="value-implict">
         <start region1="DocumentEdge" region2="def:PairStart" region3="Error"><![CDATA[/
             ^((\-{3}))(\S*)\s+
             \M[^#\s]
@@ -346,15 +346,15 @@
 
     <!-- detect mapping with an explicit value -->
     <block start="/^(\s*)\M%mapping-key-value-explicit;/x" end="/\M^(\y1\s)?!/"
-        scheme="mapping-value-explicit" priority="low"/>
+        scheme="mapping-explicit" priority="low"/>
 
     <!-- detect mapping with a value as a block scalar -->
     <block start="/^(\s*)\M%mapping-key-value-block;/x" end="/\M^(\y1\s)?!/"
-        scheme="mapping-value-block" priority="low"/>
+        scheme="mapping-block" priority="low"/>
 
     <!-- detect mapping with an implicit value -->
     <block start="/^(\s*)\M%mapping-key;/x" end="/\M^(\y1\s)?!/"
-        scheme="mapping-value-implict" priority="low"/>
+        scheme="mapping-implict" priority="low"/>
 
 </scheme>
 
@@ -363,10 +363,10 @@
     <inherit scheme="document-common"/>
 
     <!-- block value -->
-    <block start="/^(\s*)\M%value-block;/x" end="/\M^(\y1\s)?!/" scheme="yaml-value-first-line" priority="low"/>
+    <block start="/^(\s*)\M%value-block;/x" end="/\M^(\y1\s)?!/" scheme="value-block" priority="low"/>
 
     <!-- explicit/implict value -->
-    <block start="/^(\s*)\M\S/x" end="/\M^/" scheme="yaml-value-first-line" priority="low"/>
+    <block start="/^(\s*)\M\S/x" end="/\M^/" scheme="value-first-line" priority="low"/>
 
 </scheme>
 
@@ -381,33 +381,59 @@
 
 </scheme>
 
-<scheme name="yaml-value-first-line">
+<scheme name="value-anchor-first">
 
-    <!-- eat spaces -->
-    <regexp match="/~\s+/"/>
+    <block start="/~&amp;\M[^\s\[\]\{\},]+/" end="/~[^\s\[\]\{\},]+\m/" scheme="anchor" region="Anchor"
+        region00="SymbolAnchor"/>
 
-    <!-- catch anchors/aliases without name -->
-    <regexp match="/[&amp;\*]($|\s?=)/" region="Error"/>
+    <block start="/\s+!?=/" end="/\M$/" scheme="value-tag-last"/>
 
-    <!-- do not allow tags after a tag -->
-    <block start="/!/" end="/\s+((?{Error}!\S*)\s*)*|$/" scheme="tag" region00="SymbolTag" region="Tag"/>
+    <block start="/\s+\S?=/" end="/\M$/" scheme="value-value-only"/>
 
-    <!-- do not allow anchors/aliases after an anchor -->
-    <block start="/&amp;/" end="/\s+((?{Error}[&amp;\*]\S*)\s*)*|$/" scheme="anchor" region00="SymbolAnchor" region="Anchor"/>
-
-    <block start="/#/" end="/$/" scheme="comment" region="Comment"/>
-
-    <!-- anything else is an actual value -->
-    <block start="/.?#1.?=/" end="/$/" scheme="yaml-value-actual"/>
-    <!--
-        this is a special case where this schema is used in the "document" schema and
-        then the value starts at the first character (the beginning of the line)
-    -->
-    <block start="/~.?=/" end="/$/" scheme="yaml-value-actual"/>
+    <!-- anything that doesn't start with space (doesn't match above regex) is an error -->
+    <regexp match="/\S+/" region="Error"/>
 
 </scheme>
 
-<scheme name="yaml-value-actual">
+<scheme name="value-tag-first">
+
+    <block start="/~!\M\S*/" end="/~\S*\m/" scheme="tag" region="Tag"
+        region00="SymbolTag"/>
+
+    <block start="/\s+&amp;?=/" end="/\M$/" scheme="value-anchor-last"/>
+
+    <!-- allow an alias after a tag -->
+    <block start="/\s+\*\M\S*/" end="/~\S*\s*(?{Error}[^#\s].*?)?\M(#|$)/" scheme="anchor"
+        region="Anchor" region00="SymbolAnchor"/>
+    <!-- allow comments after alias -->
+    <block start="/#/" end="/\M$/" region="Comment" scheme="comment"/>
+
+    <block start="/\s+\S?=/" end="/\M$/" scheme="value-value-only"/>
+
+</scheme>
+
+<scheme name="value-anchor-last">
+
+    <block start="/~&amp;\M[^\s\[\]\{\},]+/" end="/~[^\s\[\]\{\},]+\m/" scheme="anchor" region="Anchor"
+        region00="SymbolAnchor"/>
+
+    <block start="/\s+\S?=/" end="/\M$/" scheme="value-value-only"/>
+
+    <!-- anything that doesn't start with space (doesn't match above regex) is an error -->
+    <regexp match="/\S+/" region="Error"/>
+
+</scheme>
+
+<scheme name="value-tag-last">
+
+    <block start="/~!\M\S*/" end="/~\S*\m/" scheme="tag" region="Tag"
+        region00="SymbolTag"/>
+
+    <block start="/\s+\S?=/" end="/\M$/" scheme="value-value-only"/>
+
+</scheme>
+
+<scheme name="value-value-only">
 
     <!-- eat spaces -->
     <regexp match="/\s+/"/>
@@ -439,56 +465,68 @@
         region00="SymbolFlow"    region11="SymbolFlow"
         region01="def:PairStart" region12="def:PairEnd"/>
 
-    <!-- value - alias (after alias only a comment is allowed) -->
-    <block start="/\*/" end="/\s*$|\s+#?=|\s+(?{Error}[^#].*?)?(\s+#|$)?=/" scheme="anchor"
-        region00="SymbolAnchor" region="Anchor"/>
-
     <!-- value - block scalar -->
     <regexp match="/([&gt;\|])([+-])?(\d)?(\s*$|\s+#?=|\s*(?{Error}\S.*?)?(\s+#|$)?=)/"
         region1="BlockScalar" region2="BlockScalarIndent" region3="BlockScalarIndent"/>
 
-    <!-- do not allow sequences/complex mapping here -->
-    <regexp match="/[\-\?:]\s.*?(\s#|$)?=/" region="Error"/>
+    <!-- do not allow sequences/complex mapping, anchors, aliases, tags here -->
+    <regexp match="/([\-\?:]\s.*?|[&amp;\*!]\S*)(\s|$)?=/" region="Error"/>
 
     <!-- value - plain scalar -->
     <block start="/\S?=/" end="/\s+#?=|$/" scheme="value-plain" region="String"/>
 
 </scheme>
 
-<scheme name="yaml-value-implict">
+<scheme name="value-first-line">
+
+    <!-- this is what we expect exclusively at the beginning of the block (the first line) -->
+
+    <block start="/~(&amp;\S)?=/" end="/$/" scheme="value-anchor-first"/>
+
+    <block start="/~!?=/" end="/$/" scheme="value-tag-first"/>
+
+    <!-- alias as a value -->
+    <block start="/~\*\S?=/" end="/\s*$|\s+#?=|\s+(?{Error}[^#].*?)?\s*(#|$)?=/" scheme="anchor"
+        region="Anchor" region00="SymbolAnchor"/>
+    <!-- allow comments in the first line after alias -->
+    <block start="/.?#1#/" end="/$/" region="Comment" scheme="comment"/>
+
+    <block start="/~\S?=/" end="/$/" scheme="value-value-only" region11="SymbolMapping"/>
+
+</scheme>
+
+<scheme name="value-implict">
 
     <!--
         This is what we expect at the first line of the block.
         We are checking that we have at least 1 character in front of match,
         so here we will match something after a key, but not a newline.
     -->
-    <block start="/.?#1.?=/" end="/$/" scheme="yaml-value-first-line"/>
+    <block start="/.?#1.?=/" end="/$/" scheme="value-first-line"/>
 
     <!-- this blocks matches everything starting from the second line and below -->
 
     <!--
          Note: we cannot rely on 'eat empty lines' in the 'document' schema, as
-         that 'document' schema will be replaced in the yaml-value-explicit and
-         yaml-value-block schemas, but this ignoring of empty lines rule
+         that 'document' schema will be replaced in the value-explicit and
+         value-block schemas, but this ignoring of empty lines rule
          should be active.
     -->
     <!-- eat empty lines -->
     <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
 
-
-    <block start="/^\M(\s+)\S/" end="/\M^(\y1)?!/"
-        scheme="document-implict" priority="low"/>
+    <block start="/^\M(\s+)\S/" end="/\M^(\y1)?!/" scheme="document-implict" priority="low"/>
 
 </scheme>
 
-<scheme name="yaml-value-explicit">
-    <inherit scheme="yaml-value-implict">
+<scheme name="value-explicit">
+    <inherit scheme="value-implict">
         <virtual scheme="document-implict" subst-scheme="line-error"/>
     </inherit>
 </scheme>
 
-<scheme name="yaml-value-block">
-    <inherit scheme="yaml-value-implict">
+<scheme name="value-block">
+    <inherit scheme="value-implict">
         <virtual scheme="document-implict" subst-scheme="line-string"/>
     </inherit>
 </scheme>
@@ -501,6 +539,9 @@
     <block start="/\s+!?=/" end="/\M:(\s+|$)/" scheme="mapping-key-tag-last"/>
 
     <block start="/\s+[^\s:]?=/" end="/\M:(\s+|$)/" scheme="mapping-key-key-only"/>
+
+    <!-- anything that doesn't start with space (doesn't match above regex) is an error -->
+    <regexp match="/[^\s:]+/" region="Error"/>
 
 </scheme>
 
@@ -521,6 +562,9 @@
         region00="SymbolAnchor"/>
 
     <block start="/\s+[^\s:]?=/" end="/\M:(\s+|$)/" scheme="mapping-key-key-only"/>
+
+    <!-- anything that doesn't start with space (doesn't match above regex) is an error -->
+    <regexp match="/[^\s:]/" region="Error"/>
 
 </scheme>
 
@@ -555,7 +599,7 @@
 </scheme>
 
 
-<scheme name="mapping-value-implict">
+<scheme name="mapping-implict">
 
     <!-- this is what we expect exclusively at the beginning of the block (the first line) -->
 
@@ -572,19 +616,19 @@
     <block start="/~\S?=/" end="/(:)(\s+|$)/" scheme="mapping-key-key-only"
         region11="SymbolMapping"/>
 
-    <inherit scheme="yaml-value-implict"/>
+    <inherit scheme="value-implict"/>
 
 </scheme>
 
-<scheme name="mapping-value-explicit">
-    <inherit scheme="mapping-value-implict">
-        <virtual scheme="yaml-value-implict" subst-scheme="yaml-value-explicit"/>
+<scheme name="mapping-explicit">
+    <inherit scheme="mapping-implict">
+        <virtual scheme="value-implict" subst-scheme="value-explicit"/>
     </inherit>
 </scheme>
 
-<scheme name="mapping-value-block">
-    <inherit scheme="mapping-value-implict">
-        <virtual scheme="yaml-value-implict" subst-scheme="yaml-value-block"/>
+<scheme name="mapping-block">
+    <inherit scheme="mapping-implict">
+        <virtual scheme="value-implict" subst-scheme="value-block"/>
     </inherit>
 </scheme>
 
@@ -636,42 +680,42 @@
 <scheme name="sequence">
 
     <!-- detect sequence with a value as mapping with an explicit value -->
-    <block scheme="mapping-value-explicit" start="/
+    <block scheme="mapping-explicit" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         \M%mapping-key-value-explicit;
     /x" end="/\M^(\y1\s\y2\s)?!/"/>
 
     <!-- detect sequence with a value as mapping with a value as a block scalar -->
-    <block scheme="mapping-value-block" start="/
+    <block scheme="mapping-block" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         \M%mapping-key-value-block;
     /x" end="/\M^(\y1\s\y2\s)?!/"/>
 
     <!-- detect sequence with a value as mapping with an implicit value -->
-    <block scheme="mapping-value-implict" start="/
+    <block scheme="mapping-implict" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         \M%mapping-key;
     /x" end="/\M^(\y1\s\y2\s)?!/"/>
 
     <!-- detect sequence with an explicit value -->
-    <block scheme="yaml-value-explicit" start="/
+    <block scheme="value-explicit" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         \M%value-explicit;
     /x" end="/\M^(\y1\s)?!/"/>
 
     <!-- detect sequence with a value as a block scalar -->
-    <block scheme="yaml-value-block" start="/
+    <block scheme="value-block" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         \M%value-block;
     /x" end="/\M^(\y1\s)?!/"/>
 
     <!-- detect sequence with an implicit value -->
-    <block scheme="yaml-value-implict" start="/
+    <block scheme="value-implict" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+|$)
         \M(\-\s)?!
@@ -684,7 +728,7 @@
 <scheme name="sequence-nested-1">
 
     <!-- detect sequence with a value as mapping with an explicit value -->
-    <block scheme="mapping-value-explicit" start="/
+    <block scheme="mapping-explicit" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -692,7 +736,7 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s)?!/"/>
 
     <!-- detect sequence with a value as mapping with a value as a block scalar -->
-    <block scheme="mapping-value-block" start="/
+    <block scheme="mapping-block" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -700,7 +744,7 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s)?!/"/>
 
     <!-- detect sequence with a value as mapping with an implicit value -->
-    <block scheme="mapping-value-implict" start="/
+    <block scheme="mapping-implict" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -708,7 +752,7 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s)?!/"/>
 
     <!-- detect sequence with an explicit value -->
-    <block scheme="yaml-value-explicit" start="/
+    <block scheme="value-explicit" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -716,7 +760,7 @@
     /x" end="/\M^(\y1\s\y2\s)?!/"/>
 
     <!-- detect sequence with a value as a block scalar -->
-    <block scheme="yaml-value-block" start="/
+    <block scheme="value-block" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -724,7 +768,7 @@
     /x" end="/\M^(\y1\s\y2\s)?!/"/>
 
     <!-- detect sequence with an implicit value -->
-    <block scheme="yaml-value-implict" start="/
+    <block scheme="value-implict" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+|$)
@@ -738,7 +782,7 @@
 <scheme name="sequence-nested-2">
 
     <!-- detect sequence with a value as mapping with an explicit value -->
-    <block scheme="mapping-value-explicit" start="/
+    <block scheme="mapping-explicit" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -747,7 +791,7 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"/>
 
     <!-- detect sequence with a value as mapping with a value as a block scalar -->
-    <block scheme="mapping-value-block" start="/
+    <block scheme="mapping-block" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -756,7 +800,7 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"/>
 
     <!-- detect sequence with a value as mapping with an implicit value -->
-    <block scheme="mapping-value-implict" start="/
+    <block scheme="mapping-implict" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -765,7 +809,7 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"/>
 
     <!-- detect sequence with an explicit value -->
-    <block scheme="yaml-value-explicit" start="/
+    <block scheme="value-explicit" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -774,7 +818,7 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s)?!/"/>
 
     <!-- detect sequence with a value as a block scalar -->
-    <block scheme="yaml-value-block" start="/
+    <block scheme="value-block" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -783,7 +827,7 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s)?!/"/>
 
     <!-- detect sequence with an implicit value -->
-    <block scheme="yaml-value-implict" start="/
+    <block scheme="value-implict" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -798,7 +842,7 @@
 <scheme name="sequence-nested-3">
 
     <!-- detect sequence with a value as mapping with an explicit value -->
-    <block scheme="mapping-value-explicit" start="/
+    <block scheme="mapping-explicit" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -808,7 +852,7 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
 
     <!-- detect sequence with a value as mapping with a value as a block scalar -->
-    <block scheme="mapping-value-block" start="/
+    <block scheme="mapping-block" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -818,7 +862,7 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
 
     <!-- detect sequence with a value as mapping with an implicit value -->
-    <block scheme="mapping-value-implict" start="/
+    <block scheme="mapping-implict" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -828,7 +872,7 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
 
     <!-- detect sequence with an explicit value -->
-    <block scheme="yaml-value-explicit" start="/
+    <block scheme="value-explicit" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -838,7 +882,7 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"/>
 
     <!-- detect sequence with a value as a block scalar -->
-    <block scheme="yaml-value-block" start="/
+    <block scheme="value-block" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -848,7 +892,7 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"/>
 
     <!-- detect sequence with an implicit value -->
-    <block scheme="yaml-value-implict" start="/
+    <block scheme="value-implict" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -864,7 +908,7 @@
 <scheme name="sequence-nested-4">
 
     <!-- detect sequence with a value as mapping with an explicit value -->
-    <block scheme="mapping-value-explicit" start="/
+    <block scheme="mapping-explicit" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -875,7 +919,7 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s\y6\s)?!/"/>
 
     <!-- detect sequence with a value as mapping with a value as a block scalar -->
-    <block scheme="mapping-value-block" start="/
+    <block scheme="mapping-block" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -886,7 +930,7 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s\y6\s)?!/"/>
 
     <!-- detect sequence with a value as mapping with an implicit value -->
-    <block scheme="mapping-value-implict" start="/
+    <block scheme="mapping-implict" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -897,7 +941,7 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s\y6\s)?!/"/>
 
     <!-- detect sequence with an explicit value -->
-    <block scheme="yaml-value-explicit" start="/
+    <block scheme="value-explicit" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -908,7 +952,7 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
 
     <!-- detect sequence with a value as a block scalar -->
-    <block scheme="yaml-value-block" start="/
+    <block scheme="value-block" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
@@ -919,12 +963,12 @@
     /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
 
     <!-- detect sequence with an implicit value -->
-    <block scheme="yaml-value-implict" start="/
+    <block scheme="value-implict" start="/
         ~(\s*)
         (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
         (?{SymbolSequence}\-)(\s+)
         (?{SymbolSequence}\-)(\s+)
-        (?{SymbolSequence}\-)(\s+|$)
+        (?{SymbolSequence}\-)(\s+)
         (?{SymbolSequence}\-)(\s+|$)
         \M(\-\s)?!
     /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
