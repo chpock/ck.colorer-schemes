@@ -8,32 +8,15 @@ SELF_DIR="$(cd "$(dirname "$0")"; pwd)"
 BIN_DIR="$SELF_DIR/bin"
 SOURCE_DIR="$SELF_DIR/source"
 OUT_DIR="$SELF_DIR/_out"
-VALID_DIR="$SELF_DIR/valid"
-PREVIEW_DIR="$SELF_DIR/../../preview"
-
-if [ "$1" = "show" ]; then
-    MODE_SHOW=1
-    shift
-elif [ "$1" = "save" ]; then
-    MODE_CREATE=1
-    shift
-elif [ "$1" = "preview" ]; then
-    MODE_PREVIEW=1
-    shift
-elif [ "$1" = "test" ]; then
-    # normal mode
-    shift
-elif [ -n "$1" ]; then
-    echo "Error: unknown mode: '$1'"
-    exit 1
-fi
-
-if [ "$1" = "-squash" ]; then
-    shift
-    SQUASH=1
-fi
+SCHEMES_DIR="$SELF_DIR/../hrc"
+LOG_FILE="$OUT_DIR"/consoletools.log
 
 MASKS="$1"
+
+if [ -z "$MASKS" ]; then
+    echo "Usage: $0 <sample file to watch>"
+    exit 1
+fi
 
 if [ "$(uname -o)" = "Cygwin" ]; then
     COLORER_BIN="colorer.exe"
@@ -41,30 +24,9 @@ else
     COLORER_BIN="colorer"
 fi
 
-set -- "$BIN_DIR/$COLORER_BIN" -c "$BIN_DIR"/catalog.xml -i gruvbox_dark_hard
+set -- "$BIN_DIR/$COLORER_BIN" -c "$BIN_DIR"/catalog.xml -i gruvbox_dark_hard -el debug -ed "$OUT_DIR"
 
-LOG_FILE="$OUT_DIR"/consoletools.log
 HRD_FILE="$BIN_DIR"/gruvbox_dark_hard.hrd
-
-rm -fr "$OUT_DIR"/*
-
-if ! command -v cygpath >/dev/null 2>&1; then
-    if [ -d /c/DriveD/Projects/ck.colorer-schemes/hrc/hrc ]; then
-        cp -rf "$SELF_DIR/../hrc"/* "/c/DriveD/Projects/ck.colorer-schemes/hrc/hrc"
-        cp -f "$SELF_DIR/../proto.hrc" "/c/DriveD/Projects/ck.colorer-schemes/hrc"
-    fi
-    if [ -e /d/Sync/Envy ]; then
-        mkdir -p /d/Sync/Envy/ck.colorer-schemes/hrc/hrc
-        cp -rf "$SELF_DIR/../hrc"/* /d/Sync/Envy/ck.colorer-schemes/hrc/hrc
-        cp -f "$SELF_DIR/../proto.hrc" /d/Sync/Envy/ck.colorer-schemes/hrc
-    fi
-fi
-
-ERASE_LINE_STRING="$(printf "\r%$(tput cols)s\r")"
-
-erase_line() {
-    printf '%s' "$ERASE_LINE_STRING"
-}
 
 print_color() {
     local NAME="$1" COL
@@ -163,16 +125,6 @@ filter_diff() {
         printf '%s' "$LINE"
         echo
     done
-}
-
-squash() {
-    while IFS= read -r LINE; do
-        if [ "$SQUASH" = "1" ]; then
-            LINE="${LINE// /}"
-            LINE="${LINE//spanclass=/span class=}"
-        fi
-        echo "$LINE"
-    done | sed 's#<span[^>]*></span>##g' # removes span tags without content
 }
 
 html2console() {
@@ -297,6 +249,12 @@ for SOURCE in "$SOURCE_DIR"/* "$SOURCE_DIR"/*/*; do
         SOURCE="${SOURCE%.*}"
     fi
 
+    if [ -n "$BASE" ] && [ -z "$FAIL_MULTIPLE_BASE" ]; then
+        echo "Error - multiple files match specified mask:"
+        echo "  $BASE"
+        FAIL_MULTIPLE_BASE=1
+    fi
+
     BASE="${SOURCE##$SOURCE_DIR/}"
 
     BASE_DIR="${BASE%/*}"
@@ -310,83 +268,39 @@ for SOURCE in "$SOURCE_DIR"/* "$SOURCE_DIR"/*/*; do
     VALID="$VALID_DIR/${BASE}.html"
     TEMPLATE="${SOURCE}.template"
 
-    printf "Generate: %s ..." "$BASE"
-    [ ! -e "$TEMPLATE" ] || (cd "$SOURCE_DIR" && sh "$TEMPLATE") > "$SOURCE"
-    if [ -n "$MODE_SHOW" ]; then
-        echo
-        MAX_LENGTH=$(( $(wc -L "$SOURCE" | awk '{print $1}') + 2 ))
-        "$@" -h "$SOURCE" -db | tr -d '\r' | html2ans "$MAX_LENGTH"
-        continue
-    fi
-    if [ -n "$MODE_PREVIEW" ]; then
-        if [ -e "$TEMPLATE" ]; then
-            echo " Skip."
-            rm -f "$SOURCE"
-            continue
-        fi
-        MAX_LENGTH=$(( $(wc -L "$SOURCE" | awk '{print $1}') + 2 ))
-        PREVIEW_ANS="$PREVIEW_DIR/${BASE}.ans"
-        if [ ! -e "$PREVIEW_ANS" ]; then
-            echo " Preview doesn't exist. Skip as not needed."
-            continue
-        fi
-        "$@" -h "$SOURCE" -db | tr -d '\r' | html2ans "$MAX_LENGTH" >"$PREVIEW_ANS"
-    else
-        "$@" -ht "$SOURCE" -dc -dh -ln -o "$OUT_DIR"/${BASE}.html -el debug -ed "$OUT_DIR"
-    fi
-    printf " OK"
-    [ ! -e "$TEMPLATE" ] || rm -f "$SOURCE"
-
-    if [ -n "$MODE_PREVIEW" ]; then
-       printf "; Convert to SVG ..."
-       PREVIEW_SVG="$PREVIEW_DIR/${BASE}.svg"
-       if command -v ansisvg >/dev/null 2>&1; then
-           ansisvg < "$PREVIEW_ANS" > "$PREVIEW_SVG"
-           echo " OK"
-       else
-           echo " Failed. ansisvg not found."
-       fi
-       continue
+    if [ -n "$FAIL_MULTIPLE_BASE" ]; then
+        echo "  $BASE"
     fi
 
-    if [ -n "$MODE_CREATE" ]; then
-        printf "; Save ..."
-        cp -f "$OUT" "$VALID"
-        echo " OK"
-        continue
-    fi
-
-    if [ ! -e "$VALID" ]; then
-        echo "; Skip."
-        continue
-    fi
-
-    printf "; Check ..."
-    filter_diff < "$VALID" | squash > "${VALID}.filtered"
-    filter_diff < "$OUT" | squash > "${OUT}.filtered"
-    if diff -rubBaN -U10 "${VALID}.filtered" "${OUT}.filtered" >"$DIFF"; then
-        # echo " OK"
-        erase_line
-        rm -f "${VALID}.filtered" "${OUT}.filtered" "$DIFF"
-        continue
-    fi
-    rm -f "${VALID}.filtered" "${OUT}.filtered"
-
-    echo " NOT OK"
-    echo "Raw diff:"
-    cat "$DIFF"
-    echo "Preview diff:"
-    cat "$DIFF" | html2console
+    SOURCE_LIVE="$SOURCE"
 
 done
 
-[ -z "$MODE_PREVIEW" ] || exit 0
-
-echo
-printf "Check logs ..."
-if grep -q -P '\[(warning|error)\](?!\s+Duplicate prototype\s+)' "$LOG_FILE"; then
-    echo " NOT OK"
-    grep --color=auto -P '\[(warning|error)\](?!\s+Duplicate prototype\s+)' "$LOG_FILE"
-else
-    echo " OK"
+if [ -n "$FAIL_MULTIPLE_BASE" ]; then
+    echo
+    exit 1
 fi
+
+if [ -z "$SOURCE_LIVE" ]; then
+    echo
+    echo "Error - could not find source for mask '$MASKS'"
+    exit 1
+fi
+
+MAX_LENGTH=$(( $(wc -L "$SOURCE" | awk '{print $1}') + 2 ))
+
+while true; do
+    CURRENT_STATE="$(/bin/ls -Rla "$SCHEMES_DIR")$(/bin/ls -la "$SOURCE_LIVE")"
+    if [ "$CURRENT_STATE" != "$OLD_STATE" ]; then
+        rm -f "$LOG_FILE"
+        clear
+        "$@" -h "$SOURCE_LIVE" -db | tr -d '\r' | html2ans "$MAX_LENGTH" | head -n $(( $(tput lines) - 1 ))
+        if grep -q -P '\[(warning|error)\](?!\s+Duplicate prototype\s+)' "$LOG_FILE"; then
+            grep --color=auto -P '\[(warning|error)\](?!\s+Duplicate prototype\s+)' "$LOG_FILE"
+        fi
+        OLD_STATE="$CURRENT_STATE"
+    fi
+    sleep 1
+done
+
+
