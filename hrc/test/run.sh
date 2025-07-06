@@ -143,7 +143,7 @@ filter_diff() {
 
             local C_NAME="${X%% *}" ORIG="$X"
             C_NAME="${C_NAME//-/:}"
-            while [ -n "$C_NAME" -a -z "${HTML2CONS["$C_NAME"]}" ]; do
+            while [ -n "$C_NAME" -a -z "${HTML2CONS["${C_NAME:-undefined}"]}" ]; do
                 [ "${X#* }" = "$X" ] && X="" || X="${X#* }"
                 C_NAME="${X%% *}"
                 C_NAME="${C_NAME//-/:}"
