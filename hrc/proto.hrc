@@ -114,6 +114,14 @@
         <firstline weight="2">/\{\{/x</firstline>
     </prototype>
 
+    <prototype name="helm-yaml" group="misc" description="Helm Charts (YAML)">
+        <location link="hrc/misc/helm-yaml.hrc"/>
+        <!-- !!! WARNING !!! These values are only for my local proto.hrc. General
+        colorer-schemes bundle should have prototype from helm-yaml.hrc -->
+        <filename weight="10">/\.ya?ml$/i</filename>
+        <firstline weight="2">/\{\{/x</firstline>
+    </prototype>
+
 </hrc>
 <!-- ***** BEGIN LICENSE BLOCK *****
    - Version: MPL 1.1/GPL 2.0/LGPL 2.1
