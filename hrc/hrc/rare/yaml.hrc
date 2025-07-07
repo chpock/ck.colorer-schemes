@@ -227,6 +227,8 @@
 
 <!-- these schemes can be overriden by parent scheme -->
 
+<scheme name="integration"/>
+
 <scheme name="key">
 </scheme>
 
@@ -241,6 +243,7 @@
 </scheme>
 
 <scheme name="comment">
+    <inherit scheme="def:Comment"/>
 </scheme>
 
 <scheme name="anchor">
@@ -307,6 +310,8 @@
 </scheme>
 
 <scheme name="line-error">
+    <!-- integration -->
+    <inherit scheme="integration"/>
     <!-- comments -->
     <block start="/^\s*\m#/" end="/\M^/" region="Comment" scheme="comment" priority="low"/>
     <!-- anything unexpected as an error -->
@@ -318,6 +323,9 @@
 </scheme>
 
 <scheme name="document-common">
+
+    <!-- integration -->
+    <inherit scheme="integration"/>
 
     <!-- eat empty lines -->
     <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
@@ -434,6 +442,9 @@
 </scheme>
 
 <scheme name="value-value-only">
+
+    <!-- integration -->
+    <inherit scheme="integration"/>
 
     <!-- eat spaces -->
     <regexp match="/\s+/"/>
