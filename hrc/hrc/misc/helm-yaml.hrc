@@ -10,7 +10,7 @@
 
 <annotation>
     <documentation>
-        Helm Charts (text)
+        Helm Charts (YAML)
 
         Home: https://github.com/chpock/ck.colorer-schemes
         Send requests there for bug fixes and features.
@@ -20,26 +20,65 @@
     ]]></contributors>
 
     <appinfo>
-        <prototype name="helm-text" group="misc" description="Helm Charts (text)">
-            <location link="misc/helm-text.hrc"/>
-            <!-- Set the weight slightly lower than the default (2) to not catch notes.txt
-            files by default, but catch only files which match by firstline also. -->
-            <filename weight="1">/^NOTES.txt$/i</filename>
+        <prototype name="helm-yaml" group="misc" description="Helm Charts (YAML)">
+            <location link="misc/helm-yaml.hrc"/>
+            <!-- Set the weight slightly lower than the default (2) to not catch regular
+            YAML files by default, but catch only files which match by firstline also. -->
+            <filename weight="1">/\.ya?ml$/i</filename>
             <firstline weight="2">/\{\{/x</firstline>
         </prototype>
     </appinfo>
 </annotation>
 
-<type name="helm-text">
+<type name="helm-yaml">
 
 <!-- for testing -->
 <region name="Test" parent="def:URL"/>
 <region name="Test2" parent="def:TODO"/>
 
-<scheme name="helm-text">
+<scheme name="helm-yaml">
+    <inherit scheme="yaml:yaml">
+        <virtual scheme="yaml:integration" subst-scheme="integration"/>
+        <virtual scheme="yaml:string" subst-scheme="string"/>
+        <!-- Be default, YAML marks as an error lines below a block with
+        flow-style value. E.g. for this document:
+
+            foo: { "bar": "baz" }
+                qux: 123
+            more: "text"
+
+        "qux: 123" is not allowed and will be marked as an error. However,
+        this causes false errors in Helm Charts. E.g. here:
+
+            foo: {{ here some template }}
+                qux: 123
+            more: "text"
+
+        "qux: 123" is probably valid string. Thus, we disable error reporting
+        after flow-style values to avoid false error in Helm Charts. -->
+        <virtual scheme="yaml:value-explicit" subst-scheme="value-explicit"/>
+    </inherit>
+</scheme>
+
+<scheme name="integration">
+    <!-- if we have any spaces before go template block '{{', then eat them -->
+    <regexp match="/\s+(\{\{)?=/"/>
+    <!-- try to match go template -->
     <inherit scheme="helm-tpl:helm-tpl-embed"/>
-    <inherit scheme="text:text">
-        <virtual scheme="text:text" subst-scheme="helm-text"/>
+</scheme>
+
+<scheme name="string">
+    <!-- try to match go template -->
+    <inherit scheme="helm-tpl:helm-tpl-embed"/>
+    <!-- fallback to default -->
+    <inherit scheme="yaml:string"/>
+</scheme>
+
+<scheme name="value-explicit">
+    <inherit scheme="yaml:value-implict">
+        <virtual scheme="yaml:integration" subst-scheme="integration"/>
+        <virtual scheme="yaml:string" subst-scheme="string"/>
+        <virtual scheme="yaml:value-explicit" subst-scheme="value-explicit"/>
     </inherit>
 </scheme>
 
