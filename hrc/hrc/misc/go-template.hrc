@@ -75,12 +75,14 @@
          - .         - dot/field (standalone dot is possible)
          - $         - variable (empty variable name is possible)
          - (         - group
+         - nil/true/false
 -->
 
 <entity name="argument-start" value="(
     [+-]?\d|
     [+-]?\.\d|
-    [`&quot;&apos;\.\$\(]
+    [`&quot;&apos;\.\$\(]|
+    ((nil|true|false)\b)?=
 )"/>
 
 <!--
