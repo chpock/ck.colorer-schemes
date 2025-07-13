@@ -100,7 +100,7 @@
         <!-- Set the weight slightly lower than the default (2) to not catch notes.txt
         files by default, but catch only files which match by firstline also. -->
         <filename weight="1">/^NOTES.txt$/i</filename>
-        <firstline weight="2">/^.*\{\{/x</firstline>
+        <firstline weight="2">/\{\{/x</firstline>
     </prototype>
 
 </hrc>

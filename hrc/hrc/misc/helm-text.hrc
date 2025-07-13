@@ -25,7 +25,7 @@
             <!-- Set the weight slightly lower than the default (2) to not catch notes.txt
             files by default, but catch only files which match by firstline also. -->
             <filename weight="1">/^NOTES.txt$/i</filename>
-            <firstline weight="2">/^.*\{\{/x</firstline>
+            <firstline weight="2">/\{\{/x</firstline>
         </prototype>
     </appinfo>
 </annotation>
@@ -38,9 +38,23 @@
 
 <scheme name="helm-text">
     <inherit scheme="helm-tpl:helm-tpl-embed"/>
+    <inherit scheme="text"/>
+</scheme>
+
+<scheme name="text">
+
+    <!-- 'text' scheme uses def:StandardString to highlight strings. def:StandardString is a simple
+    regexp that captures everything between single and double quotes. It is impossible to highlight
+    anything in what was caught by this regexp. So here we are catching single/double quotes before
+    'text' scheme in a block and enabling go templates within it. -->
+    <block start="/([&apos;&quot;])/" end="/(\y1)/" region="def:String" scheme="helm-tpl:helm-tpl-embed"
+        region01="def:PairStart"  region11="def:PairEnd"
+        region00="def:StringEdge" region10="def:StringEdge"/>
+
     <inherit scheme="text:text">
-        <virtual scheme="text:text" subst-scheme="helm-text"/>
+        <virtual scheme="text:text" subst-scheme="text"/>
     </inherit>
+
 </scheme>
 
 </type>
