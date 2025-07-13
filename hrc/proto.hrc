@@ -92,7 +92,7 @@
         The "Smarty PHP Templates" highlighting scheme also looks for '{' on the first
         line and can trigger for this file type. But here we specify a more
         exact match. -->
-        <firstline weight="2">/^\s*\{\{/x</firstline>
+        <firstline weight="2">/\{\{/x</firstline>
     </prototype>
 
     <prototype name="helm-text" group="misc" description="Helm Charts (text)">

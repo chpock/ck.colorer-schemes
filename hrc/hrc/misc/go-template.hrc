@@ -75,27 +75,18 @@
          - .         - dot/field (standalone dot is possible)
          - $         - variable (empty variable name is possible)
          - (         - group
-         - nil/true/false
+         - a-zA-Z_   - niladic function or "nil"/"true"/"false"
 -->
 
 <entity name="argument-start" value="(
     [+-]?\d|
     [+-]?\.\d|
     [`&quot;&apos;\.\$\(]|
-    ((nil|true|false)\b)?=
+    [a-zA-Z_]
 )"/>
 
-<!--
-    pipeline can start with:
-         - argument
-         - a-zA-Z    - function/control structure
--->
-
-<entity name="pipeline-start" value="(
-    %argument-start;|
-    [a-zA-Z]
-)"/>
-
+<!-- pipeline can start with the same characters as an argument -->
+<entity name="pipeline-start" value="%argument-start;"/>
 <entity name="pipeline-end" value="((((^|\s+)-)|\s*)\}\}|\))"/>
 
 <entity name="literal-integer" value="
@@ -381,6 +372,9 @@
     <!-- allow a field name after dot symbol -->
     <block start="/(^|[\s\)]?#1)\M\.[a-zA-Z_]/" end="//" scheme="fields"/>
 
+    <!-- niladic function -->
+    <block start="/(^|\s?#1)~\M[a-zA-Z_][a-zA-Z0-9_]*/" end="/~[a-zA-Z_][a-zA-Z0-9_]*\m/" scheme="function-name"/>
+
     <!-- next pipeline -->
     <block start="/(^|\s?#1)\M\|/" end="/\M%pipeline-end;/x" scheme="pipeline-next"/>
 
@@ -428,7 +422,7 @@
     <block start="/\(?=/" end="/\M%pipeline-end;/x" scheme="pipeline-group"/>
 
     <!-- function call -->
-    <block start="/[a-zA-Z]?=/" end="/\M%pipeline-end;/x" scheme="pipeline-function"/>
+    <block start="/[a-zA-Z_]?=/" end="/\M%pipeline-end;/x" scheme="pipeline-function"/>
 
     <!-- anything unknown is an error -->
     <inherit scheme="error"/>
@@ -466,7 +460,7 @@
 
 <scheme name="pipeline-function">
 
-    <block start="/~\M[\w-]+/" end="/~[\w-]+\m\b/" scheme="function-name"/>
+    <block start="/~\M[a-zA-Z_][a-zA-Z0-9_]*/" end="/~[a-zA-Z_][a-zA-Z0-9_]*\m/" scheme="function-name"/>
 
     <!-- allow comments here -->
     <inherit scheme="comments"/>
