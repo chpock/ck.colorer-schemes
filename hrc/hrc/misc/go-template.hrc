@@ -505,7 +505,11 @@
     <inherit scheme="comments"/>
 
     <!-- initialize/set variable -->
-    <block start="/(:?\=)/" end="/\M%pipeline-end;/x" region01="Symbol" scheme="pipeline"/>
+    <!--
+        Do not allow 'nil' in variable assignment (see: https://github.com/golang/go/issues/57773).
+        However, allow 'nil' as input value for subsequent pipeline.
+    -->
+    <block start="/(:?\=)(\s*(?{Error}nil)\b(\s*$|(\s*[^\s\|])?=))?/" end="/\M%pipeline-end;/x" region01="Symbol" scheme="pipeline"/>
 
     <!-- next pipeline -->
     <block start="/\M\|/" end="/\M%pipeline-end;/x" scheme="pipeline-next"/>
