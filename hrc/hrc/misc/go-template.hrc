@@ -326,19 +326,19 @@
     <inherit scheme="comments"/>
 
     <!-- rune literals -->
-    <block start="/(^|\s?#1)((&apos;))/" end="/((&apos;))/" scheme="rune-literal"
-        region01="def:PairStart" region11="def:PairEnd"
-        region02="StringEdge"    region12="StringEdge"/>
+    <block start="/(^|\s?#1)((&apos;))/" end="/(&apos;)/" scheme="rune-literal"
+        region02="def:PairStart" region11="def:PairEnd"
+        region03="StringEdge"    region10="StringEdge"/>
 
     <!-- raw string literals -->
-    <block start="/(^|\s?#1)(`)/" end="/((`))/" scheme="def:empty" region="String"
-        region01="def:PairStart" region11="def:PairEnd"
-        region02="StringEdge"    region12="StringEdge"/>
+    <block start="/(^|\s?#1)((`))/" end="/(`)/" scheme="def:empty" region="String"
+        region02="def:PairStart" region11="def:PairEnd"
+        region03="StringEdge"    region10="StringEdge"/>
 
     <!-- string literals -->
-    <block start="/(^|\s?#1)(&quot;)/" end="/((&quot;))/" scheme="string-literal" region="String"
-        region01="def:PairStart" region11="def:PairEnd"
-        region02="StringEdge"    region12="StringEdge"/>
+    <block start="/(^|\s?#1)((&quot;))/" end="/(&quot;)/" scheme="string-literal" region="String"
+        region02="def:PairStart" region11="def:PairEnd"
+        region03="StringEdge"    region10="StringEdge"/>
 
     <!-- variable use -->
     <!-- allow variable name/empty variable name (dollar followed by space, ')', '}')/field symbol after dollar symbol -->
@@ -360,8 +360,8 @@
 
     <!-- group -->
     <block start="/(^|\s?#1)((\())/" end="/(\))/" scheme="pipeline"
-        region01="def:PairStart" region11="def:PairEnd"
-        region02="SymbolStrong"  region10="SymbolStrong"/>
+        region02="def:PairStart" region11="def:PairEnd"
+        region03="SymbolStrong"  region10="SymbolStrong"/>
 
     <!-- fields -->
     <!-- match this after numbers to not catch float numbers like .1 -->

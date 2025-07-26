@@ -12,3 +12,7 @@ https://github.com/chpock/ck.colorer-schemes/issues/21
 
 However, this is fully correct:
 {{ $var := nil | printf "%s" }}
+
+https://github.com/chpock/ck.colorer-schemes/issues/22
+
+{{ printf "%s" 'a' (len $var) }}
