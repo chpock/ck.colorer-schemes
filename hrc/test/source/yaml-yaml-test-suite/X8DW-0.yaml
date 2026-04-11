@@ -1,0 +1,15 @@
+# name = Explicit key and value seperated by comment
+
+---
+? key
+# comment
+: value
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :key
+#    =VAL :value
+#   -MAP
+#  -DOC
+# -STR

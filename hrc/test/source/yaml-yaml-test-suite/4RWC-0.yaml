@@ -1,0 +1,14 @@
+# name = Trailing spaces after flow collection
+
+  [1, 2, 3]␣␣
+␣␣∎
+
+# +STR
+#  +DOC
+#   +SEQ []
+#    =VAL :1
+#    =VAL :2
+#    =VAL :3
+#   -SEQ
+#  -DOC
+# -STR

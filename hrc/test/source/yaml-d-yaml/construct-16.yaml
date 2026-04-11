@@ -1,0 +1,44 @@
+# name = construct-binary
+# code = construct-binary
+
+---     # Old schema
+link with:
+  - library1.dll
+  - library2.dll
+---     # New schema
+link with:
+  - = : library1.dll
+    version: 1.2
+  - = : library2.dll
+    version: 2.3
+
+# +STR
+# +DOC ---
+# +MAP
+# =VAL :link with
+# +SEQ
+# =VAL :library1.dll
+# =VAL :library2.dll
+# -SEQ
+# -MAP
+# -DOC
+# +DOC ---
+# +MAP
+# =VAL :link with
+# +SEQ
+# +MAP
+# =VAL :=
+# =VAL :library1.dll
+# =VAL :version
+# =VAL :1.2
+# -MAP
+# +MAP
+# =VAL :=
+# =VAL :library2.dll
+# =VAL :version
+# =VAL :2.3
+# -MAP
+# -SEQ
+# -MAP
+# -DOC
+# -STR

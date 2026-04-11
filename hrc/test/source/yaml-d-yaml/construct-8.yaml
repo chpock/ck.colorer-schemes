@@ -1,0 +1,48 @@
+# name = construct-binary
+# code = construct-binary
+
+# Explicitly typed ordered map (dictionary).
+Bestiary: !!omap
+  - aardvark: African pig-like ant eater. Ugly.
+  - anteater: South-American ant eater. Two species.
+  - anaconda: South-American constrictor snake. Scaly.
+  # Etc.
+# Flow style
+Numbers: !!omap [ one: 1, two: 2, three : 3 ]
+
+# +STR
+# +DOC
+# +MAP
+# =VAL :Bestiary
+# +SEQ <tag:yaml.org,2002:omap>
+# +MAP
+# =VAL :aardvark
+# =VAL :African pig-like ant eater. Ugly.
+# -MAP
+# +MAP
+# =VAL :anteater
+# =VAL :South-American ant eater. Two species.
+# -MAP
+# +MAP
+# =VAL :anaconda
+# =VAL :South-American constrictor snake. Scaly.
+# -MAP
+# -SEQ
+# =VAL :Numbers
+# +SEQ [] <tag:yaml.org,2002:omap>
+# +MAP {}
+# =VAL :one
+# =VAL :1
+# -MAP
+# +MAP {}
+# =VAL :two
+# =VAL :2
+# -MAP
+# +MAP {}
+# =VAL :three
+# =VAL :3
+# -MAP
+# -SEQ
+# -MAP
+# -DOC
+# -STR

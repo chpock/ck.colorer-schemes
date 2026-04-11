@@ -1,0 +1,20 @@
+# name = Flow collections over many lines
+# fail = true
+
+k: {
+ k
+ :
+ v
+ }
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :k
+#    +MAP {}
+#     =VAL :k
+#     =VAL :v
+#    -MAP
+#   -MAP
+#  -DOC
+# -STR

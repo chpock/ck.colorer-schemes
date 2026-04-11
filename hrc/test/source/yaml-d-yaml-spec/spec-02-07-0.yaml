@@ -1,0 +1,28 @@
+# name = spec-02-07
+
+# Ranking of 1998 home runs
+---
+- Mark McGwire
+- Sammy Sosa
+- Ken Griffey
+
+# Team ranking
+---
+- Chicago Cubs
+- St Louis Cardinals
+
+# +STR
+# +DOC ---
+# +SEQ
+# =VAL :Mark McGwire
+# =VAL :Sammy Sosa
+# =VAL :Ken Griffey
+# -SEQ
+# -DOC
+# +DOC ---
+# +SEQ
+# =VAL :Chicago Cubs
+# =VAL :St Louis Cardinals
+# -SEQ
+# -DOC
+# -STR

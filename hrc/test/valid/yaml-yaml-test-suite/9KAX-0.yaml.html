@@ -1,0 +1,70 @@
+﻿ 0: <span class='yaml-Comment def-Comment def-Syntax'># name = Various combinations of tags and anchors</span>
+ 1: 
+ 2: <span class='yaml-DocumentEdge def-Keyword'>---</span>
+ 3: <span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>a1</span>
+ 4: <span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>str</span>
+ 5: <span class='yaml-String def-String'>scalar1</span>
+ 6: <span class='yaml-DocumentEdge def-Keyword'>---</span>
+ 7: <span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>str</span>
+ 8: <span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>a2</span>
+ 9: <span class='yaml-String def-String'>scalar2</span>
+10: <span class='yaml-DocumentEdge def-Keyword'>---</span>
+11: <span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>a3</span>
+12: <span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>str</span> <span class='yaml-String def-String'>scalar3</span>
+13: <span class='yaml-DocumentEdge def-Keyword'>---</span>
+14: <span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>a4</span> <span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>map</span>
+15: <span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>a5</span> <span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>str</span> <span class='yaml-MappingKey def-Parameter'>key5</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='yaml-String def-String'>value4</span>
+16: <span class='yaml-DocumentEdge def-Keyword'>---</span>
+17: <span class='yaml-MappingKey def-Parameter'>a6</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='def-NumberDec def-Number'>1</span>
+18: <span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>anchor6</span> <span class='yaml-MappingKey def-Parameter'>b6</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='def-NumberDec def-Number'>2</span>
+19: <span class='yaml-DocumentEdge def-Keyword'>---</span>
+20: <span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>map</span>
+21: <span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>a8</span> <span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>str</span> <span class='yaml-MappingKey def-Parameter'>key8</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='yaml-String def-String'>value7</span>
+22: <span class='yaml-DocumentEdge def-Keyword'>---</span>
+23: <span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>map</span>
+24: <span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>str</span> <span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>a10</span> <span class='yaml-MappingKey def-Parameter'>key10</span><span class='yaml-SymbolMapping def-SymbolStrong def-Symbol'>:</span> <span class='yaml-String def-String'>value9</span>
+25: <span class='yaml-DocumentEdge def-Keyword'>---</span>
+26: <span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-SymbolTag def-Tag'>!</span><span class='yaml-Tag def-OpenTag def-Tag'>str</span> <span class='yaml-SymbolAnchor def-VarStrong def-Var'>&amp;</span><span class='yaml-Anchor def-Var'>a11</span>
+27: <span class='yaml-String def-String'>value11</span>
+28: 
+29: <span class='yaml-Comment def-Comment def-Syntax'># +STR</span>
+30: <span class='yaml-Comment def-Comment def-Syntax'>#  +DOC ---</span>
+31: <span class='yaml-Comment def-Comment def-Syntax'>#   =VAL &amp;a1 &lt;tag:yaml.org,2002:str> :scalar1</span>
+32: <span class='yaml-Comment def-Comment def-Syntax'>#  -DOC</span>
+33: <span class='yaml-Comment def-Comment def-Syntax'>#  +DOC ---</span>
+34: <span class='yaml-Comment def-Comment def-Syntax'>#   =VAL &amp;a2 &lt;tag:yaml.org,2002:str> :scalar2</span>
+35: <span class='yaml-Comment def-Comment def-Syntax'>#  -DOC</span>
+36: <span class='yaml-Comment def-Comment def-Syntax'>#  +DOC ---</span>
+37: <span class='yaml-Comment def-Comment def-Syntax'>#   =VAL &amp;a3 &lt;tag:yaml.org,2002:str> :scalar3</span>
+38: <span class='yaml-Comment def-Comment def-Syntax'>#  -DOC</span>
+39: <span class='yaml-Comment def-Comment def-Syntax'>#  +DOC ---</span>
+40: <span class='yaml-Comment def-Comment def-Syntax'>#   +MAP &amp;a4 &lt;tag:yaml.org,2002:map></span>
+41: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL &amp;a5 &lt;tag:yaml.org,2002:str> :key5</span>
+42: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :value4</span>
+43: <span class='yaml-Comment def-Comment def-Syntax'>#   -MAP</span>
+44: <span class='yaml-Comment def-Comment def-Syntax'>#  -DOC</span>
+45: <span class='yaml-Comment def-Comment def-Syntax'>#  +DOC ---</span>
+46: <span class='yaml-Comment def-Comment def-Syntax'>#   +MAP</span>
+47: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :a6</span>
+48: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :1</span>
+49: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL &amp;anchor6 :b6</span>
+50: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :2</span>
+51: <span class='yaml-Comment def-Comment def-Syntax'>#   -MAP</span>
+52: <span class='yaml-Comment def-Comment def-Syntax'>#  -DOC</span>
+53: <span class='yaml-Comment def-Comment def-Syntax'>#  +DOC ---</span>
+54: <span class='yaml-Comment def-Comment def-Syntax'>#   +MAP &lt;tag:yaml.org,2002:map></span>
+55: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL &amp;a8 &lt;tag:yaml.org,2002:str> :key8</span>
+56: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :value7</span>
+57: <span class='yaml-Comment def-Comment def-Syntax'>#   -MAP</span>
+58: <span class='yaml-Comment def-Comment def-Syntax'>#  -DOC</span>
+59: <span class='yaml-Comment def-Comment def-Syntax'>#  +DOC ---</span>
+60: <span class='yaml-Comment def-Comment def-Syntax'>#   +MAP &lt;tag:yaml.org,2002:map></span>
+61: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL &amp;a10 &lt;tag:yaml.org,2002:str> :key10</span>
+62: <span class='yaml-Comment def-Comment def-Syntax'>#    =VAL :value9</span>
+63: <span class='yaml-Comment def-Comment def-Syntax'>#   -MAP</span>
+64: <span class='yaml-Comment def-Comment def-Syntax'>#  -DOC</span>
+65: <span class='yaml-Comment def-Comment def-Syntax'>#  +DOC ---</span>
+66: <span class='yaml-Comment def-Comment def-Syntax'>#   =VAL &amp;a11 &lt;tag:yaml.org,2002:str> :value11</span>
+67: <span class='yaml-Comment def-Comment def-Syntax'>#  -DOC</span>
+68: <span class='yaml-Comment def-Comment def-Syntax'># -STR</span>
+69: 

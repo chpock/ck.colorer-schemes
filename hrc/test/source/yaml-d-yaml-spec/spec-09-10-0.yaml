@@ -1,0 +1,11 @@
+# name = spec-09-10
+
+ 'first
+ 	inner	
+ last'
+
+# +STR
+#   +DOC
+#     =VAL 'first inner last
+#   -DOC
+# -STR

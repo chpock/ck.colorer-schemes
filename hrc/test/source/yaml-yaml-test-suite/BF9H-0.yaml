@@ -1,0 +1,13 @@
+# name = Trailing comment in multiline plain scalar
+# fail = true
+
+---
+plain: a
+       b # end of scalar
+       c
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :plain
+#    =VAL :a b

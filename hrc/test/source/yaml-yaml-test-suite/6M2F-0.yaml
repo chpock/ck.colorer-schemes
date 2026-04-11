@@ -1,0 +1,16 @@
+# name = Aliases in Explicit Block Mapping
+
+? &a a
+: &b b
+: *a
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL &a :a
+#    =VAL &b :b
+#    =VAL :
+#    =ALI *a
+#   -MAP
+#  -DOC
+# -STR

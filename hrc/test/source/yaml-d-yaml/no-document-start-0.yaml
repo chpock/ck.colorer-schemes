@@ -1,0 +1,11 @@
+# name = no-document-start
+# fail = true
+# mark.line = 3
+# mark.column = 1
+# error = Expected document start but found blockMappingStart
+
+%YAML   1.1
+# no ---
+foo: bar
+
+# null

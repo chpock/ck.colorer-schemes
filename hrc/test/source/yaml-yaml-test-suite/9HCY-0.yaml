@@ -1,0 +1,11 @@
+# name = Need document footer before directives
+# fail = true
+
+!foo "bar"
+%TAG ! tag:example.com,2000:app/
+---
+!foo "bar"
+
+# +STR
+#  +DOC
+#   =VAL <!foo> "bar

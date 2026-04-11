@@ -1,0 +1,7 @@
+# name = construct-binary
+# code = construct-binary
+
+- "foo 'bar'"
+- "foo\n'bar'"
+
+# null

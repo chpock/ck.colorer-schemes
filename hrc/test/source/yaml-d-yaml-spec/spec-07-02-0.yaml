@@ -1,0 +1,12 @@
+# name = spec-07-02
+
+%YAML 1.2 # Attempt parsing
+           # with a warning
+---
+"foo"
+
+# +STR
+#   +DOC ---
+#     =VAL "foo
+#   -DOC
+# -STR

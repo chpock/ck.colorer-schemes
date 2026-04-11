@@ -1,0 +1,15 @@
+# name = emojianchor
+
+%YAML 1.1
+---
+!!seq [
+  &😁 !!str "unicode anchor"
+]
+
+# +STR
+#   +DOC ---
+#     +SEQ [] <tag:yaml.org,2002:seq>
+#       =VAL &😁 <tag:yaml.org,2002:str> "unicode anchor
+#     -SEQ
+#   -DOC
+# -STR

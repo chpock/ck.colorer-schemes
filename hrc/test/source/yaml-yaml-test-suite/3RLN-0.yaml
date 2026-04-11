@@ -1,0 +1,10 @@
+# name = Leading tabs in double quoted
+
+"1 leading
+    \ttab"
+
+# +STR
+#  +DOC
+#   =VAL "1 leading \ttab
+#  -DOC
+# -STR

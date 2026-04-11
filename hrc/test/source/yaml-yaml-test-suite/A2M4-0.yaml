@@ -1,0 +1,21 @@
+# name = Spec Example 6.2. Indentation Indicators
+
+? a
+: -»b
+  -  -—»c
+     - d
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :a
+#    +SEQ
+#     =VAL :b
+#     +SEQ
+#      =VAL :c
+#      =VAL :d
+#     -SEQ
+#    -SEQ
+#   -MAP
+#  -DOC
+# -STR

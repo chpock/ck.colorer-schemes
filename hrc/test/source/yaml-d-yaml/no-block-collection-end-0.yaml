@@ -1,0 +1,13 @@
+# name = no-block-collection-end
+# fail = true
+# mark.line = 3
+# mark.column = 1
+# mark2.line = 1
+# mark2.column = 1
+# error = While parsing a block sequence, expected block end, but found: key
+
+- foo
+- bar
+baz: bar
+
+# null

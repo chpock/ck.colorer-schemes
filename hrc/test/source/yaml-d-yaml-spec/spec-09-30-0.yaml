@@ -1,0 +1,22 @@
+# name = spec-09-30
+
+>
+ folded
+ line
+
+ next
+ line
+
+   * bullet
+   * list
+
+ last
+ line
+
+# Comment
+
+# +STR
+#   +DOC
+#     =VAL >folded line\nnext line\n\n  * bullet\n  * list\n\nlast line\n
+#   -DOC
+# -STR

@@ -1,0 +1,16 @@
+# name = Multiline plain value with tabs on empty lines
+
+key:
+  value
+  with
+  —»
+  tabs
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :key
+#    =VAL :value with\ntabs
+#   -MAP
+#  -DOC
+# -STR

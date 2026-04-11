@@ -1,0 +1,11 @@
+# name = Node anchor in sequence
+# fail = true
+
+- item1
+&node
+- item2
+
+# +STR
+#  +DOC
+#   +SEQ
+#    =VAL :item1

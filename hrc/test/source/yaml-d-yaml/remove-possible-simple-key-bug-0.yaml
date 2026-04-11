@@ -1,0 +1,13 @@
+# name = remove-possible-simple-key-bug
+# fail = true
+# mark.line = 2
+# mark.column = 4
+# mark2.line = 2
+# mark2.column = 1
+# error = While scanning a simple key, could not find expected ':'
+
+foo: &A bar
+*A ]    # The ']' indicator triggers remove_possible_simple_key,
+        # which should raise an error.
+
+# null

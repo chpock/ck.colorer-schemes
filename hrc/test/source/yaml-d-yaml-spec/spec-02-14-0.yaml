@@ -1,0 +1,12 @@
+# name = spec-02-14
+
+---
+  Mark McGwire's
+  year was crippled
+  by a knee injury.
+
+# +STR
+# +DOC ---
+# =VAL :Mark McGwire's year was crippled by a knee injury.
+# -DOC
+# -STR

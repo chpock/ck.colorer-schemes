@@ -1,0 +1,26 @@
+# name = spec-10-05
+
+- # Empty
+- |
+ block node
+- - one # in-line
+  - two # sequence
+- one: two # in-line
+           # mapping
+
+# +STR
+#   +DOC
+#     +SEQ
+#       =VAL :
+#       =VAL |block node\n
+#       +SEQ
+#         =VAL :one
+#         =VAL :two
+#       -SEQ
+#       +MAP
+#         =VAL :one
+#         =VAL :two
+#       -MAP
+#     -SEQ
+#   -DOC
+# -STR

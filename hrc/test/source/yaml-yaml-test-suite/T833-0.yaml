@@ -1,0 +1,12 @@
+# name = Flow mapping missing a separating comma
+# fail = true
+
+---
+{
+ foo: 1
+ bar: 2 }
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :foo

@@ -1,0 +1,12 @@
+# name = Flow mapping edge cases
+
+{x: :x}
+
+# +STR
+#  +DOC
+#   +MAP {}
+#    =VAL :x
+#    =VAL ::x
+#   -MAP
+#  -DOC
+# -STR

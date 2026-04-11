@@ -1,0 +1,21 @@
+# name = spec-08-15
+
+- # Empty plain scalar
+- ? foo
+  :
+  ?
+  : bar
+
+# +STR
+#   +DOC
+#     +SEQ
+#       =VAL :
+#       +MAP
+#         =VAL :foo
+#         =VAL :
+#         =VAL :
+#         =VAL :bar
+#       -MAP
+#     -SEQ
+#   -DOC
+# -STR

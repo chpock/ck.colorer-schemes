@@ -1,0 +1,17 @@
+# name = spec-10-12
+
+block: # Block
+    # mapping
+ key: value
+
+# +STR
+#   +DOC
+#     +MAP
+#       =VAL :block
+#       +MAP
+#         =VAL :key
+#         =VAL :value
+#       -MAP
+#     -MAP
+#   -DOC
+# -STR

@@ -1,0 +1,11 @@
+# name = Multiline scalar that looks like a YAML directive
+
+---
+scalar
+%YAML 1.2
+
+# +STR
+#  +DOC ---
+#   =VAL :scalar %YAML 1.2
+#  -DOC
+# -STR

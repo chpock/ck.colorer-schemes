@@ -1,0 +1,11 @@
+# name = spec-09-06
+
+%YAML 1.1
+---
+!!str "here's to \"quotes\""
+
+# +STR
+#   +DOC ---
+#     =VAL <tag:yaml.org,2002:str> "here's to "quotes"
+#   -DOC
+# -STR

@@ -1,0 +1,7 @@
+# name = Extra words on %YAML directive
+# fail = true
+
+%YAML 1.2 foo
+---
+
+# +STR

@@ -1,0 +1,31 @@
+# name = Various location of anchors in flow sequence
+
+&flowseq [
+ a: b,
+ &c c: d,
+ { &e e: f },
+ &g { g: h }
+]
+
+# +STR
+#  +DOC
+#   +SEQ [] &flowseq
+#    +MAP {}
+#     =VAL :a
+#     =VAL :b
+#    -MAP
+#    +MAP {}
+#     =VAL &c :c
+#     =VAL :d
+#    -MAP
+#    +MAP {}
+#     =VAL &e :e
+#     =VAL :f
+#    -MAP
+#    +MAP {} &g
+#     =VAL :g
+#     =VAL :h
+#    -MAP
+#   -SEQ
+#  -DOC
+# -STR

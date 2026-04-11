@@ -1,0 +1,33 @@
+# name = spec-10-05
+
+%YAML 1.1
+---
+!!seq [
+  !!null "",
+  !!str "block node\n",
+  !!seq [
+    !!str "one",
+    !!str "two",
+  ],
+  !!map {
+    ? !!str "one"
+    : !!str "two",
+  }
+]
+
+# +STR
+#   +DOC ---
+#     +SEQ [] <tag:yaml.org,2002:seq>
+#       =VAL <tag:yaml.org,2002:null> "
+#       =VAL <tag:yaml.org,2002:str> "block node\n
+#       +SEQ [] <tag:yaml.org,2002:seq>
+#         =VAL <tag:yaml.org,2002:str> "one
+#         =VAL <tag:yaml.org,2002:str> "two
+#       -SEQ
+#       +MAP {} <tag:yaml.org,2002:map>
+#         =VAL <tag:yaml.org,2002:str> "one
+#         =VAL <tag:yaml.org,2002:str> "two
+#       -MAP
+#     -SEQ
+#   -DOC
+# -STR

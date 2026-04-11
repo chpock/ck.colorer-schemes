@@ -1,0 +1,13 @@
+# name = spec-05-13
+
+%YAML 1.1
+--- !!str
+"Text containing \
+ both space and \
+ tab	characters"
+
+# +STR
+#   +DOC ---
+#     =VAL <tag:yaml.org,2002:str> "Text containing both space and tab\tcharacters
+#   -DOC
+# -STR

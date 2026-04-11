@@ -1,0 +1,23 @@
+# name = spec-10-06
+
+- { inner : entry , also: inner , }
+- {inner: entry,last : entry}
+
+# +STR
+#   +DOC
+#     +SEQ
+#       +MAP {}
+#         =VAL :inner
+#         =VAL :entry
+#         =VAL :also
+#         =VAL :inner
+#       -MAP
+#       +MAP {}
+#         =VAL :inner
+#         =VAL :entry
+#         =VAL :last
+#         =VAL :entry
+#       -MAP
+#     -SEQ
+#   -DOC
+# -STR

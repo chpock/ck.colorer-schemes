@@ -1,0 +1,15 @@
+# name = Spec Example 6.6. Line Folding
+
+>-
+  trimmed
+␣␣
+␣
+
+  as
+  space
+
+# +STR
+#  +DOC
+#   =VAL >trimmed\n\n\nas space
+#  -DOC
+# -STR

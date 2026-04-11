@@ -1,0 +1,24 @@
+# name = Zero-indented sequences in explicit mapping keys
+
+---
+?
+- a
+- b
+:
+- c
+- d
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    +SEQ
+#     =VAL :a
+#     =VAL :b
+#    -SEQ
+#    +SEQ
+#     =VAL :c
+#     =VAL :d
+#    -SEQ
+#   -MAP
+#  -DOC
+# -STR

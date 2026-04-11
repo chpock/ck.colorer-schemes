@@ -1,0 +1,10 @@
+# name = forbidden-entry
+# fail = true
+# mark.line = 1
+# mark.column = 7
+# error = Sequence keys are not allowed here
+
+test: - foo
+      - bar
+
+# null

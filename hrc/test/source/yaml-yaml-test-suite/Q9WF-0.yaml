@@ -1,0 +1,27 @@
+# name = Spec Example 6.12. Separation Spaces
+
+{ first: Sammy, last: Sosa }:
+# Statistics:
+  hr:  # Home runs
+     65
+  avg: # Average
+   0.278
+
+# +STR
+#  +DOC
+#   +MAP
+#    +MAP {}
+#     =VAL :first
+#     =VAL :Sammy
+#     =VAL :last
+#     =VAL :Sosa
+#    -MAP
+#    +MAP
+#     =VAL :hr
+#     =VAL :65
+#     =VAL :avg
+#     =VAL :0.278
+#    -MAP
+#   -MAP
+#  -DOC
+# -STR

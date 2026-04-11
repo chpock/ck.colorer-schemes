@@ -1,0 +1,37 @@
+# name = spec-10-10
+
+%YAML 1.1
+---
+!!map {
+  ? !!str "explicit key1"
+  : !!str "explicit value",
+  ? !!str "explicit key2"
+  : !!null "",
+  ? !!str "explicit key3"
+  : !!null "",
+  ? !!str "simple key1"
+  : !!str "explicit value",
+  ? !!str "simple key2"
+  : !!null "",
+  ? !!str "simple key3"
+  : !!null "",
+}
+
+# +STR
+#   +DOC ---
+#     +MAP {} <tag:yaml.org,2002:map>
+#       =VAL <tag:yaml.org,2002:str> "explicit key1
+#       =VAL <tag:yaml.org,2002:str> "explicit value
+#       =VAL <tag:yaml.org,2002:str> "explicit key2
+#       =VAL <tag:yaml.org,2002:null> "
+#       =VAL <tag:yaml.org,2002:str> "explicit key3
+#       =VAL <tag:yaml.org,2002:null> "
+#       =VAL <tag:yaml.org,2002:str> "simple key1
+#       =VAL <tag:yaml.org,2002:str> "explicit value
+#       =VAL <tag:yaml.org,2002:str> "simple key2
+#       =VAL <tag:yaml.org,2002:null> "
+#       =VAL <tag:yaml.org,2002:str> "simple key3
+#       =VAL <tag:yaml.org,2002:null> "
+#     -MAP
+#   -DOC
+# -STR

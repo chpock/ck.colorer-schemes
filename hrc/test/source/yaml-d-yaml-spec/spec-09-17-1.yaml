@@ -1,0 +1,12 @@
+# name = spec-09-17
+
+%YAML 1.1
+---
+!!str "first line\n\
+      more line"
+
+# +STR
+#   +DOC ---
+#     =VAL <tag:yaml.org,2002:str> "first line\nmore line
+#   -DOC
+# -STR

@@ -1,0 +1,13 @@
+# name = Literal unicode
+
+---
+wanted: love ♥ and peace ☮
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :wanted
+#    =VAL :love ♥ and peace ☮
+#   -MAP
+#  -DOC
+# -STR

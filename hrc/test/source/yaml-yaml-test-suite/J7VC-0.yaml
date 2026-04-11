@@ -1,0 +1,17 @@
+# name = Empty Lines Between Mapping Elements
+
+one: 2
+
+
+three: 4
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :one
+#    =VAL :2
+#    =VAL :three
+#    =VAL :4
+#   -MAP
+#  -DOC
+# -STR

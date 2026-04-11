@@ -1,0 +1,11 @@
+# name = Tab indented top flow
+
+————»[
+————»]
+
+# +STR
+#  +DOC
+#   +SEQ []
+#   -SEQ
+#  -DOC
+# -STR

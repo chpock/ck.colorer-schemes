@@ -1,0 +1,13 @@
+# name = Spec Example 6.24. Verbatim Tags
+
+!<tag:yaml.org,2002:str> foo :
+  !<!bar> baz
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL <tag:yaml.org,2002:str> :foo
+#    =VAL <!bar> :baz
+#   -MAP
+#  -DOC
+# -STR

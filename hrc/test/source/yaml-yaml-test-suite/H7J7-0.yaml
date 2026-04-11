@@ -1,0 +1,12 @@
+# name = Node anchor not indented
+# fail = true
+
+key: &x
+!!map
+  a: b
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :key
+#    =VAL &x :

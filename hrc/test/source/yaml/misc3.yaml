@@ -1,0 +1,42 @@
+
+  foo:
+  foo: bar
+  foo: bar # comment
+  # anchor reuse
+  foo: *bar
+  foo: *bar # comment
+  # anchor
+  foo: &bar
+  foo: &bar # comment
+  foo: &bar value
+  foo: !bar
+  foo: !bar # comment
+  foo: !bar baz
+  # tag + alias
+  foo: !bar *bar
+  foo: !bar *bar # comment
+  # tag + anchor
+  foo: !bar &bar
+  foo: !bar &bar # comment
+  foo: !bar &bar value # comment
+  # anchor + tag
+  foo: &bar !tag
+  foo: &bar !tag # comment
+  foo: &bar !tag value # comment
+  # empty tag name
+  foo: !
+  foo: ! foo
+
+# errors here
+
+  # nothing is allowed after alias
+  foo: *bar error here
+  foo: *bar !tag
+  foo: *bar &anchor
+  # alias is not allowed after anchor
+  foo: &bar *error
+  # no tag/anchor name
+  foo: *
+  foo: * foo
+  foo: &
+  foo: & foo

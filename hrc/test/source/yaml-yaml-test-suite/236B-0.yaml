@@ -1,0 +1,12 @@
+# name = Invalid value after mapping
+# fail = true
+
+foo:
+  bar
+invalid
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :foo
+#    =VAL :bar

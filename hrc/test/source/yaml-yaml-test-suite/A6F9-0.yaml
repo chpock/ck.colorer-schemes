@@ -1,0 +1,21 @@
+# name = Spec Example 8.4. Chomping Final Line Break
+
+strip: |-
+  text
+clip: |
+  text
+keep: |+
+  text
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :strip
+#    =VAL |text
+#    =VAL :clip
+#    =VAL |text\n
+#    =VAL :keep
+#    =VAL |text\n
+#   -MAP
+#  -DOC
+# -STR

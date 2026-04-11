@@ -1,0 +1,11 @@
+# name = Invalid Mapping in plain scalar
+# fail = true
+
+key:
+  word1 word2
+  no: key
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :key

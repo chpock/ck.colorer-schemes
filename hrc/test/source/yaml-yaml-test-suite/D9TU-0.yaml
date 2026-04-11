@@ -1,0 +1,12 @@
+# name = Single Pair Block Mapping
+
+foo: bar
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :foo
+#    =VAL :bar
+#   -MAP
+#  -DOC
+# -STR

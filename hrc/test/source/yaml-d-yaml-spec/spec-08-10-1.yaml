@@ -1,0 +1,58 @@
+# name = spec-08-10
+
+%YAML 1.1
+---
+!!map {
+  ? !!str "block styles" : !!map {
+    ? !!str "scalars" : !!map {
+      ? !!str "literal"
+      : !!str "#!/usr/bin/perl\n\
+          print \"Hello,
+          world!\\n\";\n",
+      ? !!str "folded"
+      : !!str "This sentence
+          is false.\n"
+    },
+    ? !!str "collections" : !!map {
+      ? !!str "sequence" : !!seq [
+        !!str "entry",
+        !!map {
+          ? !!str "key" : !!str "value"
+        }
+      ],
+      ? !!str "mapping" : !!map {
+        ? !!str "key" : !!str "value"
+} } } }
+
+# +STR
+#   +DOC ---
+#     +MAP {} <tag:yaml.org,2002:map>
+#       =VAL <tag:yaml.org,2002:str> "block styles
+#       +MAP {} <tag:yaml.org,2002:map>
+#         =VAL <tag:yaml.org,2002:str> "scalars
+#         +MAP {} <tag:yaml.org,2002:map>
+#           =VAL <tag:yaml.org,2002:str> "literal
+#           =VAL <tag:yaml.org,2002:str> "#!/usr/bin/perl\nprint "Hello, world!\\n";\n
+#           =VAL <tag:yaml.org,2002:str> "folded
+#           =VAL <tag:yaml.org,2002:str> "This sentence is false.\n
+#         -MAP
+#         =VAL <tag:yaml.org,2002:str> "collections
+#         +MAP {} <tag:yaml.org,2002:map>
+#           =VAL <tag:yaml.org,2002:str> "sequence
+#           +SEQ [] <tag:yaml.org,2002:seq>
+#             =VAL <tag:yaml.org,2002:str> "entry
+#             +MAP {} <tag:yaml.org,2002:map>
+#               =VAL <tag:yaml.org,2002:str> "key
+#               =VAL <tag:yaml.org,2002:str> "value
+#             -MAP
+#           -SEQ
+#           =VAL <tag:yaml.org,2002:str> "mapping
+#           +MAP {} <tag:yaml.org,2002:map>
+#             =VAL <tag:yaml.org,2002:str> "key
+#             =VAL <tag:yaml.org,2002:str> "value
+#           -MAP
+#         -MAP
+#       -MAP
+#     -MAP
+#   -DOC
+# -STR

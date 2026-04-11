@@ -1,0 +1,13 @@
+# name = Tabs that look like indentation
+
+foo:
+ ———»bar
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :foo
+#    =VAL :bar
+#   -MAP
+#  -DOC
+# -STR

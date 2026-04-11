@@ -1,0 +1,10 @@
+# name = Wrong indendation in mapping
+# fail = true
+
+k1: v1
+ k2: v2
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :k1

@@ -1,0 +1,14 @@
+# name = bool
+# detect = tag:yaml.org,2002:bool\n
+
+%TAG !e! tag:example.com,2000:app/
+---
+- !e!tag%F0%9F%A4%94 baz
+
+# +STR
+#   +DOC ---
+#     +SEQ
+#       =VAL <tag:example.com,2000:app/tag🤔> :baz
+#     -SEQ
+#   -DOC
+# -STR

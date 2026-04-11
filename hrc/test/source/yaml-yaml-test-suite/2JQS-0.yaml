@@ -1,0 +1,15 @@
+# name = Block Mapping with Missing Keys
+
+: a
+: b
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :
+#    =VAL :a
+#    =VAL :
+#    =VAL :b
+#   -MAP
+#  -DOC
+# -STR

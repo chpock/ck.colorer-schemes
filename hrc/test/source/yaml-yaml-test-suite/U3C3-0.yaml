@@ -1,0 +1,11 @@
+# name = Spec Example 6.16. “TAG” directive
+
+%TAG !yaml! tag:yaml.org,2002:
+---
+!yaml!str "foo"
+
+# +STR
+#  +DOC ---
+#   =VAL <tag:yaml.org,2002:str> "foo
+#  -DOC
+# -STR

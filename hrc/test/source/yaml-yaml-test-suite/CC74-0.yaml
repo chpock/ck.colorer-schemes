@@ -1,0 +1,11 @@
+# name = Spec Example 6.20. Tag Handles
+
+%TAG !e! tag:example.com,2000:app/
+---
+!e!foo "bar"
+
+# +STR
+#  +DOC ---
+#   =VAL <tag:example.com,2000:app/foo> "bar
+#  -DOC
+# -STR

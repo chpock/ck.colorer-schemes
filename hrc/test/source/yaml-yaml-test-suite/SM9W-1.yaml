@@ -1,0 +1,12 @@
+# name = Single character streams
+
+:∎
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :
+#    =VAL :
+#   -MAP
+#  -DOC
+# -STR

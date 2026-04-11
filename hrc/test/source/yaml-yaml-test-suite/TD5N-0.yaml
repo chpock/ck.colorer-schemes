@@ -1,0 +1,12 @@
+# name = Invalid scalar after sequence
+# fail = true
+
+- item1
+- item2
+invalid
+
+# +STR
+#  +DOC
+#   +SEQ
+#    =VAL :item1
+#    =VAL :item2

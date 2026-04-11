@@ -1,0 +1,16 @@
+# name = spec-08-07
+
+# Assuming conventional resolution:
+- "12"
+- 12
+- ! 12
+
+# +STR
+#   +DOC
+#     +SEQ
+#       =VAL "12
+#       =VAL :12
+#       =VAL <!> :12
+#     -SEQ
+#   -DOC
+# -STR

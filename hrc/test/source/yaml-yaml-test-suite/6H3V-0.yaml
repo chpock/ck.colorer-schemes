@@ -1,0 +1,12 @@
+# name = Backslashes in singlequotes
+
+'foo: bar\': baz'
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL 'foo: bar\\
+#    =VAL :baz'
+#   -MAP
+#  -DOC
+# -STR

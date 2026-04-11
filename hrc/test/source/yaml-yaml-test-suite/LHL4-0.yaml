@@ -1,0 +1,8 @@
+# name = Invalid tag
+# fail = true
+
+---
+!invalid{}tag scalar
+
+# +STR
+#  +DOC ---

@@ -1,0 +1,16 @@
+# name = Legal tab after indentation
+
+x:
+ - x
+  ——»x
+
+# +STR
+#  +DOC
+#   +MAP
+#    =VAL :x
+#    +SEQ
+#     =VAL :x x
+#    -SEQ
+#   -MAP
+#  -DOC
+# -STR

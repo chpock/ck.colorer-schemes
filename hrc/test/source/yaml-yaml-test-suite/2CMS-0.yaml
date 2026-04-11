@@ -1,0 +1,9 @@
+# name = Invalid mapping in plain multiline
+# fail = true
+
+this
+ is
+  invalid: x
+
+# +STR
+#  +DOC

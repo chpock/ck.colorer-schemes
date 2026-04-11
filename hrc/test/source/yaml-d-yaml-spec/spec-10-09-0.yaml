@@ -1,0 +1,17 @@
+# name = spec-10-09
+
+{
+key : value,
+empty: # empty value↓
+}
+
+# +STR
+#   +DOC
+#     +MAP {}
+#       =VAL :key
+#       =VAL :value
+#       =VAL :empty
+#       =VAL :
+#     -MAP
+#   -DOC
+# -STR

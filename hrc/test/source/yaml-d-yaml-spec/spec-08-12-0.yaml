@@ -1,0 +1,23 @@
+# name = spec-08-12
+
+[
+  Without properties,
+  &anchor "Anchored",
+  !!str 'Tagged',
+  *anchor, # Alias node
+  !!str ,  # Empty plain scalar
+  '',   # Empty plain scalar
+]
+
+# +STR
+#   +DOC
+#     +SEQ []
+#       =VAL :Without properties
+#       =VAL &anchor "Anchored
+#       =VAL <tag:yaml.org,2002:str> 'Tagged
+#       =ALI *anchor
+#       =VAL <tag:yaml.org,2002:str> :
+#       =VAL '
+#     -SEQ
+#   -DOC
+# -STR

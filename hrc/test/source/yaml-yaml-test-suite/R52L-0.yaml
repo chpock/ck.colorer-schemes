@@ -1,0 +1,22 @@
+# name = Nested flow mapping sequence and mappings
+
+---
+{ top1: [item1, {key2: value2}, item3], top2: value2 }
+
+# +STR
+#  +DOC ---
+#   +MAP {}
+#    =VAL :top1
+#    +SEQ []
+#     =VAL :item1
+#     +MAP {}
+#      =VAL :key2
+#      =VAL :value2
+#     -MAP
+#     =VAL :item3
+#    -SEQ
+#    =VAL :top2
+#    =VAL :value2
+#   -MAP
+#  -DOC
+# -STR

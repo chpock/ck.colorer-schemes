@@ -1,0 +1,20 @@
+# name = Flow Mapping Separate Values
+
+{
+unquoted : "separate",
+http://foo.com,
+omitted value:,
+}
+
+# +STR
+#  +DOC
+#   +MAP {}
+#    =VAL :unquoted
+#    =VAL "separate
+#    =VAL :http://foo.com
+#    =VAL :
+#    =VAL :omitted value
+#    =VAL :
+#   -MAP
+#  -DOC
+# -STR

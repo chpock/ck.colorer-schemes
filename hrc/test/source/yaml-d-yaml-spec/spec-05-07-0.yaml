@@ -1,0 +1,17 @@
+# name = spec-05-07
+
+literal: |
+  text
+folded: >
+  text
+
+# +STR
+#   +DOC
+#     +MAP
+#       =VAL :literal
+#       =VAL |text\n
+#       =VAL :folded
+#       =VAL >text\n
+#     -MAP
+#   -DOC
+# -STR

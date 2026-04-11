@@ -1,0 +1,22 @@
+﻿ 0: <span class='yaml-Comment def-Comment def-Syntax'># name = document-separator-in-quoted-scalar</span>
+ 1: <span class='yaml-Comment def-Comment def-Syntax'># fail = true</span>
+ 2: <span class='yaml-Comment def-Comment def-Syntax'># mark.line = 10</span>
+ 3: <span class='yaml-Comment def-Comment def-Syntax'># mark.column = 1</span>
+ 4: <span class='yaml-Comment def-Comment def-Syntax'># mark2.line = 8</span>
+ 5: <span class='yaml-Comment def-Comment def-Syntax'># mark2.column = 1</span>
+ 6: <span class='yaml-Comment def-Comment def-Syntax'># error = While scanning a quoted scalar, found unexpected document separator</span>
+ 7: 
+ 8: <span class='yaml-DocumentEdge def-Keyword'>---</span>
+ 9: <span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'>this --- is correct</span><span class='yaml-StringEdge def-StringEdge def-String'>"</span>
+10: <span class='yaml-DocumentEdge def-Keyword'>---</span>
+11: <span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'>this</span>
+12: <span class='yaml-String def-String'>...is also</span>
+13: <span class='yaml-String def-String'>correct</span><span class='yaml-StringEdge def-StringEdge def-String'>"</span>
+14: <span class='yaml-DocumentEdge def-Keyword'>---</span>
+15: <span class='yaml-StringEdge def-StringEdge def-String'>"</span><span class='yaml-String def-String'>a quoted scalar</span>
+16: <span class='yaml-String def-String'>cannot contain</span>
+17: <span class='yaml-String def-String'>---</span>
+18: <span class='yaml-String def-String'>document separators</span><span class='yaml-StringEdge def-StringEdge def-String'>"</span>
+19: 
+20: <span class='yaml-Comment def-Comment def-Syntax'># null</span>
+21: 

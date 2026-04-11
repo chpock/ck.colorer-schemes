@@ -1,0 +1,21 @@
+# name = spec-08-01
+
+%YAML 1.1
+---
+!!map {
+  ? &A1 !!str "foo"
+  : !!str "bar",
+  ? &A2 !!str "baz"
+  : *A1
+}
+
+# +STR
+#   +DOC ---
+#     +MAP {} <tag:yaml.org,2002:map>
+#       =VAL &A1 <tag:yaml.org,2002:str> "foo
+#       =VAL <tag:yaml.org,2002:str> "bar
+#       =VAL &A2 <tag:yaml.org,2002:str> "baz
+#       =ALI *A1
+#     -MAP
+#   -DOC
+# -STR

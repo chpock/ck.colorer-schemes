@@ -1,0 +1,13 @@
+# name = Missing document-end marker before directive
+# fail = true
+
+---
+scalar1 # comment
+%YAML 1.2
+---
+scalar2
+
+# +STR
+#  +DOC ---
+#   =VAL :scalar1
+#  -DOC

@@ -1,0 +1,17 @@
+# name = spec-09-11
+
+%YAML 1.1
+---
+!!seq [
+  !!str "first ",
+  !!str "first\nlast",
+]
+
+# +STR
+#   +DOC ---
+#     +SEQ [] <tag:yaml.org,2002:seq>
+#       =VAL <tag:yaml.org,2002:str> "first 
+#       =VAL <tag:yaml.org,2002:str> "first\nlast
+#     -SEQ
+#   -DOC
+# -STR

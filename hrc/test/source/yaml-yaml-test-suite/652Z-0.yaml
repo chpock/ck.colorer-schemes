@@ -1,0 +1,16 @@
+# name = Question mark at start of flow key
+
+{ ?foo: bar,
+bar: 42
+}
+
+# +STR
+#  +DOC
+#   +MAP {}
+#    =VAL :?foo
+#    =VAL :bar
+#    =VAL :bar
+#    =VAL :42
+#   -MAP
+#  -DOC
+# -STR

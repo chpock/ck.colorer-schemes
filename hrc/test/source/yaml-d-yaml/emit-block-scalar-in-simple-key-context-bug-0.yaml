@@ -1,0 +1,15 @@
+# name = emit-block-scalar-in-simple-key-context-bug
+
+? |-
+  foo
+: |-
+  bar
+
+# +STR
+#   +DOC
+#     +MAP
+#       =VAL |foo
+#       =VAL |bar
+#     -MAP
+#   -DOC
+# -STR

@@ -1,0 +1,12 @@
+# name = Invalid tabs as indendation in a mapping
+# fail = true
+
+---
+a:
+———»b:
+———»———»c: value
+
+# +STR
+#  +DOC ---
+#   +MAP
+#    =VAL :a

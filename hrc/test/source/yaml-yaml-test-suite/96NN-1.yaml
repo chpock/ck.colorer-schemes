@@ -1,0 +1,6 @@
+# name = Leading tab content in literals
+
+foo: |-
+ ——»bar∎
+
+# null

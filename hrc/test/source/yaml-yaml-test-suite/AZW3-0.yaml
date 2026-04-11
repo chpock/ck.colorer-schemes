@@ -1,0 +1,19 @@
+# name = Lookahead test cases
+
+- bla"keks: foo
+- bla]keks: foo
+
+# +STR
+#  +DOC
+#   +SEQ
+#    +MAP
+#     =VAL :bla"keks
+#     =VAL :foo
+#    -MAP
+#    +MAP
+#     =VAL :bla]keks
+#     =VAL :foo
+#    -MAP
+#   -SEQ
+#  -DOC
+# -STR

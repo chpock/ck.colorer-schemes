@@ -1,0 +1,15 @@
+# name = Multiple Entry Block Sequence
+
+- foo
+- bar
+- 42
+
+# +STR
+#  +DOC
+#   +SEQ
+#    =VAL :foo
+#    =VAL :bar
+#    =VAL :42
+#   -SEQ
+#  -DOC
+# -STR

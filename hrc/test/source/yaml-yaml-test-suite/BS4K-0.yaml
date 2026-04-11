@@ -1,0 +1,10 @@
+# name = Comment between plain scalar lines
+# fail = true
+
+word1  # comment
+word2
+
+# +STR
+#  +DOC
+#   =VAL :word1
+#  -DOC

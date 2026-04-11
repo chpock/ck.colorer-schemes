@@ -1,0 +1,15 @@
+# name = spec-05-06
+
+anchored: !local &anchor value
+alias: *anchor
+
+# +STR
+#   +DOC
+#     +MAP
+#       =VAL :anchored
+#       =VAL &anchor <!local> :value
+#       =VAL :alias
+#       =ALI *anchor
+#     -MAP
+#   -DOC
+# -STR

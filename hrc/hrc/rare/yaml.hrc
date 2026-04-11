@@ -1,0 +1,1184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hrc PUBLIC "-//Cail Lomecb//DTD Colorer HRC take5//EN"
+  "http://colorer.sf.net/2003/hrc.dtd">
+<hrc version="take5"
+     xmlns="http://colorer.sf.net/2003/hrc"
+     xmlns:xinc="http://www.w3.org/2001/XInclude"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://colorer.sf.net/2003/hrc http://colorer.sf.net/2003/hrc.xsd">
+
+<annotation>
+    <documentation>
+        YAML
+
+        Home: https://github.com/chpock/ck.colorer-schemes
+        Send requests there for bug fixes and features.
+    </documentation>
+    <contributors><![CDATA[
+        Konstantin Kushnir <chpock@gmail.com>
+    ]]></contributors>
+
+    <appinfo>
+        <prototype name="yaml" group="rare" description="YAML">
+            <location link="rare/yaml.hrc"/>
+            <filename weight="10">/\.ya?ml$/</filename>
+        </prototype>
+    </appinfo>
+</annotation>
+
+<type name="yaml">
+
+<region name="Text" parent="def:Text"/>
+<region name="Comment" parent="def:Comment"/>
+<region name="String"  parent="def:String"/>
+<region name="StringEdge" parent="def:StringEdge"/>
+<region name="StringContent" parent="def:StringContent"/>
+<region name="Constant"  parent="def:Constant"/>
+<region name="BooleanConstant"  parent="def:BooleanConstant"/>
+
+<region name="Symbol" parent="def:Symbol"/>
+<region name="SymbolStrong" parent="def:SymbolStrong"/>
+
+<region name="SymbolMapping" parent="def:SymbolStrong"/>
+<region name="SymbolSequence" parent="def:Symbol"/>
+<region name="SymbolMappingComplexKey" parent="def:Keyword"/>
+<region name="SymbolTag" parent="def:Tag"/>
+<region name="SymbolAnchor" parent="def:VarStrong"/>
+<region name="SymbolFlow" parent="def:SymbolStrong"/>
+<region name="SymbolMergeKeys" parent="def:InterfaceKeyword"/>
+
+<region name="Tag" parent="def:OpenTag"/>
+<region name="Anchor" parent="def:Var"/>
+
+<region name="Error" parent="def:Error"/>
+
+<region name="BlockScalar" parent="def:InterfaceKeyword"/>
+<region name="BlockScalarIndent" parent="def:Prefix"/>
+
+
+<region name="DocumentEdge" parent="def:Keyword"/>
+
+<region name="MappingKey" parent="def:Parameter"/>
+
+<!-- for testing -->
+<region name="Test" parent="def:URL"/>
+<region name="Test2" parent="def:TODO"/>
+
+<!--
+
+    This regexp is for floating-point base60 numbers (https://yaml.org/type/float.html)
+        (?{def:NumberSuffix}[+-]?\d[\d_]*(:[0-5]?\d)+\.[\d_]*)
+
+    This regexp is for integer base60 numbers (https://yaml.org/type/int.html)
+        (?{def:NumberSuffix}[+-]?[1-9][\d_]*(:[0-5]?\d)+)
+
+-->
+
+<entity name="special-values" value="
+    (
+        (?{BooleanConstant}[tT]rue|TRUE|[fF]alse|FALSE|[yY]es|YES|[nN]o|NO|[oO]n|ON|[oO]ff|OFF)|
+        (?{Constant}[nN]ull|NULL|\~)|
+        (?{def:NumberFloat}\.nan|\.NaN|\.NAN|[+-]?\.[iI]nf|[+-]?\.INF)|
+        (?{def:NumberFloat}[+-]?(\d[\d_]*)?\.\d[\d_]*([eE][+-]?[0-9]+)?)|
+        (?{def:NumberFloat}[+-]?\d[\d_]*(\.|[eE][+-]?[0-9]+))|
+        (?{def:NumberSuffix}[+-]?\d[\d_]*(:[0-5]?\d)+\.[\d_]*)|
+        (?{def:NumberDec}[+-]?\d[\d_]*)|
+        (?{def:NumberSuffix}[+-]?[1-9][\d_]*(:[0-5]?\d)+)|
+        (?{def:NumberHex}0x[\da-fA-F][\da-fA-F_]*)|
+        (?{def:NumberOct}0o?[0-7][0-7_]*)|
+        (?{def:NumberBin}[+-]?0b[0-1][0-1_]*)|
+        (?{def:Date}\d\d\d\d\-\d\d\-\d\d)|
+            (?{def:Date}\d\d\d\d\-\d\d?\-\d\d?)
+            (?{def:Prefix}[Tt]|[ \t]+)
+            (?{def:Time}\d\d?:\d\d:\d\d(\.\d*)?)
+            (?{def:Prefix}[ \t]*(Z|[+-]\d\d?(:\d\d)?))?
+    )
+"/>
+
+<!--
+
+    Regexp for mapping key has the following scheme:
+
+    (
+        (*alias)|
+        (
+            ((&anchor|!tag)\s+)*
+            (
+                key|
+                "key"|
+                'key'|
+                ''
+            )
+        )
+    )\s*:
+
+    Notes:
+      - aliases/anchors can contain any characters except ,[]{}
+        https://github.com/adrienverge/yamllint/issues/686
+        https://yaml-core.narkive.com/Q1Th79CA/what-characters-allowed-in-anchor-names
+      - there are no explicit requirements for tags in YAML specs, lets use everything except space
+      - tags/anchors are node properties and they can be specified in any order
+        https://yaml.org/spec/1.2.2/#69-node-properties
+
+-->
+
+<entity name="mapping-key" value="
+    (
+        (\*[^\s\[\]\{\},]+)|
+        (
+            (((&amp;[^\s\[\]\{\},]+)|(!\S+))\s+)*
+            (
+                ([^\s&quot;&apos;\-!&amp;\*\?:\{\}\[\]]|[\-\?:]\s?!) ((:(\s|$)|\s#)?!.)* (:(\s|$))?= |
+                &quot; ([^&quot;]*((\\&quot;)[^&quot;]*)*) \\?~1&quot; |
+                &apos; ([^&apos;]*((&apos;&apos;)[^&apos;]*)*)((&apos;&apos;)+|&apos;?~1) &apos; |
+                &apos;&apos;
+            )
+        )
+    )\s*:(\s?=|$)
+"/>
+
+<!-- includes alias -->
+<entity name="value-explicit" value="
+    (
+        \*|
+        (!\S*\s+)?
+        (&amp;\S*\s+)?
+        [&quot;'\[\{]
+    )
+"/>
+
+<entity name="value-block" value="
+    (!\S*\s+)?
+    (&amp;\S*\s+)?
+    [&gt;\|]
+"/>
+
+<entity name="mapping-key-value-explicit" value="%mapping-key;\s+%value-explicit;"/>
+<entity name="mapping-key-value-block" value="%mapping-key;\s+%value-block;"/>
+
+<scheme name="yaml">
+
+    <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
+
+    <!-- directive %YAML -->
+    <regexp><![CDATA[/
+        ^
+        (?{def:ClassKeyword}%YAML)\s+
+        (?{def:NumberDec}\d+\.\d+)?
+        (\s+#?=|\s*(?{Error}.*)$)
+    /x]]></regexp>
+
+    <!-- directive %TAG -->
+    <regexp><![CDATA[/
+        ^
+        (?{def:ClassKeyword}%TAG)\s+
+        ((?{SymbolTag}!)(?{Tag}\S*)\s+)?
+        (?{String}\S+)?
+        (\s+#?=|\s*(?{Error}.*)$)
+    /x]]></regexp>
+
+    <!-- unknown directive -->
+    <regexp match="/^%.*$/" region="Error"/>
+    <!-- document end without document start -->
+    <regexp match="/^((\.{3}))\s*(?{Error}([#\s]+)?!.*$)?/" region1="DocumentEdge" region2="def:PairEnd"/>
+
+    <!-- document starts with a block scalar -->
+    <block scheme="value-block">
+        <start region1="DocumentEdge" region2="def:PairStart" region3="Error"><![CDATA[/
+            ^((\-{3}))(\S*)\s+
+            \M%value-block;
+        /x]]></start>
+        <end region0="DocumentEdge" region3="def:PairEnd"><![CDATA[/
+            ^(((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|\S?=)
+        /x]]></end>
+    </block>
+
+    <!-- document starts with an explicit value -->
+    <block scheme="value-explicit">
+        <start region1="DocumentEdge" region2="def:PairStart" region3="Error"><![CDATA[/
+            ^((\-{3}))(\S*)\s+
+            \M%value-explicit;
+        /x]]></start>
+        <end region0="DocumentEdge" region3="def:PairEnd"><![CDATA[/
+            ^(((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|\S?=)
+        /x]]></end>
+    </block>
+
+    <!-- document starts with an implict value -->
+    <block scheme="value-implict">
+        <start region1="DocumentEdge" region2="def:PairStart" region3="Error"><![CDATA[/
+            ^((\-{3}))(\S*)\s+
+            \M[^#\s]
+        /x]]></start>
+        <end region0="DocumentEdge" region3="def:PairEnd"><![CDATA[/
+            ^(((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|\S?=)
+        /x]]></end>
+    </block>
+
+    <!-- document starts -->
+    <block start="/^((\-{3}))(?{Error}\S*)\s*/" end="/^((\.{3})\s*(?{Error}([#\s]+)?!.*$)?)|(\-{3})?=/"
+        scheme="document"
+        region01="DocumentEdge"  region10="DocumentEdge"
+        region02="def:PairStart" region12="def:PairEnd"/>
+
+    <inherit scheme="document"/>
+
+</scheme>
+
+<!-- these schemes can be overriden by parent scheme -->
+
+<scheme name="integration"/>
+
+<scheme name="key">
+</scheme>
+
+<scheme name="value">
+</scheme>
+
+<scheme name="string">
+</scheme>
+
+<scheme name="tag">
+    <regexp match="/~!/" region="SymbolTag"/>
+</scheme>
+
+<scheme name="comment">
+    <inherit scheme="def:Comment"/>
+</scheme>
+
+<scheme name="anchor">
+</scheme>
+
+<scheme name="string-double-quote">
+    <regexp match="/\\(?{Error}\s+)$/"/>
+    <regexp region="StringContent"><![CDATA[/
+        \\((
+            [0abtnvfre"/\\N_LP\x20]|
+            (x[0-9a-fA-F]{2})|
+            (u[0-9a-fA-F]{4})|
+            (U[0-9a-fA-F]{8})
+        )|$)
+    /x]]></regexp>
+    <!-- unknown escapes -->
+    <regexp match="/\\./" region="Error"/>
+    <inherit scheme="string"/>
+</scheme>
+
+<scheme name="string-single-quote">
+    <regexp match="/&apos;&apos;/" region="StringContent"/>
+    <inherit scheme="string"/>
+</scheme>
+
+<scheme name="key-double-quote">
+    <inherit scheme="key"/>
+    <inherit scheme="string-double-quote"/>
+</scheme>
+
+<scheme name="key-single-quote">
+    <inherit scheme="key"/>
+    <inherit scheme="string-single-quote"/>
+</scheme>
+
+<scheme name="key-plain">
+    <inherit scheme="key"/>
+    <regexp match="/~%special-values;:?=/x"/>
+    <!-- eat colon without subsequent space -->
+    <regexp match="/:(\s|$)?!/"/>
+    <inherit scheme="string"/>
+</scheme>
+
+<scheme name="value-double-quote">
+    <inherit scheme="string-double-quote"/>
+</scheme>
+
+<scheme name="value-single-quote">
+    <inherit scheme="string-single-quote"/>
+</scheme>
+
+<scheme name="value-plain">
+    <inherit scheme="value"/>
+    <regexp match="/~%special-values;(\s*$|\s+#)?=/x"/>
+    <!-- eat colon without subsequent space -->
+    <regexp match="/:(\s|$)?!/"/>
+    <inherit scheme="string"/>
+</scheme>
+
+<scheme name="value-plain-flow">
+    <inherit scheme="value"/>
+    <regexp match="/~%special-values;(\s*($|[,\]\}]))?=/x"/>
+    <inherit scheme="string"/>
+</scheme>
+
+<scheme name="line-error">
+    <!-- integration -->
+    <inherit scheme="integration"/>
+    <!-- comments -->
+    <block start="/^\s*\m#/" end="/\M^/" region="Comment" scheme="comment" priority="low"/>
+    <!-- anything unexpected as an error -->
+    <block start="/^\s*(?{Error}\S.*)?/" end="/\M^/" region01="Error" scheme="def:empty" priority="low"/>
+</scheme>
+
+<scheme name="line-string">
+    <block start="/^\s+\S?=/" end="/\M^/" region="String" inner-region="yes" scheme="string" priority="low"/>
+</scheme>
+
+<scheme name="document-common">
+
+    <!-- integration -->
+    <inherit scheme="integration"/>
+
+    <!-- eat empty lines -->
+    <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
+
+    <!-- do not allow directives inside document -->
+    <block start="/^%/" end="/\M^/" region="Error" scheme="def:empty" priority="low"/>
+
+    <!-- comments -->
+    <block start="/\s*\m#/" end="/\M^/" region="Comment" scheme="comment" priority="low"/>
+
+    <!-- detect sequences/complex mappings -->
+    <block start="/\M^(\s*)[\-\?:](\s+)\-(\s+)\-(\s+)\-(\s+)\-(\s|$)/" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"
+        scheme="sequence-nested-4" priority="low"/>
+    <block  start="/\M^(\s*)[\-\?:](\s+)\-(\s+)\-(\s+)\-(\s|$)/" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"
+        scheme="sequence-nested-3" priority="low"/>
+    <block start="/\M^(\s*)[\-\?:](\s+)\-(\s+)\-(\s|$)/" end="/\M^(\y1\s\y2\s\y3\s)?!/"
+        scheme="sequence-nested-2" priority="low"/>
+    <block start="/\M^(\s*)[\-\?:](\s+)\-(\s|$)/" end="/\M^(\y1\s\y2\s)?!/"
+        scheme="sequence-nested-1" priority="low"/>
+    <block start="/\M^(\s*)[\-\?:](\s|$)/" end="/\M^(\y1\s)?!/"
+        scheme="sequence" priority="low"/>
+
+    <!-- detect mergekeys mapping -->
+    <block start="/^(\s*)\M&lt;&lt;\s*:/x" end="/\M^(\y1\s)?!/"
+        scheme="mapping-mergekeys" priority="low"/>
+
+    <!-- detect mapping with an explicit value -->
+    <block start="/^(\s*)\M%mapping-key-value-explicit;/x" end="/\M^(\y1\s)?!/"
+        scheme="mapping-explicit" priority="low"/>
+
+    <!-- detect mapping with a value as a block scalar -->
+    <block start="/^(\s*)\M%mapping-key-value-block;/x" end="/\M^(\y1\s)?!/"
+        scheme="mapping-block" priority="low"/>
+
+    <!-- detect mapping with an implicit value -->
+    <block start="/^(\s*)\M%mapping-key;/x" end="/\M^(\y1\s)?!/"
+        scheme="mapping-implict" priority="low"/>
+
+</scheme>
+
+<scheme name="document">
+
+    <inherit scheme="document-common"/>
+
+    <!-- block value -->
+    <block start="/^(\s*)\M%value-block;/x" end="/\M^(\y1\s)?!/" scheme="value-block" priority="low"/>
+
+    <!-- explicit/implict value -->
+    <block start="/^(\s*)\M\S/x" end="/\M^/" scheme="value-first-line" priority="low"/>
+
+</scheme>
+
+<scheme name="document-implict">
+
+    <inherit scheme="document-common"/>
+
+    <!-- detect lines with comments -->
+    <block start="/^\s+\M\S.*\s#/" end="/\M#/" scheme="string" region="String" inner-region="yes" priority="low"/>
+
+    <inherit scheme="line-string"/>
+
+</scheme>
+
+<scheme name="value-anchor-first">
+
+    <block start="/~&amp;\M[^\s\[\]\{\},]+/" end="/~[^\s\[\]\{\},]+\m/" scheme="anchor" region="Anchor"
+        region00="SymbolAnchor"/>
+
+    <block start="/\s+!?=/" end="/\M$/" scheme="value-tag-last"/>
+
+    <block start="/\s+\S?=/" end="/\M$/" scheme="value-value-only"/>
+
+    <!-- anything that doesn't start with space (doesn't match above regex) is an error -->
+    <regexp match="/\S+/" region="Error"/>
+
+</scheme>
+
+<scheme name="value-tag-first">
+
+    <block start="/~!\M\S*/" end="/~\S*\m/" scheme="tag" region="Tag"
+        region00="SymbolTag"/>
+
+    <block start="/\s+&amp;?=/" end="/\M$/" scheme="value-anchor-last"/>
+
+    <!-- allow an alias after a tag -->
+    <block start="/\s+\*\M\S*/" end="/~\S*\s*(?{Error}[^#\s].*?)?\M(#|$)/" scheme="anchor"
+        region="Anchor" region00="SymbolAnchor"/>
+    <!-- allow comments after alias -->
+    <block start="/#/" end="/\M$/" region="Comment" scheme="comment"/>
+
+    <block start="/\s+\S?=/" end="/\M$/" scheme="value-value-only"/>
+
+</scheme>
+
+<scheme name="value-anchor-last">
+
+    <block start="/~&amp;\M[^\s\[\]\{\},]+/" end="/~[^\s\[\]\{\},]+\m/" scheme="anchor" region="Anchor"
+        region00="SymbolAnchor"/>
+
+    <block start="/\s+\S?=/" end="/\M$/" scheme="value-value-only"/>
+
+    <!-- anything that doesn't start with space (doesn't match above regex) is an error -->
+    <regexp match="/\S+/" region="Error"/>
+
+</scheme>
+
+<scheme name="value-tag-last">
+
+    <block start="/~!\M\S*/" end="/~\S*\m/" scheme="tag" region="Tag"
+        region00="SymbolTag"/>
+
+    <block start="/\s+\S?=/" end="/\M$/" scheme="value-value-only"/>
+
+</scheme>
+
+<scheme name="value-value-only">
+
+    <!-- integration -->
+    <inherit scheme="integration"/>
+
+    <!-- eat spaces -->
+    <regexp match="/\s+/"/>
+
+    <!-- catch comments -->
+    <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
+
+    <!-- value - double quoted -->
+    <block start="/(&quot;)/" end="/((&quot;))(\s*$|\s+#?=|\s*(?{Error}.*)$)/"
+        scheme="value-double-quote" region="String"
+        region00="StringEdge"    region11="StringEdge"
+        region01="def:PairStart" region12="def:PairEnd"/>
+
+    <!-- value - single quoted -->
+    <block start="/(&apos;)/" end="/((&apos;))(\s*$|\s+#?=|\s*(?{Error}.*)$)/"
+        scheme="value-single-quote" region="String"
+        region00="StringEdge"    region11="StringEdge"
+        region01="def:PairStart" region12="def:PairEnd"/>
+
+    <!-- value - flow mapping -->
+    <block start="/(\{)/" end="/((\}))(\s*$|\s+#?=|\s*(?{Error}.*)$)/"
+        scheme="flow-mapping"
+        region00="SymbolFlow"    region11="SymbolFlow"
+        region01="def:PairStart" region12="def:PairEnd"/>
+
+    <!-- value - flow sequence -->
+    <block start="/(\[)/" end="/((\]))(\s*$|\s+#?=|\s*(?{Error}.*)$)/"
+        scheme="flow-sequence"
+        region00="SymbolFlow"    region11="SymbolFlow"
+        region01="def:PairStart" region12="def:PairEnd"/>
+
+    <!-- value - block scalar -->
+    <regexp match="/([&gt;\|])([+-])?(\d)?(\s*$|\s+#?=|\s*(?{Error}\S.*?)?(\s+#|$)?=)/"
+        region1="BlockScalar" region2="BlockScalarIndent" region3="BlockScalarIndent"/>
+
+    <!-- do not allow sequences/complex mapping, anchors, aliases, tags here -->
+    <regexp match="/([\-\?:]\s.*?|[&amp;\*!]\S*)(\s|$)?=/" region="Error"/>
+
+    <!-- value - plain scalar -->
+    <block start="/\S?=/" end="/\s+#?=|$/" scheme="value-plain" region="String"/>
+
+</scheme>
+
+<scheme name="value-first-line">
+
+    <!-- this is what we expect exclusively at the beginning of the block (the first line) -->
+
+    <block start="/~(&amp;\S)?=/" end="/$/" scheme="value-anchor-first"/>
+
+    <block start="/~!?=/" end="/$/" scheme="value-tag-first"/>
+
+    <!-- alias as a value -->
+    <block start="/~\*\S?=/" end="/\s*$|\s+#?=|\s+(?{Error}[^#].*?)?\s*(#|$)?=/" scheme="anchor"
+        region="Anchor" region00="SymbolAnchor"/>
+    <!-- allow comments in the first line after alias -->
+    <block start="/.?#1#/" end="/$/" region="Comment" scheme="comment"/>
+
+    <block start="/~\S?=/" end="/$/" scheme="value-value-only" region11="SymbolMapping"/>
+
+</scheme>
+
+<scheme name="value-implict">
+
+    <!--
+        This is what we expect at the first line of the block.
+        We are checking that we have at least 1 character in front of match,
+        so here we will match something after a key, but not a newline.
+    -->
+    <block start="/.?#1.?=/" end="/$/" scheme="value-first-line"/>
+
+    <!-- this blocks matches everything starting from the second line and below -->
+
+    <!--
+         Note: we cannot rely on 'eat empty lines' in the 'document' schema, as
+         that 'document' schema will be replaced in the value-explicit and
+         value-block schemas, but this ignoring of empty lines rule
+         should be active.
+    -->
+    <!-- eat empty lines -->
+    <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
+
+    <block start="/^\M(\s+)\S/" end="/\M^(\y1)?!/" scheme="document-implict" priority="low"/>
+
+</scheme>
+
+<scheme name="value-explicit">
+    <inherit scheme="value-implict">
+        <virtual scheme="document-implict" subst-scheme="line-error"/>
+    </inherit>
+</scheme>
+
+<scheme name="value-block">
+    <inherit scheme="value-implict">
+        <virtual scheme="document-implict" subst-scheme="line-string"/>
+    </inherit>
+</scheme>
+
+<scheme name="mapping-key-anchor-first">
+
+    <block start="/~&amp;\M[^\s\[\]\{\},]+/" end="/~[^\s\[\]\{\},]+\m/" scheme="anchor" region="Anchor"
+        region00="SymbolAnchor"/>
+
+    <block start="/\s+!?=/" end="/\M:(\s+|$)/" scheme="mapping-key-tag-last"/>
+
+    <block start="/\s+[^\s:]?=/" end="/\M:(\s+|$)/" scheme="mapping-key-key-only"/>
+
+    <!-- anything that doesn't start with space (doesn't match above regex) is an error -->
+    <regexp match="/[^\s:]+/" region="Error"/>
+
+</scheme>
+
+<scheme name="mapping-key-tag-first">
+
+    <block start="/~!\M\S+/" end="/~\S+\m/" scheme="tag" region="Tag"
+        region00="SymbolTag"/>
+
+    <block start="/\s+&amp;?=/" end="/\M:(\s+|$)/" scheme="mapping-key-anchor-last"/>
+
+    <block start="/\s+[^\s:]?=/" end="/\M:(\s+|$)/" scheme="mapping-key-key-only"/>
+
+</scheme>
+
+<scheme name="mapping-key-anchor-last">
+
+    <block start="/~&amp;\M[^\s\[\]\{\},]+/" end="/~[^\s\[\]\{\},]+\m/" scheme="anchor" region="Anchor"
+        region00="SymbolAnchor"/>
+
+    <block start="/\s+[^\s:]?=/" end="/\M:(\s+|$)/" scheme="mapping-key-key-only"/>
+
+    <!-- anything that doesn't start with space (doesn't match above regex) is an error -->
+    <regexp match="/[^\s:]/" region="Error"/>
+
+</scheme>
+
+<scheme name="mapping-key-tag-last">
+
+    <block start="/~!\M\S+/" end="/~\S+\m/" scheme="tag" region="Tag"
+        region00="SymbolTag"/>
+
+    <block start="/\s+[^\s:]?=/" end="/\M:(\s+|$)/" scheme="mapping-key-key-only"/>
+
+</scheme>
+
+<scheme name="mapping-key-key-only">
+
+    <!-- double-quoted key -->
+    <block start="/~(&quot;)/" end="/(&quot;)/" scheme="key-double-quote" region="MappingKey"
+        region00="StringEdge"    region10="StringEdge"
+        region01="def:PairStart" region11="def:PairEnd"/>
+
+    <!-- single-quoted key -->
+    <block start="/~(&apos;)/" end="/(&apos;)/" scheme="key-single-quote" region="MappingKey"
+        region00="StringEdge"    region10="StringEdge"
+        region01="def:PairStart" region11="def:PairEnd"/>
+
+    <!-- plain key -->
+    <block start="/~\M([^\s&quot;&apos;:!&amp;&gt;#\|\-]|[:\-]\s?!)/" end="/\M:(\s+|$)/"
+        scheme="key-plain" region="MappingKey" />
+
+    <!-- anything that is not a colon/space after a key is an error -->
+    <regexp match="/[^:\s]/" region="Error"/>
+
+</scheme>
+
+
+<scheme name="mapping-implict">
+
+    <!-- this is what we expect exclusively at the beginning of the block (the first line) -->
+
+    <block start="/~&amp;?=/" end="/(:)(\s+|$)/" scheme="mapping-key-anchor-first"
+        region11="SymbolMapping"/>
+
+    <block start="/~!?=/" end="/(:)(\s+|$)/" scheme="mapping-key-tag-first"
+        region11="SymbolMapping"/>
+
+    <!-- alias as a key -->
+    <block start="/~\*/" end="/(:)(\s+|$)/" scheme="anchor" region="Anchor"
+        region00="SymbolAnchor" region11="SymbolMapping"/>
+
+    <block start="/~\S?=/" end="/(:)(\s+|$)/" scheme="mapping-key-key-only"
+        region11="SymbolMapping"/>
+
+    <inherit scheme="value-implict"/>
+
+</scheme>
+
+<scheme name="mapping-explicit">
+    <inherit scheme="mapping-implict">
+        <virtual scheme="value-implict" subst-scheme="value-explicit"/>
+    </inherit>
+</scheme>
+
+<scheme name="mapping-block">
+    <inherit scheme="mapping-implict">
+        <virtual scheme="value-implict" subst-scheme="value-block"/>
+    </inherit>
+</scheme>
+
+<scheme name="mapping-mergekeys">
+
+    <!-- eat empty lines -->
+    <block start="/^\s*$/" end="/\M^./" scheme="def:empty"/>
+
+    <!-- this is what we expect exclusively at the beginning of the block (the first line) -->
+
+    <!-- merge keys is allowed here -->
+    <regexp match="/~(&lt;&lt;)\s*(:)\s*/" region1="SymbolMergeKeys" region2="SymbolMapping"/>
+
+    <!--
+        This is what we expect at the first line of the block.
+        We check if we have at least one character before match to make sure we are
+        in the first line. Thus, these matches will not work for the second and
+        subsequent lines, as they will start at the beginning of the line.
+    -->
+
+    <!-- catch tags/aliases/anchors without name -->
+    <regexp match="/.?#1\s*([!\*&amp;](\s.*$|$))/" region1="Error"/>
+
+    <!-- tags -->
+    <block start="/.?#1!/" end="/\s*$|\s+/" scheme="tag" region00="SymbolTag" region="Tag"/>
+
+    <!-- actual value as flow-sequence -->
+    <block start="/.?#1(\[)/" end="/((\]))(\s*$|\s+#?=|\s*(?{Error}.*)$)/"
+        scheme="flow-sequence-mergekeys"
+        region00="SymbolFlow"    region11="SymbolFlow"
+        region01="def:PairStart" region12="def:PairEnd"/>
+
+    <!-- actual value as alias (after alias only a comment is allowed) -->
+    <block start="/.?#1\*/" end="/\s*$|\s+#?=|\s+(?{Error}[^#].*)?$/" scheme="anchor"
+        region00="SymbolAnchor" region="Anchor"/>
+
+    <!-- comments -->
+    <block start="/.?#1#/" end="/$/" scheme="comment" region="Comment"/>
+
+    <!-- anything unexpected is an error -->
+    <regexp match="/.?#1\s*(.+)$/" region1="Error"/>
+
+    <!-- this blocks matches everything starting from the second line and below -->
+
+    <inherit scheme="line-error"/>
+
+</scheme>
+
+<scheme name="sequence">
+
+    <!-- detect sequence with a value as mapping with an explicit value -->
+    <block scheme="mapping-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        \M%mapping-key-value-explicit;
+    /x" end="/\M^(\y1\s\y2\s)?!/"/>
+
+    <!-- detect sequence with a value as mapping with a value as a block scalar -->
+    <block scheme="mapping-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        \M%mapping-key-value-block;
+    /x" end="/\M^(\y1\s\y2\s)?!/"/>
+
+    <!-- detect sequence with a value as mapping with an implicit value -->
+    <block scheme="mapping-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        \M%mapping-key;
+    /x" end="/\M^(\y1\s\y2\s)?!/"/>
+
+    <!-- detect sequence with an explicit value -->
+    <block scheme="value-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        \M%value-explicit;
+    /x" end="/\M^(\y1\s)?!/"/>
+
+    <!-- detect sequence with a value as a block scalar -->
+    <block scheme="value-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        \M%value-block;
+    /x" end="/\M^(\y1\s)?!/"/>
+
+    <!-- detect sequence with an implicit value -->
+    <block scheme="value-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+|$)
+        \M(\-\s)?!
+    /x" end="/\M^(\y1\s)?!/"/>
+
+    <inherit scheme="document"/>
+
+</scheme>
+
+<scheme name="sequence-nested-1">
+
+    <!-- detect sequence with a value as mapping with an explicit value -->
+    <block scheme="mapping-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key-value-explicit;
+    /x" end="/\M^(\y1\s\y2\s\y3\s)?!/"/>
+
+    <!-- detect sequence with a value as mapping with a value as a block scalar -->
+    <block scheme="mapping-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key-value-block;
+    /x" end="/\M^(\y1\s\y2\s\y3\s)?!/"/>
+
+    <!-- detect sequence with a value as mapping with an implicit value -->
+    <block scheme="mapping-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key;
+    /x" end="/\M^(\y1\s\y2\s\y3\s)?!/"/>
+
+    <!-- detect sequence with an explicit value -->
+    <block scheme="value-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%value-explicit;
+    /x" end="/\M^(\y1\s\y2\s)?!/"/>
+
+    <!-- detect sequence with a value as a block scalar -->
+    <block scheme="value-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%value-block;
+    /x" end="/\M^(\y1\s\y2\s)?!/"/>
+
+    <!-- detect sequence with an implicit value -->
+    <block scheme="value-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+|$)
+        \M(\-\s)?!
+    /x" end="/\M^(\y1\s\y2\s)?!/"/>
+
+    <inherit scheme="document"/>
+
+</scheme>
+
+<scheme name="sequence-nested-2">
+
+    <!-- detect sequence with a value as mapping with an explicit value -->
+    <block scheme="mapping-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key-value-explicit;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"/>
+
+    <!-- detect sequence with a value as mapping with a value as a block scalar -->
+    <block scheme="mapping-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key-value-block;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"/>
+
+    <!-- detect sequence with a value as mapping with an implicit value -->
+    <block scheme="mapping-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"/>
+
+    <!-- detect sequence with an explicit value -->
+    <block scheme="value-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%value-explicit;
+    /x" end="/\M^(\y1\s\y2\s\y3\s)?!/"/>
+
+    <!-- detect sequence with a value as a block scalar -->
+    <block scheme="value-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%value-block;
+    /x" end="/\M^(\y1\s\y2\s\y3\s)?!/"/>
+
+    <!-- detect sequence with an implicit value -->
+    <block scheme="value-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+|$)
+        \M(\-\s)?!
+    /x" end="/\M^(\y1\s\y2\s\y3\s)?!/"/>
+
+    <inherit scheme="document"/>
+
+</scheme>
+
+<scheme name="sequence-nested-3">
+
+    <!-- detect sequence with a value as mapping with an explicit value -->
+    <block scheme="mapping-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key-value-explicit;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
+
+    <!-- detect sequence with a value as mapping with a value as a block scalar -->
+    <block scheme="mapping-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key-value-block;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
+
+    <!-- detect sequence with a value as mapping with an implicit value -->
+    <block scheme="mapping-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
+
+    <!-- detect sequence with an explicit value -->
+    <block scheme="value-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%value-explicit;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"/>
+
+    <!-- detect sequence with a value as a block scalar -->
+    <block scheme="value-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%value-block;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"/>
+
+    <!-- detect sequence with an implicit value -->
+    <block scheme="value-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+|$)
+        \M(\-\s)?!
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s)?!/"/>
+
+    <inherit scheme="document"/>
+
+</scheme>
+
+<scheme name="sequence-nested-4">
+
+    <!-- detect sequence with a value as mapping with an explicit value -->
+    <block scheme="mapping-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key-value-explicit;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s\y6\s)?!/"/>
+
+    <!-- detect sequence with a value as mapping with a value as a block scalar -->
+    <block scheme="mapping-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key-value-block;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s\y6\s)?!/"/>
+
+    <!-- detect sequence with a value as mapping with an implicit value -->
+    <block scheme="mapping-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%mapping-key;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s\y6\s)?!/"/>
+
+    <!-- detect sequence with an explicit value -->
+    <block scheme="value-explicit" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%value-explicit;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
+
+    <!-- detect sequence with a value as a block scalar -->
+    <block scheme="value-block" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        \M%value-block;
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
+
+    <!-- detect sequence with an implicit value -->
+    <block scheme="value-implict" start="/
+        ~(\s*)
+        (?{}(?{SymbolSequence}\-)|(?{SymbolMappingComplexKey}[\?:]))(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+)
+        (?{SymbolSequence}\-)(\s+|$)
+        \M(\-\s)?!
+    /x" end="/\M^(\y1\s\y2\s\y3\s\y4\s\y5\s)?!/"/>
+
+    <inherit scheme="document"/>
+
+</scheme>
+
+<scheme name="flow-mapping">
+    <!-- eat spaces -->
+    <regexp match="/\s+/"/>
+    <!-- comments without space is an error -->
+    <block start="/\S?#1#/" end="/$|\}?=/" region="Error" scheme="def:empty"/>
+    <!-- comments -->
+    <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
+    <!-- mapping key: merge key -->
+    <block start="/(&lt;&lt;)\s*(:)/" end="/[,\}]?=/" scheme="flow-mapping-value-mergekeys"
+        region01="SymbolMergeKeys" region02="SymbolMapping"/>
+    <!-- mapping key: double quoted -->
+    <block start="/((&quot;))/" end="/((&quot;))\s*(?{Error}([^#,:\}]|\s?~1#)*)/" scheme="key-double-quote"
+        region="MappingKey"
+        region00="StringEdge"    region11="StringEdge"
+        region01="def:PairStart" region12="def:PairEnd"/>
+    <!-- mapping key: single quoted -->
+    <block start="/((&apos;))/" end="/((&apos;))\s*(?{Error}([^#,:\}]|\s?~1#)*)/" scheme="key-single-quote"
+        region="MappingKey"
+        region00="StringEdge"    region11="StringEdge"
+        region01="def:PairStart" region12="def:PairEnd"/>
+    <!-- mapping key: flow-sequence -->
+    <block start="/((\[))/" end="/((\]))\s*(?{Error}([^#,:\}]|\s?~1#)*)/" scheme="flow-sequence"
+        region00="SymbolFlow"    region11="SymbolFlow"
+        region01="def:PairStart" region12="def:PairEnd"/>
+    <!-- mapping key: flow-mapping -->
+    <block start="/((\{))/" end="/((\}))\s*(?{Error}([^#,:\}]|\s?~1#)*)/" scheme="flow-mapping"
+        region00="SymbolFlow"    region11="SymbolFlow"
+        region01="def:PairStart" region12="def:PairEnd"/>
+    <!-- mapping key: plain scalar -->
+    <block start="/\M[^:,\}\s]/" end="/[,:\}]?=/" scheme="key-plain" region="MappingKey"/>
+
+    <!-- allow comma, but do not allow another comma to be used after the found comma -->
+    <regexp match="/,\s*(?{Error},[\s,]*)?/" region="Symbol"/>
+
+    <!-- mapping value -->
+    <block start="/:/" end="/[,\}]?=/" region00="SymbolMapping" scheme="flow-mapping-value"/>
+
+    <!-- anything unexpected is an error -->
+    <regexp match="/\S/" region="Error" priority="low"/>
+</scheme>
+
+<scheme name="flow-mapping-value-mergekeys">
+    <!-- eat spaces -->
+    <regexp match="/\s+/"/>
+    <!-- comments without space is an error -->
+    <block start="/\S?#1#/" end="/$|\}?=/" region="Error" scheme="def:empty"/>
+    <!-- comments -->
+    <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
+    <!-- a tag, do not allow another tag to be used after the found tag -->
+    <block start="/!/" end="/\s*$|\s+(?{Error}![^,\}]*)?/" scheme="tag" region00="SymbolTag" region="Tag"/>
+    <!-- alias, do not allow anything after the found alias -->
+    <block start="/\*/" end="/\s*[,\}]?=|\s+(?{Error}[^,\}]*)/" scheme="anchor"
+        region00="SymbolAnchor" region="Anchor"/>
+    <!-- nested flow-sequence, allow only comma or closing bracket after this match -->
+    <block start="/(\[)/" end="/((\]))\s*(?{Error}([^#,\}]|\s?~1#)*)/" scheme="flow-sequence-mergekeys"
+        region00="SymbolFlow"    region11="SymbolFlow"
+        region01="def:PairStart" region12="def:PairEnd"/>
+    <!-- anything unexpected is an error -->
+    <regexp match="/\S/" region="Error" priority="low"/>
+</scheme>
+
+<scheme name="flow-mapping-value">
+    <!-- eat spaces -->
+    <regexp match="/\s+/"/>
+    <!-- comments without space is an error -->
+    <block start="/\S?#1#/" end="/$|\}?=/" region="Error" scheme="def:empty"/>
+    <!-- comments -->
+    <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
+    <!-- a tag, do not allow another tag to be used after the found tag -->
+    <block start="/!/" end="/\s*$|\s+((?{Error}![^,\}\s]*)\s*)*/" scheme="tag" region00="SymbolTag" region="Tag"/>
+    <!-- anchor, do not allow a tag/anchor/alias after the found anchor -->
+    <block start="/&amp;/" end="/\s*$|\s+((?{Error}[!&amp;\*][^,\}\s]*)\s*)*/" scheme="anchor" region00="SymbolAnchor" region="Anchor"/>
+    <!-- alias, do not allow anything after the found alias -->
+    <block start="/\*/" end="/\s*[,\}]?=|\s+(?{Error}([^#,\}]|\s?~1#)*)/" scheme="anchor"
+        region00="SymbolAnchor" region="Anchor"/>
+    <!-- nested flow-sequence, allow only comma or closing bracket after this match -->
+    <block start="/(\[)/" end="/((\]))\s*(?{Error}([^#,\}]|\s?~1#)*)/" scheme="flow-sequence"
+        region00="SymbolFlow"    region11="SymbolFlow"
+        region01="def:PairStart" region12="def:PairEnd"/>
+    <!-- nested flow-mapping, allow only comma or closing bracket after this match -->
+    <block start="/(\{)/" end="/((\}))\s*(?{Error}([^#,\}]|\s?~1#)*)/" scheme="flow-mapping"
+        region00="SymbolFlow"    region11="SymbolFlow"
+        region01="def:PairStart" region12="def:PairEnd"/>
+    <!-- double quoted value, allow only comma or closing bracket after this match -->
+    <block start="/(&quot;)/" end="/((&quot;))\s*(?{Error}([^#,\}]|\s?~1#)*)/" scheme="value-double-quote"
+        region="String"
+        region00="StringEdge"    region11="StringEdge"
+        region01="def:PairStart" region12="def:PairEnd"/>
+    <!-- single quoted value, allow only comma or closing bracket after this match -->
+    <block start="/(&apos;)/" end="/((&apos;))\s*(?{Error}([^#,\}]|\s?~1#)*)/" scheme="value-single-quote"
+        region="String"
+        region00="StringEdge"    region11="StringEdge"
+        region01="def:PairStart" region12="def:PairEnd"/>
+    <!-- plain scalar value -->
+    <block start="/\M[^,\}\s]/" end="/[,\}]?=/" scheme="value-plain-flow" region="String"/>
+    <!-- anything unexpected is an error -->
+    <regexp match="/\S/" region="Error" priority="low"/>
+</scheme>
+
+<scheme name="flow-sequence">
+    <!-- eat spaces -->
+    <regexp match="/\s+/"/>
+    <!-- comments without space is an error -->
+    <block start="/\S?#1#/" end="/$|\]?=/" region="Error" scheme="def:empty"/>
+    <!-- comments -->
+    <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
+    <!-- a tag, do not allow another tag to be used after the found tag -->
+    <block start="/!/" end="/\s*$|\s+((?{Error}![^,\]\s]*)\s*)*/" scheme="tag" region00="SymbolTag" region="Tag"/>
+    <!-- anchor, do not allow a tag/anchor/alias after the found anchor -->
+    <block start="/&amp;/" end="/\s*$|\s+((?{Error}[!&amp;\*][^,\]\s]*)\s*)*/" scheme="anchor" region00="SymbolAnchor" region="Anchor"/>
+    <!-- alias, do not allow anything after the found alias -->
+    <block start="/\*/" end="/\s*[,\]]?=|\s+(?{Error}([^#,\]]|\s?~1#)*)/" scheme="anchor"
+        region00="SymbolAnchor" region="Anchor"/>
+    <!-- nested flow-sequence, allow only comma or closing bracket after this match -->
+    <block start="/(\[)/" end="/((\]))\s*(?{Error}([^#,\]]|\s?~1#)*)/" scheme="flow-sequence"
+        region00="SymbolFlow"    region11="SymbolFlow"
+        region01="def:PairStart" region12="def:PairEnd"/>
+    <!-- nested flow-mapping, allow only comma or closing bracket after this match -->
+    <block start="/(\{)/" end="/((\}))\s*(?{Error}([^#,\]]|\s?~1#)*)/" scheme="flow-mapping"
+        region00="SymbolFlow"    region11="SymbolFlow"
+        region01="def:PairStart" region12="def:PairEnd"/>
+    <!-- double quoted value, allow only comma or closing bracket after this match -->
+    <block start="/(&quot;)/" end="/((&quot;))\s*(?{Error}([^#,\]]|\s?~1#)*)/" scheme="value-double-quote"
+        region="String"
+        region00="StringEdge"    region11="StringEdge"
+        region01="def:PairStart" region12="def:PairEnd"/>
+    <!-- single quoted value, allow only comma or closing bracket after this match -->
+    <block start="/(&apos;)/" end="/((&apos;))\s*(?{Error}([^#,\]]|\s?~1#)*)/" scheme="value-single-quote"
+        region="String"
+        region00="StringEdge"    region11="StringEdge"
+        region01="def:PairStart" region12="def:PairEnd"/>
+    <!-- allow comma, but do not allow another comma to be used after the found comma -->
+    <regexp match="/,\s*(?{Error},[\s,]*)?/" region="Symbol"/>
+    <!-- plain scalar value -->
+    <block start="/\M[^,\]\s]/" end="/[,\]]?=/" scheme="value-plain-flow" region="String"/>
+    <!-- anything unexpected is an error -->
+    <regexp match="/\S/" region="Error" priority="low"/>
+</scheme>
+
+<scheme name="flow-sequence-mergekeys">
+    <!-- eat spaces -->
+    <regexp match="/\s+/"/>
+    <!-- comments without space is an error -->
+    <block start="/\S?#1#/" end="/$|\]?=/" region="Error" scheme="def:empty"/>
+    <!-- comments -->
+    <block start="/#/" end="/$/" region="Comment" scheme="comment"/>
+    <!-- alias, do not allow anything after the found alias -->
+    <block start="/\*/" end="/\s*[,\]]?=|\s+(?{Error}([^#,\]]|\s?~1#)*)/" scheme="anchor"
+        region00="SymbolAnchor" region="Anchor"/>
+    <!-- allow comma, but do not allow another comma to be used after the found comma -->
+    <regexp match="/,\s*(?{Error},[\s,]*)?/" region="Symbol"/>
+    <!-- anything unexpected is an error -->
+    <regexp match="/\S/" region="Error" priority="low"/>
+</scheme>
+
+</type>
+</hrc>
+
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1/GPL 2.0/LGPL 2.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is the Colorer Library.
+   -
+   - The Initial Developer of the Original Code is
+   - Cail Lomecb <cail@nm.ru>.
+   - Portions created by the Initial Developer are Copyright (C) 1999-2008
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   - Konstantin Kushnir <chpock@gmail.com>.
+   -
+   - Alternatively, the contents of this file may be used under the terms of
+   - either the GNU General Public License Version 2 or later (the "GPL"), or
+   - the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+   - in which case the provisions of the GPL or the LGPL are applicable instead
+   - of those above. If you wish to allow use of your version of this file only
+   - under the terms of either the GPL or the LGPL, and not to allow others to
+   - use your version of this file under the terms of the MPL, indicate your
+   - decision by deleting the provisions above and replace them with the notice
+   - and other provisions required by the LGPL or the GPL. If you do not delete
+   - the provisions above, a recipient may use your version of this file under
+   - the terms of any one of the MPL, the GPL or the LGPL.
+   -
+   - ***** END LICENSE BLOCK ***** -->

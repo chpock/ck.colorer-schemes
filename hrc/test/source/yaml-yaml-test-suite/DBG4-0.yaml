@@ -1,0 +1,33 @@
+# name = Spec Example 7.10. Plain Characters
+
+# Outside flow collection:
+- ::vector
+- ": - ()"
+- Up, up, and away!
+- -123
+- http://example.com/foo#bar
+# Inside flow collection:
+- [ ::vector,
+  ": - ()",
+  "Up, up and away!",
+  -123,
+  http://example.com/foo#bar ]
+
+# +STR
+#  +DOC
+#   +SEQ
+#    =VAL :::vector
+#    =VAL ": - ()
+#    =VAL :Up, up, and away!
+#    =VAL :-123
+#    =VAL :http://example.com/foo#bar
+#    +SEQ []
+#     =VAL :::vector
+#     =VAL ": - ()
+#     =VAL "Up, up and away!
+#     =VAL :-123
+#     =VAL :http://example.com/foo#bar
+#    -SEQ
+#   -SEQ
+#  -DOC
+# -STR

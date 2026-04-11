@@ -1,0 +1,13 @@
+# name = duplicate-anchor-1
+# fail = true
+# mark.line = 3
+# mark.column = 3
+# mark2.line = 1
+# mark2.column = 3
+# error = Unable to load test/duplicate-errors.yaml#duplicate-anchor-1:yaml: Found duplicate anchor: foo\n
+
+%YAML   1.1
+%YAML   1.1
+--- foo
+
+# null

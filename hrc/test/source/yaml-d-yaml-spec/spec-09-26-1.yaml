@@ -1,0 +1,11 @@
+# name = spec-09-26
+
+%YAML 1.1
+---
+!!str "\n\nliteral\n\ntext\n"
+
+# +STR
+#   +DOC ---
+#     =VAL <tag:yaml.org,2002:str> "\n\nliteral\n\ntext\n
+#   -DOC
+# -STR

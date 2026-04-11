@@ -1,0 +1,21 @@
+# name = spec-05-07
+
+%YAML 1.1
+---
+!!map {
+  ? !!str "literal"
+  : !!str "text\n",
+  ? !!str "folded"
+  : !!str "text\n",
+}
+
+# +STR
+#   +DOC ---
+#     +MAP {} <tag:yaml.org,2002:map>
+#       =VAL <tag:yaml.org,2002:str> "literal
+#       =VAL <tag:yaml.org,2002:str> "text\n
+#       =VAL <tag:yaml.org,2002:str> "folded
+#       =VAL <tag:yaml.org,2002:str> "text\n
+#     -MAP
+#   -DOC
+# -STR

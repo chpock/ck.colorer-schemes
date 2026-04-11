@@ -1,0 +1,22 @@
+# name = spec-09-01
+
+"simple key" : {
+  "also simple" : value,
+  ? "not a
+  simple key" : "any
+  value"
+}
+
+# +STR
+#   +DOC
+#     +MAP
+#       =VAL "simple key
+#       +MAP {}
+#         =VAL "also simple
+#         =VAL :value
+#         =VAL "not a simple key
+#         =VAL "any value
+#       -MAP
+#     -MAP
+#   -DOC
+# -STR

@@ -1,0 +1,12 @@
+# name = Zero indented block scalar with line that looks like a comment
+
+--- >
+line1
+# no comment
+line3
+
+# +STR
+#  +DOC ---
+#   =VAL >line1 # no comment line3\n
+#  -DOC
+# -STR

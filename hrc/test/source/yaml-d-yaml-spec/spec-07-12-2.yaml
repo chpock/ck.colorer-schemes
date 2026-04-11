@@ -1,0 +1,12 @@
+# name = spec-07-12a
+
+# Explicit document. Root
+# scalar (literal) node.
+--- |
+ Text content
+
+# +STR
+#   +DOC ---
+#     =VAL |Text content\n
+#   -DOC
+# -STR

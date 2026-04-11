@@ -1,0 +1,33 @@
+# name = Single Pair Implicit Entries
+
+- [ YAML : separate ]
+- [ "JSON like":adjacent ]
+- [ {JSON: like}:adjacent ]
+
+# +STR
+#  +DOC
+#   +SEQ
+#    +SEQ []
+#     +MAP {}
+#      =VAL :YAML
+#      =VAL :separate
+#     -MAP
+#    -SEQ
+#    +SEQ []
+#     +MAP {}
+#      =VAL "JSON like
+#      =VAL :adjacent
+#     -MAP
+#    -SEQ
+#    +SEQ []
+#     +MAP {}
+#      +MAP {}
+#       =VAL :JSON
+#       =VAL :like
+#      -MAP
+#      =VAL :adjacent
+#     -MAP
+#    -SEQ
+#   -SEQ
+#  -DOC
+# -STR

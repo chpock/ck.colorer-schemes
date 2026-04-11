@@ -1,0 +1,8 @@
+# skip = true
+# note = The following cases are valid YAML according to the 1.2 productions but not at all usefully valid. We don't want to encourage parsers to support them when we'll likely make them invalid later.
+# name = Directive variants
+
+%YAML 1.12345
+---
+
+# null

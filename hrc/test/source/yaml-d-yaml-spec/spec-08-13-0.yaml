@@ -1,0 +1,17 @@
+# name = spec-08-13
+
+{
+  ? foo :,
+  ? : bar,
+}
+
+# +STR
+#   +DOC
+#     +MAP {}
+#       =VAL :foo
+#       =VAL :
+#       =VAL :
+#       =VAL :bar
+#     -MAP
+#   -DOC
+# -STR

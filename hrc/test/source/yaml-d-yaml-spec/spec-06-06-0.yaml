@@ -1,0 +1,22 @@
+# name = spec-06-06
+
+plain: text
+  lines
+quoted: "text
+  	lines"
+block: |
+  text
+   	lines
+
+# +STR
+#   +DOC
+#     +MAP
+#       =VAL :plain
+#       =VAL :text lines
+#       =VAL :quoted
+#       =VAL "text lines
+#       =VAL :block
+#       =VAL |text\n \tlines\n
+#     -MAP
+#   -DOC
+# -STR
