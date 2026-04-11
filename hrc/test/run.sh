@@ -41,6 +41,9 @@ else
     COLORER_BIN="colorer"
 fi
 
+LD_LIBRARY_PATH="$BIN_DIR/libs"
+export LD_LIBRARY_PATH
+
 set -- "$BIN_DIR/$COLORER_BIN" -c "$BIN_DIR"/catalog.xml -i gruvbox_dark_hard
 
 LOG_FILE="$OUT_DIR"/consoletools.log
